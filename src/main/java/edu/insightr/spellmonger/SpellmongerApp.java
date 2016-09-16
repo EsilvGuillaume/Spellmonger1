@@ -15,14 +15,12 @@ public class SpellmongerApp {
     List<String> cardPool = new ArrayList<>(70);
 
     public SpellmongerApp() {
-        // INITIALISATION DES JOUEURS
         playersLifePoints.put("Alice", 20);
         playersLifePoints.put("Bob", 20);
         playersCreature.put("Alice", 0);
         playersCreature.put("Bob", 0);
         int ritualMod = 3;
 
-        // INITIALISATION DES CARTES
         for (int i = 0; i < 70; i++) {
             if (i % ritualMod == 0) {
                 cardPool.add("Ritual");
