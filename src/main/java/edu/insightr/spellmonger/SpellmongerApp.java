@@ -8,19 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*   Having 3 different creatures: eagle, wolf and bear
-     Eagle deals 1 damage
-     Wolf deals 2 damages
-     Bear deals 3 damages
-
-     Having 2 different rituals : curse and blessing
-     Curse deals 3 damages
-     Blessing restore 3 life points
-
-     add a discard to the game*/
-
-
 public class SpellmongerApp {
+
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
 
     Map<String, Integer> playersLifePoints = new HashMap<>(2);
@@ -105,6 +94,39 @@ public class SpellmongerApp {
         logger.info("******************************");
 
     }
+    public void ritualdraw (String nameritual, int number, String currentPlayer, String opponent)
+    {
+        String effect;
+        if (nameritual=="Blessing")
+        {
+            effect = "Restore";
+            ritualeffect(effect,number, currentPlayer, opponent);
+        }
+        else if (nameritual=="Curse") {
+            effect = "Curse";
+            ritualeffect(effect, number, currentPlayer, opponent);
+        }
+    }
+
+    public void ritualeffect (String effect, int number, String currentPlayer, String opponent)
+    {
+        if (effect=="Restore")
+        {
+            if(playersLifePoints.get(currentPlayer)>=17)
+            {
+                playersLifePoints.put(currentPlayer,20);
+            }
+            else {
+                playersLifePoints.put(currentPlayer, (playersLifePoints.get(currentPlayer).intValue() + number));
+            }
+        }
+        else if (effect=="Curse")
+        {
+            playersLifePoints.put(opponent,(playersLifePoints.get(opponent).intValue() - number));
+        }
+    }
+
+
 
     public void drawACard(String currentPlayer, String opponent, int currentCardNumber) {
 
@@ -130,35 +152,49 @@ public class SpellmongerApp {
         if ("Ritual".equalsIgnoreCase(cardPool.get(currentCardNumber))) {
             logger.info(currentPlayer + " draw a Ritual");
             int nbCreatures = playersCreature.get(currentPlayer).intValue();
+            Random rand = new Random();
+            int randomNum = rand.nextInt((2 - 1) + 1) + 1;
+            if (randomNum == 1)
+            {
+                Blessing rituol = new Blessing();
+                ritualdraw(rituol.getNom(),rituol.getNumber(), currentPlayer, opponent);
+                logger.info(currentPlayer + " cast a ritual that restore 3 pv to " + currentPlayer);
+            }
+            else if (randomNum == 2) {
+                Curse rituol = new Curse();
+                ritualdraw(rituol.getNom(),rituol.getNumber(), currentPlayer, opponent);
+                logger.info(currentPlayer + " cast a ritual that deals 3 damages to " + opponent);
+            }
             if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - damageFromCreatures - 3));
+                damageFromCreatures = playersCreatures.get(currentPlayer)[0] + playersCreatures.get(currentPlayer)[1]*2 + playersCreatures.get(currentPlayer)[2]*3;
+                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - damageFromCreatures));
                 logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + damageFromCreatures + " damages to its opponent");
             }
-            logger.info(currentPlayer + " cast a ritual that deals 3 damages to " + opponent);
         }
     }
 
+
     public void drawACreature(String player){
 
-            Random rand = new Random();
-            int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+        Random rand = new Random();
+        int randomNum = rand.nextInt((3 - 1) + 1) + 1;
 
-            creaArray = playersCreatures.get(player);
-            if (creaArray == null){
-                creaArray = new int[] { 0, 0, 0 };
-            }
+        creaArray = playersCreatures.get(player);
+        if (creaArray == null){
+            creaArray = new int[] { 0, 0, 0 };
+        }
 
-            if (randomNum == 1) {
-                creaArray[0]++;
-            }
-            else if (randomNum == 2){
-                creaArray[1]++;
-            }
-            else{
-                creaArray[2]++;
-            }
+        if (randomNum == 1) {
+            creaArray[0]++;
+        }
+        else if (randomNum == 2){
+            creaArray[1]++;
+        }
+        else{
+            creaArray[2]++;
+        }
 
-            playersCreatures.put(player, creaArray);
+        playersCreatures.put(player, creaArray);
 
     }
 
