@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class SpellmongerApp {
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
@@ -83,6 +84,39 @@ public class SpellmongerApp {
 
 
     }
+    public void ritualdraw (String nameritual, int number, String currentPlayer, String opponent)
+    {
+        String effect;
+        if (nameritual=="Blessing")
+        {
+            effect = "Restore";
+            ritualeffect(effect,number, currentPlayer, opponent);
+        }
+        else if (nameritual=="Curse") {
+            effect = "Curse";
+            ritualeffect(effect, number, currentPlayer, opponent);
+        }
+    }
+
+    public void ritualeffect (String effect, int number, String currentPlayer, String opponent)
+    {
+        if (effect=="Restore")
+        {
+            if(playersLifePoints.get(currentPlayer)>=17)
+            {
+                playersLifePoints.put(currentPlayer,20);
+            }
+           else {
+                playersLifePoints.put(currentPlayer, (playersLifePoints.get(currentPlayer).intValue() + number));
+            }
+        }
+        else if (effect=="Deal")
+        {
+            playersLifePoints.put(opponent,(playersLifePoints.get(opponent).intValue() - number));
+        }
+    }
+
+
 
     public void drawACard(String currentPlayer, String opponent, int currentCardNumber) {
 
@@ -98,11 +132,24 @@ public class SpellmongerApp {
         if ("Ritual".equalsIgnoreCase(cardPool.get(currentCardNumber))) {
             logger.info(currentPlayer + " draw a Ritual");
             int nbCreatures = playersCreature.get(currentPlayer).intValue();
+            Random rand = new Random();
+             int randomNum = rand.nextInt(1) + 1;
+            if (randomNum == 1)
+            {
+                Blessing rituol = new Blessing();
+                ritualdraw(rituol.getNom(),rituol.getNumber(), currentPlayer, opponent);
+                logger.info(currentPlayer + " cast a ritual that restore 3 pv to " + currentPlayer);
+            }
+            else if (randomNum == 2) {
+                Curse rituol = new Curse();
+                ritualdraw(rituol.getNom(),rituol.getNumber(), currentPlayer, opponent);
+                logger.info(currentPlayer + " cast a ritual that deals 3 damages to " + opponent);
+            }
+
             if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - nbCreatures - 3));
+                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - nbCreatures));
                 logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + nbCreatures + " damages to its opponent");
             }
-            logger.info(currentPlayer + " cast a ritual that deals 3 damages to " + opponent);
         }
     }
 
