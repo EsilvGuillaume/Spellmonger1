@@ -8,7 +8,6 @@ public class Wolf implements Creature{
     private boolean alive;
     private int damage;
 
-
     public boolean isAlive() {
         return alive;
     }
