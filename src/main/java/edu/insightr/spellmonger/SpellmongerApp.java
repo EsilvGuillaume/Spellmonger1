@@ -7,9 +7,10 @@ import java.util.*;
 public class SpellmongerApp {
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
 
-    Map<String, Integer> playersLifePoints = new HashMap<>(2);
+    //Map<String, Integer> playersLifePoints = new HashMap<>(2);
     Map<String, Integer> playersCreature = new HashMap<>(2);
     Map<String, Integer> playersDegats = new HashMap<>(2);
+
     List<String> cardPool = new ArrayList<>(70);
     List<String> discard = new ArrayList<>();
     List<String> creatures = new ArrayList<>(3);
@@ -17,8 +18,9 @@ public class SpellmongerApp {
 
 
     public SpellmongerApp() {
-        playersLifePoints.put("Alice", 20);
-        playersLifePoints.put("Bob", 20);
+
+        /*playersLifePoints.put("Alice", 20);
+        playersLifePoints.put("Bob", 20);*/
         playersCreature.put("Alice", 0);
         playersCreature.put("Bob", 0);
         playersDegats.put("Alice", 0);
@@ -52,9 +54,16 @@ public class SpellmongerApp {
     public static void main(String[] args) {
         SpellmongerApp app = new SpellmongerApp();
 
+        Player player1 = new Player("Alice");
+        Player player2 = new Player("Bob");
+
+        List<Creature> player1Creatures = Creature.getPlayerCreatures(player1.getName());
+        List<Creature> player2Creatures = Creature.getPlayerCreatures(player2.getName());
+
         boolean onePlayerDead = false;
-        String currentPlayer = "Alice";
-        String opponent = "Bob";
+        Player currentPlayer = player1;
+        Player opponent = player2;
+
         int currentCardNumber = 0;
         int roundCounter = 1;
         String winner = null;
@@ -65,24 +74,24 @@ public class SpellmongerApp {
 
             app.drawACard(currentPlayer, opponent, currentCardNumber);
 
-            logger.info(opponent + " has " + app.playersLifePoints.get(opponent).intValue() + " life points and " + currentPlayer + " has " + app.playersLifePoints.get(currentPlayer).intValue() + " life points ");
+            logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
-            if (app.playersLifePoints.get(currentPlayer).intValue() <= 0) {
-                winner = opponent;
+            if (currentPlayer.getHp() <= 0) {
+                winner = opponent.getName();
                 onePlayerDead = true;
             }
 
-            else if (app.playersLifePoints.get(opponent).intValue() <= 0) {
-                winner = currentPlayer;
+            else if (opponent.getHp() <= 0) {
+                winner = currentPlayer.getName();
                 onePlayerDead = true;
-                }
+            }
 
-            if ("Alice".equalsIgnoreCase(currentPlayer)) {
-                currentPlayer = "Bob";
-                opponent = "Alice";
+            if (currentPlayer.equals(player1)) {
+                currentPlayer = player2;
+                opponent = player1;
             } else {
-                currentPlayer = "Alice";
-                opponent = "Bob";
+                currentPlayer = player1;
+                opponent = player2;
             }
             currentCardNumber++;
             roundCounter++;
@@ -96,20 +105,21 @@ public class SpellmongerApp {
 
     }
 
-    public void drawACard(String currentPlayer, String opponent, int currentCardNumber) {
+    public void drawACard(Player currentPlayer, Player opponent, int currentCardNumber) {
 
 
         if (creatures.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
         {
-            logger.info(currentPlayer + " draw a " + creatures.get(0));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 1);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
+            logger.info(currentPlayer.getName() + " draw a " + creatures.get(0));
+
+            playersCreature.put(currentPlayer.getName(), playersCreature.get(currentPlayer.getName()).intValue() + 1);
+            playersDegats.put(currentPlayer.getName(), playersDegats.get(currentPlayer.getName()).intValue() + 1);
+            int nbCreatures = playersCreature.get(currentPlayer.getName()).intValue();
+            int degats = playersDegats.get(currentPlayer.getName()).intValue();
             if (nbCreatures > 0)
             {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+                opponent.setHp(opponent.getHp() - degats);
+                logger.info("The " + nbCreatures + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
 
             }
 
@@ -119,15 +129,15 @@ public class SpellmongerApp {
 
         else if (creatures.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
         {
-            logger.info(currentPlayer + " draw a " + creatures.get(1));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 2);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue() ;
-            int degats = playersDegats.get(currentPlayer).intValue();
+            logger.info(currentPlayer.getName() + " draw a " + creatures.get(1));
+            playersCreature.put(currentPlayer.getName(), playersCreature.get(currentPlayer.getName()).intValue() + 1);
+            playersDegats.put(currentPlayer.getName(), playersDegats.get(currentPlayer.getName()).intValue() + 2);
+            int nbCreatures = playersCreature.get(currentPlayer.getName()).intValue() ;
+            int degats = playersDegats.get(currentPlayer.getName()).intValue();
             if (nbCreatures > 0)
             {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+                opponent.setHp(opponent.getHp() - degats);
+                logger.info("The " + nbCreatures + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
 
             }
 
@@ -136,15 +146,15 @@ public class SpellmongerApp {
 
         else if (creatures.get(2).equalsIgnoreCase(cardPool.get(currentCardNumber)))
         {
-            logger.info(currentPlayer + " draw a " + creatures.get(2));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 3);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
+            logger.info(currentPlayer.getName() + " draw a " + creatures.get(2));
+            playersCreature.put(currentPlayer.getName(), playersCreature.get(currentPlayer.getName()).intValue() + 1);
+            playersDegats.put(currentPlayer.getName(), playersDegats.get(currentPlayer.getName()).intValue() + 3);
+            int nbCreatures = playersCreature.get(currentPlayer.getName()).intValue();
+            int degats = playersDegats.get(currentPlayer.getName()).intValue();
             if (nbCreatures > 0)
             {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+                opponent.setHp(opponent.getHp() - degats);
+                logger.info("The " + nbCreatures + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
 
             }
 
@@ -153,13 +163,13 @@ public class SpellmongerApp {
 
         else if (rituals.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
         {
-            logger.info(currentPlayer + " draw a " + rituals.get(0));
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
+            logger.info(currentPlayer.getName() + " draw a " + rituals.get(0));
+            int nbCreatures = playersCreature.get(currentPlayer.getName()).intValue();
+            int degats = playersDegats.get(currentPlayer.getName()).intValue();
             if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats - 3));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
-                logger.info(currentPlayer + " cast a " + rituals.get(0) + " that deals 3 damages to " + opponent);
+                opponent.setHp(opponent.getHp() - degats - 3);
+                logger.info("The " + nbCreatures + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
+                logger.info(currentPlayer.getName() + " cast a " + rituals.get(0) + " that deals 3 damages to " + opponent.getName());
             }
 
             String card = cardPool.get(currentCardNumber);
@@ -170,21 +180,21 @@ public class SpellmongerApp {
 
         else if (rituals.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
         {
-            logger.info(currentPlayer + " draw a " + rituals.get(1));
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
+            logger.info(currentPlayer.getName() + " draw a " + rituals.get(1));
+            int nbCreatures = playersCreature.get(currentPlayer.getName()).intValue();
+            int degats = playersDegats.get(currentPlayer.getName()).intValue();
 
-            if (playersLifePoints.get(currentPlayer).intValue() <= 17)
-                playersLifePoints.put(currentPlayer, (playersLifePoints.get(currentPlayer).intValue() + 3));
+            if (currentPlayer.getHp() <= 17)
+                currentPlayer.setHp(currentPlayer.getHp() + 3);
             else
-                playersLifePoints.put(currentPlayer, 20);
+                currentPlayer.setHp(20);
 
             if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+                opponent.setHp(opponent.getHp() - degats);
+                logger.info("The " + nbCreatures + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
             }
 
-            logger.info(currentPlayer + " cast a " + rituals.get(1) + " that restores 3 life point to " + currentPlayer);
+            logger.info(currentPlayer.getName() + " cast a " + rituals.get(1) + " that restores 3 life point to " + currentPlayer.getName());
 
             String card = cardPool.get(currentCardNumber);
             cardPool.remove(currentCardNumber);
