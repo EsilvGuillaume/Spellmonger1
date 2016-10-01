@@ -14,6 +14,7 @@ public abstract class Creature extends Card {
     private boolean alive;
 
     static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    static ArrayList<Creature> temp = allCreatures;
 
     void killCreature() {
         allCreatures.remove(this);
@@ -27,13 +28,22 @@ public abstract class Creature extends Card {
         allCreatures.add(this);
     }
 
+    public Creature(String name){
+        super(name);
+        this.setHp(0);
+        this.setAttack(0);
+        this.setAlive(true);
+        allCreatures.add(this);
+    }
+
     public static List<Creature> getPlayerCreatures(String playerName){
-        for(int i=0; i<allCreatures.size(); i++) {
-            if (allCreatures.get(i).getOwner() != playerName) {
-                allCreatures.remove(allCreatures.get(i));
+        temp = allCreatures;
+        for(int i=0; i<temp.size(); i++) {
+            if (temp.get(i).getOwner() != playerName) {
+                temp.remove(temp.get(i));
             }
         }
-        return allCreatures;
+        return temp;
     }
 
     public void attackOpponent(Player opponent){

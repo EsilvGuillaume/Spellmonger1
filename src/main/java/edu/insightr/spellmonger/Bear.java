@@ -8,10 +8,10 @@ import java.util.List;
  */
 public class Bear extends Creature{
 
-    public Bear(String name, int hp){
-        super(name, hp);
-        this.setHp(hp);
-        this.setAttack(hp);
+    public Bear(String name){
+        super(name+" [Bear]");
+        this.setHp(3);
+        this.setAttack(3);
         this.setAlive(true);
     }
 
