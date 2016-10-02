@@ -3,6 +3,7 @@ package edu.insightr.spellmonger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Collections;
 
 /**
  * Created by Guillaume on 26/09/2016.
@@ -19,27 +20,40 @@ public class Deck {
         this.setDeckOwner(playerName);
     }
 
+    public void addToList(List<Card> list, Card card, int dupli){
+        for (int i = 0; i < dupli; i++) {
+            card.setOwner(deckOwner);
+            list.add(card);
+        }
+    }
+
     public List<Card> createDeck(int size, String playerName){
 
         List<Card> possibleCards = new ArrayList<>();
         Bear bearTest = new Bear("bear", playerName);
-        //System.out.println("owner : " +bearTest.getOwner());
         Eagle eagleTest = new Eagle("eagle", playerName);
         Wolf wolfTest = new Wolf("wolf", playerName);
         Curse curseTest = new Curse("curse");
-        possibleCards.add(bearTest);
-        possibleCards.add(wolfTest);
-        possibleCards.add(eagleTest);
-        possibleCards.add(curseTest);
+        Blessing blessingTest = new Blessing("blessing");
+        Energy_Drain energyDrainTest = new Energy_Drain("energyDrain");
+        addToList(possibleCards, energyDrainTest, 2);
+        addToList(possibleCards, blessingTest, 2);
+        addToList(possibleCards, curseTest, 2);
+        addToList(possibleCards, wolfTest, 8);
+        addToList(possibleCards, eagleTest, 8);
+        addToList(possibleCards, bearTest, 8);
 
-        Random randomGenerator = new Random();
+        Collections.shuffle(possibleCards);
 
-        for (int i = 0; i < size; i++) {
+        return possibleCards;
+
+        //Random randomGenerator = new Random();
+        /*for (int i = 0; i < size; i++) {
             int randIndex = randomGenerator.nextInt(possibleCards.size());
             (this.deck).add(possibleCards.get(randIndex));
             possibleCards.get(randIndex).setOwner(deckOwner);
-        }
-        return this.deck;
+        }*/
+        //return this.deck;
     }
 
     public int getSize() {

@@ -38,4 +38,5 @@ public class Curse extends Rituol {
     public void setBonus(boolean bonus) {
         this.bonus = bonus;
     }
+
 }

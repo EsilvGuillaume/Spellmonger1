@@ -29,29 +29,6 @@ public class SpellmongerApp {
 
     public SpellmongerApp() {
 
-        /*creatures.add("Eagle");
-        creatures.add("Wolf");
-        creatures.add("Bear");
-
-        rituals.add("Curse");
-        rituals.add("Blessing");*/
-
-        /*for(int i = 0; i < 70; i++)
-        {
-            int max = creatures.size()+ rituals.size();
-            Random rand = new Random();
-            int randNumber = rand.nextInt(max);
-
-            if(randNumber < creatures.size())
-            {
-                cardPool.add(creatures.get(randNumber));
-            }
-            else if(randNumber >= creatures.size())
-            {
-                cardPool.add(rituals.get(randNumber - creatures.size()));
-            }
-
-        }*/
     }
 
     public static void main(String[] args) {
@@ -62,9 +39,6 @@ public class SpellmongerApp {
 
         currentPlayer = player1;
         opponent = player2;
-
-        //List<Creature> player1Creatures = Creature.getPlayerCreatures(player1.getName());
-        //List<Creature> player2Creatures = Creature.getPlayerCreatures(player2.getName());
 
         while (!onePlayerDead) {
 
@@ -106,13 +80,18 @@ public class SpellmongerApp {
 
         currentCardNumber++;
         roundCounter++;
+
+        if(roundCounter > 500){
+            onePlayerDead = true;
+            winner = "Time";
+        }
     }
 
     public void drawACard(Player currentPlayer, Player opponent) {
 
         //Creature.displayGroupOfCrea(Creature.allCreatures);
 
-        Card nextCard = new Bear("no more card ?", "none"); // null, infinite loop
+        Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);//new Bear("no more card ?", "none"); // null, infinite loop
         //System.out.println("deck size: "+currentPlayer.getDeckInfo().getDeck().size());
         for(Card card : currentPlayer.getDeckInfo().getDeck())
         {
@@ -171,96 +150,6 @@ public class SpellmongerApp {
                 }
             }
         }
-
-
-        /*if (creatures.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer.getName() + " draw a " + creatures.get(0));
-
-            currentPlayer.setNumberOfCreaOnBoard(currentPlayer.getNumberOfCreaOnBoard() + 1);
-            int degats = Creature.getCreaDamageForPlayer(currentPlayer);
-            if (currentPlayer.getNumberOfCreaOnBoard() > 0)
-            {
-                opponent.setHp(opponent.getHp() - degats);
-                logger.info("The " + currentPlayer.getNumberOfCreaOnBoard() + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
-
-            }
-
-            cardPool.remove(currentCardNumber);
-
-        }
-
-        else if (creatures.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer.getName() + " draw a " + creatures.get(1));
-            currentPlayer.setNumberOfCreaOnBoard(currentPlayer.getNumberOfCreaOnBoard() + 1);
-            int degats = Creature.getCreaDamageForPlayer(currentPlayer);
-            if (currentPlayer.getNumberOfCreaOnBoard() > 0)
-            {
-                opponent.setHp(opponent.getHp() - degats);
-                logger.info("The " + currentPlayer.getNumberOfCreaOnBoard() + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
-
-            }
-
-            cardPool.remove(currentCardNumber);
-        }
-
-        else if (creatures.get(2).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer.getName() + " draw a " + creatures.get(2));
-            currentPlayer.setNumberOfCreaOnBoard(currentPlayer.getNumberOfCreaOnBoard() + 1);
-            int degats = Creature.getCreaDamageForPlayer(currentPlayer);
-            if (currentPlayer.getNumberOfCreaOnBoard() > 0)
-            {
-                opponent.setHp(opponent.getHp() - degats);
-                logger.info("The " + currentPlayer.getNumberOfCreaOnBoard() + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
-
-            }
-
-            cardPool.remove(currentCardNumber);
-        }
-
-        else if (rituals.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer.getName() + " draw a " + rituals.get(0));
-            int degats = Creature.getCreaDamageForPlayer(currentPlayer);
-            if (currentPlayer.getNumberOfCreaOnBoard() > 0) {
-                opponent.setHp(opponent.getHp() - degats - 3);
-                logger.info("The " + currentPlayer.getNumberOfCreaOnBoard() + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
-                logger.info(currentPlayer.getName() + " cast a " + rituals.get(0) + " that deals 3 damages to " + opponent.getName());
-            }
-
-            String card = cardPool.get(currentCardNumber);
-            cardPool.remove(currentCardNumber);
-            discard.add(card);
-
-        }
-
-        else if (rituals.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer.getName() + " draw a " + rituals.get(1));
-            int degats = Creature.getCreaDamageForPlayer(currentPlayer);
-
-            if (currentPlayer.getHp() <= 17)
-                currentPlayer.setHp(currentPlayer.getHp() + 3);
-            else
-                currentPlayer.setHp(20);
-
-            if (currentPlayer.getNumberOfCreaOnBoard() > 0) {
-                opponent.setHp(opponent.getHp() - degats);
-                logger.info("The " + currentPlayer.getNumberOfCreaOnBoard() + " creatures of " + currentPlayer.getName() + " attack and deal " + degats + " damages to its opponent");
-            }
-
-            logger.info(currentPlayer.getName() + " cast a " + rituals.get(1) + " that restores 3 life point to " + currentPlayer.getName());
-
-            String card = cardPool.get(currentCardNumber);
-            cardPool.remove(currentCardNumber);
-            discard.add(card);
-        }*/
-
-        /*String card = cardPool.get(currentCardNumber);
-        cardPool.remove(currentCardNumber);
-        discard.add(card);*/
 
     }
 
