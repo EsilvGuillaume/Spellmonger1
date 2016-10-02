@@ -9,7 +9,8 @@ public class Player {
     private int hp;
     private int energy;
     private boolean alive;
-    private Deck deck;
+    private Deck deckInfo;
+    private int numberOfCreaOnBoard;
 
     private static Player currentPlayer = new Player();
     private static Player currentOpponent = new Player();
@@ -18,14 +19,16 @@ public class Player {
         this.setName("");
         this.setHp(20);
         this.setEnergy(0);
-        this.deck = new Deck(30, "");
+        this.setDeckInfo(new Deck(30, ""));
+        this.setNumberOfCreaOnBoard(0);
     }
 
     Player(String name){
         this.setName(name);
         this.setHp(20);
         this.setEnergy(0);
-        this.deck = new Deck(30, name);
+        this.setDeckInfo(new Deck(30, name));
+        this.setNumberOfCreaOnBoard(0);
     }
 
     public static Player getCurrentPlayer() {
@@ -73,15 +76,27 @@ public class Player {
         this.energy = energy;
     }
 
-    public Deck getDeck() {
-        return deck;
-    }
-
     public boolean isAlive() {
         return alive;
     }
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public int getNumberOfCreaOnBoard() {
+        return numberOfCreaOnBoard;
+    }
+
+    public void setNumberOfCreaOnBoard(int numberOfCreaOnBoard) {
+        this.numberOfCreaOnBoard = numberOfCreaOnBoard;
+    }
+
+    public Deck getDeckInfo() {
+        return deckInfo;
+    }
+
+    public void setDeckInfo(Deck deckInfo) {
+        this.deckInfo = deckInfo;
     }
 }

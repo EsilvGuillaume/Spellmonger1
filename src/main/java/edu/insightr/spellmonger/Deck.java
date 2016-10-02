@@ -2,6 +2,7 @@ package edu.insightr.spellmonger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Guillaume on 26/09/2016.
@@ -14,16 +15,29 @@ public class Deck {
 
     Deck(int size, String playerName){
         this.size = size;
-        this.deck = createDeck(size);
+        this.deck = createDeck(size, playerName);
         this.setDeckOwner(playerName);
     }
 
-    public List<Card> createDeck(int size){
-        Bear bearTest = new Bear("bear", 3);
+    public List<Card> createDeck(int size, String playerName){
+
+        List<Card> possibleCards = new ArrayList<>();
+        Bear bearTest = new Bear("bear", playerName);
+        //System.out.println("owner : " +bearTest.getOwner());
+        Eagle eagleTest = new Eagle("eagle", playerName);
+        Wolf wolfTest = new Wolf("wolf", playerName);
+        Curse curseTest = new Curse("curse");
+        possibleCards.add(bearTest);
+        possibleCards.add(wolfTest);
+        possibleCards.add(eagleTest);
+        possibleCards.add(curseTest);
+
+        Random randomGenerator = new Random();
 
         for (int i = 0; i < size; i++) {
-            (this.deck).add(bearTest); // .add(card) // null for testing
-            bearTest.setOwner(deckOwner);
+            int randIndex = randomGenerator.nextInt(possibleCards.size());
+            (this.deck).add(possibleCards.get(randIndex));
+            possibleCards.get(randIndex).setOwner(deckOwner);
         }
         return this.deck;
     }

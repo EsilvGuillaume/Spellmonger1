@@ -9,9 +9,27 @@ public abstract class Card {
     private boolean draw;
     private String owner;
 
+    public Card(String name, String owner){
+        setName(name);
+        setDraw(false);
+        setOwner(owner);
+    }
+
     public Card(String name){
         setName(name);
         setDraw(false);
+        setOwner("");
+    }
+
+    public Card(){
+        setName("");
+        setDraw(false);
+        setOwner("");
+    }
+
+    @Override
+    public String toString() {
+        return "name : "+this.name+", draw : "+this.draw+", owner : "+this.owner;
     }
 
     public void draw(){
