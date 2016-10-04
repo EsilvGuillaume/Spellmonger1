@@ -83,16 +83,14 @@ public class SpellmongerApp {
 
         if(roundCounter > 500){
             onePlayerDead = true;
-            winner = "Time";
+            winner = "Time - It's a draw";
         }
     }
 
     public void drawACard(Player currentPlayer, Player opponent) {
 
-        //Creature.displayGroupOfCrea(Creature.allCreatures);
+        Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
-        Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);//new Bear("no more card ?", "none"); // null, infinite loop
-        //System.out.println("deck size: "+currentPlayer.getDeckInfo().getDeck().size());
         for(Card card : currentPlayer.getDeckInfo().getDeck())
         {
             card.setOwner(currentPlayer.getDeckInfo().getDeckOwner());
