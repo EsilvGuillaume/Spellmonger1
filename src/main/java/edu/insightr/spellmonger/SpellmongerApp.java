@@ -11,9 +11,6 @@ public class SpellmongerApp {
     List<String> cardPool = new ArrayList<>(70);
     List<String> discard = new ArrayList<>();
 
-    //List<String> creatures = new ArrayList<>(3);
-    //List<String> rituals = new ArrayList<>(2);
-
     static boolean onePlayerDead = false;
     static Player currentPlayer;
     static Player opponent;
@@ -119,7 +116,6 @@ public class SpellmongerApp {
             }
         }
 
-        //System.out.println("********call of playerCreaOnBard 2");
         playerCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
 
         allCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
@@ -127,8 +123,6 @@ public class SpellmongerApp {
         {
             allCreaOnBoard.add(crea);
         }
-
-        //System.out.println(currentPlayer.getName()+" crea on board : "+playerCreaOnBoard);
 
         System.out.println("********All the creatures on the board :");
         Creature.displayGroupOfCrea(allCreaOnBoard);

@@ -75,23 +75,8 @@ public abstract class Creature extends Card {
                 Creature crea = i.next();
                 if (!((crea.getOwner() == player.getName()) && (crea.isDraw()) && (crea.getHp() > 0))) {
                     i.remove();
-                    //System.out.println("remov: owner:"+crea.getOwner()+"/draw?:"+crea.isDraw()+"/hp:"+crea.getHp());
-                }
-                else{
-                    //System.out.println("OPPONENT CREATURE ON BOARD : "+i.next().getName()); // go delete le else
                 }
             }
-
-            /*for (Iterator<Creature> iterator = oppCreaOnBoard.iterator(); iterator.hasNext(); ) {
-                Creature crea = iterator.next();
-                //System.out.println("all creatures : "+crea.toString());
-                if (!((crea.getOwner() != player.getName()) && (!crea.isDraw()) && (crea.getHp() <= 0))) {
-                    iterator.remove();
-                }
-                else{
-                    System.out.println("THIS IS GOOD / crea on board : "+crea.toString()); // go delete le else
-                }
-            }*/
 
             return creaOnBoard;
         }
@@ -132,9 +117,6 @@ public abstract class Creature extends Card {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
         List<Creature> opponentCrea = getPlayerCreaOnBoard(opponent);
-
-        //Player opponentPlayer = Player.getCurrentOpponent();
-        //System.out.println("opponent = "+opponentPlayer.getName()+" / "+opponentPlayer);
 
         //we retrieve all opponent creatures on board
         if (opponentCrea == null){
@@ -184,13 +166,6 @@ public abstract class Creature extends Card {
         //Player opponent = Player.getCurrentOpponent();
         //System.out.println("opponent :"+opponent.getName());
         Creature bestCreaTarget = findBestTarget(this.getHp(), this.getAttack(), opponent);
-
-        /*if (bestCreaTarget != null){
-            System.out.println("(crea should be attacked) - trying to make creature attack :"+opponent.getName()+" or "+bestCreaTarget.getName());
-        }
-        else{
-            System.out.println("best target is null");
-        }*/
 
         if (bestCreaTarget ==  null){
             attackOpponent(opponent);
