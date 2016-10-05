@@ -69,7 +69,7 @@ public class SpellmongerApp {
         else if (opponent.getHp() <= 0) {
             winner = currentPlayer.getName();
             onePlayerDead = true;
-        }
+        } 
         else{
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
             opponent.setEnergy(opponent.getEnergy() + 1);
