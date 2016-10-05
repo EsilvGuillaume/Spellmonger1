@@ -1,32 +1,22 @@
 package edu.insightr.spellmonger;
 
 /**
- * Created by Guillaume on 24/09/2016.
+ * Created by Guillaume on 02/10/2016.
  */
-public class Wolf implements Creature{
+public class Wolf extends Creature{
 
-    private boolean alive;
-    private int damage;
-
-    public boolean isAlive() {
-        return alive;
+    public Wolf(String name){
+        super(name+" [Wolf]", "");
+        this.setHp(2);
+        this.setAttack(2);
+        this.setAlive(true);
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public Wolf(){
-        this.alive = true;
-        this.damage = 2;
+    public Wolf(String name, String owner){
+        super(name+" [Wolf]", owner);
+        this.setHp(2);
+        this.setAttack(2);
+        this.setAlive(true);
     }
 
 }

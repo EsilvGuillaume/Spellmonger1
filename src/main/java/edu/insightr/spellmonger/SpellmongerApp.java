@@ -5,87 +5,51 @@ import org.apache.log4j.Logger;
 import java.util.*;
 
 public class SpellmongerApp {
+
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
 
-    Map<String, Integer> playersLifePoints = new HashMap<>(2);
-    Map<String, Integer> playersCreature = new HashMap<>(2);
-    Map<String, Integer> playersDegats = new HashMap<>(2);
     List<String> cardPool = new ArrayList<>(70);
     List<String> discard = new ArrayList<>();
-    List<String> creatures = new ArrayList<>(3);
-    List<String> rituals = new ArrayList<>(2);
+
+    static boolean onePlayerDead = false;
+    static Player currentPlayer;
+    static Player opponent;
+    static Player tmpPlayer;
+
+    static int currentCardNumber = 0;
+    static int roundCounter = 1;
+    static String winner = null;
+
+    static List<Creature> playerCreaOnBoard = new ArrayList<>();
+    static List<Creature> allCreaOnBoard = new ArrayList<>();
 
 
     public SpellmongerApp() {
-        playersLifePoints.put("Alice", 20);
-        playersLifePoints.put("Bob", 20);
-        playersCreature.put("Alice", 0);
-        playersCreature.put("Bob", 0);
-        playersDegats.put("Alice", 0);
-        playersDegats.put("Bob", 0);
 
-        creatures.add("Eagle");
-        creatures.add("Wolf");
-        creatures.add("Bear");
-
-        rituals.add("Curse");
-        rituals.add("Blessing");
-
-        for(int i = 0; i < 70; i++)
-        {
-            int max = creatures.size()+ rituals.size();
-            Random rand = new Random();
-            int nombreAleatoire = rand.nextInt(max);
-
-            if(nombreAleatoire < creatures.size())
-            {
-                cardPool.add(creatures.get(nombreAleatoire));
-            }
-            else if(nombreAleatoire >= creatures.size())
-            {
-                cardPool.add(rituals.get(nombreAleatoire - creatures.size()));
-            }
-
-        }
     }
 
     public static void main(String[] args) {
         SpellmongerApp app = new SpellmongerApp();
 
-        boolean onePlayerDead = false;
-        String currentPlayer = "Alice";
-        String opponent = "Bob";
-        int currentCardNumber = 0;
-        int roundCounter = 1;
-        String winner = null;
+        Player player1 = new Player("Alice");
+        Player player2 = new Player("Bob");
+
+        currentPlayer = player1;
+        opponent = player2;
 
         while (!onePlayerDead) {
+
             logger.info("\n");
             logger.info("***** ROUND " + roundCounter);
 
-            app.drawACard(currentPlayer, opponent, currentCardNumber);
+            app.drawACard(currentPlayer, opponent); //, currentCardNumber);
 
-            logger.info(opponent + " has " + app.playersLifePoints.get(opponent).intValue() + " life points and " + currentPlayer + " has " + app.playersLifePoints.get(currentPlayer).intValue() + " life points ");
+            app.endOfTurn(currentPlayer, opponent);//, player1, player2);
 
-            if (app.playersLifePoints.get(currentPlayer).intValue() <= 0) {
-                winner = opponent;
-                onePlayerDead = true;
-            }
+            tmpPlayer = currentPlayer;
+            currentPlayer = opponent;
+            opponent = tmpPlayer;
 
-            else if (app.playersLifePoints.get(opponent).intValue() <= 0) {
-                winner = currentPlayer;
-                onePlayerDead = true;
-                }
-
-            if ("Alice".equalsIgnoreCase(currentPlayer)) {
-                currentPlayer = "Bob";
-                opponent = "Alice";
-            } else {
-                currentPlayer = "Alice";
-                opponent = "Bob";
-            }
-            currentCardNumber++;
-            roundCounter++;
         }
 
         logger.info("\n");
@@ -93,102 +57,90 @@ public class SpellmongerApp {
         logger.info("THE WINNER IS " + winner + " !!!");
         logger.info("******************************");
 
-
     }
 
-    public void drawACard(String currentPlayer, String opponent, int currentCardNumber) {
+    public void endOfTurn(Player currentPlayer, Player opponent){ //, Player player1, Player player2){
+        logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
-
-        if (creatures.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer + " draw a " + creatures.get(0));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 1);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
-            if (nbCreatures > 0)
-            {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
-
-            }
-
-            cardPool.remove(currentCardNumber);
-
+        if (currentPlayer.getHp() <= 0) {
+            winner = opponent.getName();
+            onePlayerDead = true;
+        }
+        else if (opponent.getHp() <= 0) {
+            winner = currentPlayer.getName();
+            onePlayerDead = true;
+        } 
+        else{
+            currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+            opponent.setEnergy(opponent.getEnergy() + 1);
         }
 
-        else if (creatures.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
+        currentCardNumber++;
+        roundCounter++;
+
+        if(roundCounter > 500){
+            onePlayerDead = true;
+            winner = "Time - It's a draw";
+        }
+    }
+
+    public void drawACard(Player currentPlayer, Player opponent) {
+
+        Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
+
+        for(Card card : currentPlayer.getDeckInfo().getDeck())
         {
-            logger.info(currentPlayer + " draw a " + creatures.get(1));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 2);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue() ;
-            int degats = playersDegats.get(currentPlayer).intValue();
-            if (nbCreatures > 0)
-            {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+            card.setOwner(currentPlayer.getDeckInfo().getDeckOwner());
 
+            if (card.isDraw() == false){
+                nextCard = card;
+                currentPlayer.getDeckInfo().getDeck().remove(nextCard);
+                break;
             }
-
-            cardPool.remove(currentCardNumber);
         }
 
-        else if (creatures.get(2).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer + " draw a " + creatures.get(2));
-            playersCreature.put(currentPlayer, playersCreature.get(currentPlayer).intValue() + 1);
-            playersDegats.put(currentPlayer, playersDegats.get(currentPlayer).intValue() + 3);
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
-            if (nbCreatures > 0)
-            {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
-
-            }
-
-            cardPool.remove(currentCardNumber);
+        if(nextCard != null) {
+            System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
+            nextCard.draw(); // to be discarded
         }
 
-        else if (rituals.get(0).equalsIgnoreCase(cardPool.get(currentCardNumber)))
-        {
-            logger.info(currentPlayer + " draw a " + rituals.get(0));
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
-            if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats - 3));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
-                logger.info(currentPlayer + " cast a " + rituals.get(0) + " that deals 3 damages to " + opponent);
+        if(nextCard instanceof Creature){
+            ((Creature) nextCard).attack(opponent);
+        }
+        else if(nextCard instanceof Rituol){
+            if(((Rituol) nextCard).isBonus()){
+                ((Rituol) nextCard).play(currentPlayer);
             }
-
-            String card = cardPool.get(currentCardNumber);
-            cardPool.remove(currentCardNumber);
-            discard.add(card);
-
+            else{
+                ((Rituol) nextCard).play(opponent);
+            }
         }
 
-        else if (rituals.get(1).equalsIgnoreCase(cardPool.get(currentCardNumber)))
+        playerCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
+
+        allCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
+        for(Creature crea : Creature.getPlayerCreaOnBoard(opponent))
         {
-            logger.info(currentPlayer + " draw a " + rituals.get(1));
-            int nbCreatures = playersCreature.get(currentPlayer).intValue();
-            int degats = playersDegats.get(currentPlayer).intValue();
+            allCreaOnBoard.add(crea);
+        }
 
-            if (playersLifePoints.get(currentPlayer).intValue() <= 17)
-                playersLifePoints.put(currentPlayer, (playersLifePoints.get(currentPlayer).intValue() + 3));
-            else
-                playersLifePoints.put(currentPlayer, 20);
+        System.out.println("********All the creatures on the board :");
+        Creature.displayGroupOfCrea(allCreaOnBoard);
 
-            if (nbCreatures > 0) {
-                playersLifePoints.put(opponent, (playersLifePoints.get(opponent).intValue() - degats));
-                logger.info("The " + nbCreatures + " creatures of " + currentPlayer + " attack and deal " + degats + " damages to its opponent");
+        if(playerCreaOnBoard != null) {
+            playerCreaOnBoard.remove(nextCard);
+
+            for (Card card : playerCreaOnBoard) {
+                if (card instanceof Creature) {
+                    ((Creature) card).attack(opponent);
+                } else if (card instanceof Rituol) {
+                    if (((Rituol) card).isBonus()) {
+                        ((Rituol) card).play(currentPlayer);
+                    } else {
+                        ((Rituol) card).play(opponent);
+                    }
+                }
             }
-
-            logger.info(currentPlayer + " cast a " + rituals.get(1) + " that restores 3 life point to " + currentPlayer);
-
-            String card = cardPool.get(currentCardNumber);
-            cardPool.remove(currentCardNumber);
-            discard.add(card);
         }
 
     }
