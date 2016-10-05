@@ -3,17 +3,17 @@ package edu.insightr.spellmonger;
 /**
  * Created by Guillaume on 02/10/2016.
  */
-public class Energy_Drain extends Rituol{
+public class EnergyDrain extends Rituol{
 
     private String effectDescription = "Energy Drain - consume 2 energies to your opponent and you win 2 energies";
     private boolean bonus;
 
-    public Energy_Drain(String name){
+    public EnergyDrain(String name){
         super(name);
         bonus = true;
     }
 
-    public Energy_Drain(){
+    public EnergyDrain(){
         bonus = true;
     }
 
