@@ -2,7 +2,6 @@ package edu.insightr.spellmonger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Collections;
 
 /**
@@ -35,7 +34,7 @@ public class Deck {
         Wolf wolfTest = new Wolf("wolf", playerName);
         Curse curseTest = new Curse("curse");
         Blessing blessingTest = new Blessing("blessing");
-        Energy_Drain energyDrainTest = new Energy_Drain("energyDrain");
+        EnergyDrain energyDrainTest = new EnergyDrain("energyDrain");
         addToList(possibleCards, energyDrainTest, 2);
         addToList(possibleCards, blessingTest, 2);
         addToList(possibleCards, curseTest, 2);
@@ -46,14 +45,6 @@ public class Deck {
         Collections.shuffle(possibleCards);
 
         return possibleCards;
-
-        //Random randomGenerator = new Random();
-        /*for (int i = 0; i < size; i++) {
-            int randIndex = randomGenerator.nextInt(possibleCards.size());
-            (this.deck).add(possibleCards.get(randIndex));
-            possibleCards.get(randIndex).setOwner(deckOwner);
-        }*/
-        //return this.deck;
     }
 
     public int getSize() {
