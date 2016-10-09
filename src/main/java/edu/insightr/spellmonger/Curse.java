@@ -18,9 +18,14 @@ public class Curse extends Rituol {
     }
 
     public void play(Player opponent){
-        //only if no creature on board
-        opponent.setHp(opponent.getHp() - 3);
-        System.out.println(this.getName()+" used, "+opponent.getName()+" loses 3 health points !");
+        //Problem
+        if (Creature.getPlayerCreaOnBoard(opponent).isEmpty()){
+            opponent.setHp(opponent.getHp() - 3);
+            System.out.println(this.getName() + " used, " + opponent.getName() + " loses 3 health points !");
+        }
+        else{
+            System.out.println(this.getName()+" does nothing because opponent has no creature on board.");
+        }
     }
 
     public String getEffectDescription() {

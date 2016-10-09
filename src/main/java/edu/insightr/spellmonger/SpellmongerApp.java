@@ -8,8 +8,8 @@ public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
 
-    List<String> cardPool = new ArrayList<>(70);
-    List<String> discard = new ArrayList<>();
+    //List<String> cardPool = new ArrayList<>(70);
+    List<Card> discard = new ArrayList<>();
 
     static boolean onePlayerDead = false;
     static Player currentPlayer;
@@ -101,7 +101,8 @@ public class SpellmongerApp {
 
         if(nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
-            nextCard.draw(); // to be discarded
+            nextCard.draw();
+            discard.add(nextCard);
         }
 
         if(nextCard instanceof Creature){
@@ -144,5 +145,4 @@ public class SpellmongerApp {
         }
 
     }
-
 }
