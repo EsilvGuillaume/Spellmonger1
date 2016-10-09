@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 public abstract class Creature extends Card {
 
     private int hp;
@@ -15,13 +16,13 @@ public abstract class Creature extends Card {
     private boolean alive;
 
     static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
-    static ArrayList<Creature> temp;// = allCreatures;
+    static ArrayList<Creature> temp;
 
     void killCreature() {
         allCreatures.remove(this);
     }
 
-    public Creature(String name, String owner, int hp){
+    public Creature(String name, String owner, int hp) {
         super(name, owner);
         this.setHp(hp);
         this.setAttack(hp);
@@ -29,7 +30,7 @@ public abstract class Creature extends Card {
         allCreatures.add(this);
     }
 
-    public Creature(String name, String owner){
+    public Creature(String name, String owner) {
         super(name, owner);
         this.setHp(0);
         this.setAttack(0);
@@ -38,38 +39,36 @@ public abstract class Creature extends Card {
     }
 
     @Override
-    public String toString(){
-        return super.toString()+ "hp = "+this.hp+", attack = "+this.attack+", alive = "+this.alive;
+    public String toString() {
+        return super.toString() + "hp = " + this.hp + ", attack = " + this.attack + ", alive = " + this.alive;
     }
 
-    public static int getCreaDamageForPlayer(Player player){
+    public static int getCreaDamageForPlayer(Player player) {
         int damage = 0;
         List<Creature> creatures = getPlayerCreatures(player.getName());
-        for(Creature crea : creatures)
-        {
+        for (Creature crea : creatures) {
             damage += crea.getAttack();
         }
         return damage;
     }
 
-    public static void displayGroupOfCrea(List<Creature> listOfCrea){
+    public static void displayGroupOfCrea(List<Creature> listOfCrea) {
         int i = 1;
         System.out.println("********Displaying the creatures :");
         for (Creature crea : listOfCrea) {
-            System.out.println("Creature "+i+" : "+crea.getName());
+            System.out.println("Creature " + i + " : " + crea.getName());
             i++;
         }
         System.out.println("********END");
     }
 
-    public static List<Creature> getPlayerCreaOnBoard(Player player){
+    public static List<Creature> getPlayerCreaOnBoard(Player player) {
 
         List<Creature> creaOnBoard = (ArrayList<Creature>) allCreatures.clone();
 
-        if (creaOnBoard.isEmpty()){
+        if (creaOnBoard.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             Iterator<Creature> i = creaOnBoard.iterator();
             while (i.hasNext()) {
                 Creature crea = i.next();
@@ -82,9 +81,9 @@ public abstract class Creature extends Card {
         }
     }
 
-    public static List<Creature> getPlayerCreatures(String playerName){
+    public static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
-        for(int i=0; i<temp.size(); i++) {
+        for (int i = 0; i < temp.size(); i++) {
             if (temp.get(i).getOwner() != playerName) {
                 temp.remove(temp.get(i));
             }
@@ -92,37 +91,36 @@ public abstract class Creature extends Card {
         return temp;
     }
 
-    public void attackOpponent(Player oppoTnent){
-        opponent.setHp(opponent.getHp()- this.getAttack());
-        if (opponent.getHp() <= 0){
+    public void attackOpponent(Player opponent) {
+        opponent.setHp(opponent.getHp() - this.getAttack());
+        if (opponent.getHp() <= 0) {
             opponent.setAlive(false);
-            System.out.println(opponent.getName()+" is dead !");
+            System.out.println(opponent.getName() + " is dead !");
         }
     }
 
-    public void attackCreature(Creature creature){
-        creature.setHp(creature.getHp()-this.getAttack());
-        this.setHp(this.getHp()-creature.getAttack());
-        if (creature.getHp() <= 0){
+    public void attackCreature(Creature creature) {
+        creature.setHp(creature.getHp() - this.getAttack());
+        this.setHp(this.getHp() - creature.getAttack());
+        if (creature.getHp() <= 0) {
             creature.setAlive(false);
             creature.killCreature();
         }
-        if (this.getHp() <= 0){
+        if (this.getHp() <= 0) {
             this.setAlive(false);
             this.killCreature();
         }
     }
 
-    public Creature findBestTarget(int attack, int hp, Player opponent){
+    public Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
         List<Creature> opponentCrea = getPlayerCreaOnBoard(opponent);
 
         //we retrieve all opponent creatures on board
-        if (opponentCrea == null){
+        if (opponentCrea == null) {
             return null;
-        }
-        else { // enters here, good
+        } else { // enters here, good
             for (int i = 0; i < opponentCrea.size(); i++) {
                 if (opponentCrea.get(i).getOwner() == opponent.getName()) {
                     potentialTargets.add(opponentCrea.get(i));
@@ -132,14 +130,14 @@ public abstract class Creature extends Card {
 
         //we only keep the target we can kill (if they are none, we'll attack opponent)
         //System.out.print("size of potential targets : "+potentialTargets.size());
-        for(int i=0; i<potentialTargets.size(); i++) {
+        for (int i = 0; i < potentialTargets.size(); i++) {
             if (potentialTargets.get(i).getHp() > attack) {
                 potentialTargets.remove(potentialTargets.get(i));
             }
         }
 
         //we check on targets if we can stay alive while killing them
-        for(int i=0; i<potentialTargets.size(); i++) {
+        for (int i = 0; i < potentialTargets.size(); i++) {
             if (potentialTargets.get(i).getAttack() >= hp) {
                 potentialTargets.remove(potentialTargets.get(i));
             }
@@ -147,33 +145,31 @@ public abstract class Creature extends Card {
 
         //then we choose the one with the highest health
         int healthiest = 0;
-        for(int i=0; i<potentialTargets.size(); i++) {
-            if (potentialTargets.get(i).getHp() > healthiest){
+        for (int i = 0; i < potentialTargets.size(); i++) {
+            if (potentialTargets.get(i).getHp() > healthiest) {
                 healthiest = potentialTargets.get(i).getHp();
             }
         }
-        for(Creature target : potentialTargets)
-        {
-            if(target.getHp() == healthiest)
+        for (Creature target : potentialTargets) {
+            if (target.getHp() == healthiest)
                 bestTarget = target;
         }
 
         return bestTarget;
     }
 
-    public void attack(Player opponent){
+    public void attack(Player opponent) {
 
         //Player opponent = Player.getCurrentOpponent();
         //System.out.println("opponent :"+opponent.getName());
         Creature bestCreaTarget = findBestTarget(this.getHp(), this.getAttack(), opponent);
 
-        if (bestCreaTarget ==  null){
+        if (bestCreaTarget == null) {
             attackOpponent(opponent);
-            System.out.println(this.getName()+" attacks "+opponent.getName()+" and deals "+this.getAttack()+" damage");
-        }
-        else{
+            System.out.println(this.getName() + " attacks " + opponent.getName() + " and deals " + this.getAttack() + " damage");
+        } else {
             attackCreature(bestCreaTarget);
-            System.out.println(this.getName()+" attacks "+bestCreaTarget.getName()+" and deals it "+this.getAttack()+" damage and receives "+bestCreaTarget.getAttack()+" damage");
+            System.out.println(this.getName() + " attacks " + bestCreaTarget.getName() + " and deals it " + this.getAttack() + " damage and receives " + bestCreaTarget.getAttack() + " damage");
         }
     }
 
