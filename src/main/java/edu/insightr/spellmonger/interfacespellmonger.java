@@ -75,6 +75,7 @@ public class interfacespellmonger extends Application {
                 primaryStage.setScene(scene1);
                 primaryStage.show();
 
+
             }
         });
 
