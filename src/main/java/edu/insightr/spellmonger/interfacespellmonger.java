@@ -1,3 +1,6 @@
+
+package edu.insightr.spellmonger;
+
 /**
  * Created by aissaoui on 08/10/2016.
  */
@@ -13,7 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class test extends Application {
+public class interfacespellmonger extends Application {
 
     Stage window;
 
