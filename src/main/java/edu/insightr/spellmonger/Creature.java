@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 public abstract class Creature extends Card {
 
     private int hp;
