@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by Guillaume on 11/10/2016.
  */
-public class Controller extends Application{
+public class Controller extends Application {
 
     @Override
     public void start(final Stage primaryStage) {

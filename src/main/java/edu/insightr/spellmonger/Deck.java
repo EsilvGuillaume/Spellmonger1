@@ -16,20 +16,20 @@ public class Deck {
     private int size;
     private List<Card> deck = new ArrayList<Card>(); //
 
-    Deck(int size, String playerName){
+    Deck(int size, String playerName) {
         this.size = size;
         this.deck = createDeck(size, playerName);
         this.setDeckOwner(playerName);
     }
 
-    public void addToList(List<Card> list, Card card, int dupli){
+    public void addToList(List<Card> list, Card card, int dupli) {
         for (int i = 0; i < dupli; i++) {
             card.setOwner(deckOwner);
             list.add(card);
         }
     }
 
-    public List<Card> createDeck(int size, String playerName){
+    public List<Card> createDeck(int size, String playerName) {
 
         List<Card> possibleCards = new ArrayList<>();
         Bear bearTest = new Bear("bear", playerName);
@@ -39,13 +39,13 @@ public class Deck {
         Blessing blessingTest = new Blessing("blessing");
         EnergyDrain energyDrainTest = new EnergyDrain("energyDrain");
 
-        int creatureNumber = (int)(size*0.75);
-        int rituolNumber = (int)(size*0.25);
+        int creatureNumber = (int) (size * 0.75);
+        int rituolNumber = (int) (size * 0.25);
 
-        int uniqueCreaNumber = (int)(creatureNumber/3);
-        int uniqueRituolNumber = (int)(rituolNumber/3);
+        int uniqueCreaNumber = (int) (creatureNumber / 3);
+        int uniqueRituolNumber = (int) (rituolNumber / 3);
 
-        int cardMissingNumber = size - (uniqueCreaNumber*3 + uniqueRituolNumber*3);
+        int cardMissingNumber = size - (uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
 
         addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
         addToList(possibleCards, blessingTest, uniqueRituolNumber);
@@ -55,7 +55,7 @@ public class Deck {
         addToList(possibleCards, bearTest, uniqueCreaNumber);
 
         randomGenerator = new Random();
-        int randIndex = randomGenerator.nextInt(uniqueCreaNumber*3 + uniqueRituolNumber*3);
+        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
         addToList(possibleCards, possibleCards.get(randIndex), cardMissingNumber);
 
         Collections.shuffle(possibleCards);

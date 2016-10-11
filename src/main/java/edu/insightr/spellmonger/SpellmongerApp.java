@@ -59,18 +59,16 @@ public class SpellmongerApp {
 
     }
 
-    public void endOfTurn(Player currentPlayer, Player opponent){ //, Player player1, Player player2){
+    public void endOfTurn(Player currentPlayer, Player opponent) { //, Player player1, Player player2){
         logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
         if (currentPlayer.getHp() <= 0) {
             winner = opponent.getName();
             onePlayerDead = true;
-        }
-        else if (opponent.getHp() <= 0) {
+        } else if (opponent.getHp() <= 0) {
             winner = currentPlayer.getName();
             onePlayerDead = true;
-        }
-        else{
+        } else {
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
             opponent.setEnergy(opponent.getEnergy() + 1);
         }
@@ -78,7 +76,7 @@ public class SpellmongerApp {
         currentCardNumber++;
         roundCounter++;
 
-        if(roundCounter > 500){
+        if (roundCounter > 500) {
             onePlayerDead = true;
             winner = "Time - It's a draw";
         }
@@ -88,31 +86,28 @@ public class SpellmongerApp {
 
         Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
-        for(Card card : currentPlayer.getDeckInfo().getDeck())
-        {
+        for (Card card : currentPlayer.getDeckInfo().getDeck()) {
             card.setOwner(currentPlayer.getDeckInfo().getDeckOwner());
 
-            if (card.isDraw() == false){
+            if (card.isDraw() == false) {
                 nextCard = card;
                 currentPlayer.getDeckInfo().getDeck().remove(nextCard);
                 break;
             }
         }
 
-        if(nextCard != null) {
+        if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
             nextCard.draw();
             discard.add(nextCard);
         }
 
-        if(nextCard instanceof Creature){
+        if (nextCard instanceof Creature) {
             ((Creature) nextCard).attack(opponent);
-        }
-        else if(nextCard instanceof Rituol){
-            if(((Rituol) nextCard).isBonus()){
+        } else if (nextCard instanceof Rituol) {
+            if (((Rituol) nextCard).isBonus()) {
                 ((Rituol) nextCard).play(currentPlayer);
-            }
-            else{
+            } else {
                 ((Rituol) nextCard).play(opponent);
             }
         }
@@ -120,15 +115,14 @@ public class SpellmongerApp {
         playerCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
 
         allCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
-        for(Creature crea : Creature.getPlayerCreaOnBoard(opponent))
-        {
+        for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
             allCreaOnBoard.add(crea);
         }
 
         System.out.println("********All the creatures on the board :");
         Creature.displayGroupOfCrea(allCreaOnBoard);
 
-        if(playerCreaOnBoard != null) {
+        if (playerCreaOnBoard != null) {
             playerCreaOnBoard.remove(nextCard);
 
             for (Card card : playerCreaOnBoard) {
