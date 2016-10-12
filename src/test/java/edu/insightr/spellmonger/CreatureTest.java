@@ -1,6 +1,7 @@
 package edu.insightr.spellmonger;
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -11,9 +12,8 @@ public class CreatureTest {
     @Test
     public void getPlayerCreatures() throws Exception {
         Player player1 = new Player("p1");
-
-
-
+        player1.setNumberOfCreaOnBoard(4);
+        Assert.assertEquals(player1.getNumberOfCreaOnBoard(), 4);
 
     }
 
