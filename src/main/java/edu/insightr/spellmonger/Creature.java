@@ -12,10 +12,10 @@ public abstract class Creature extends Card {
     private int attack;
     private boolean alive;
 
-    static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
-    static ArrayList<Creature> temp;
+    private static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    private static ArrayList<Creature> temp;
 
-    void killCreature() {
+    private void killCreature() {
         allCreatures.remove(this);
     }
 
@@ -81,7 +81,7 @@ public abstract class Creature extends Card {
     public static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
         for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).getOwner().equals( playerName)) {
+            if (!temp.get(i).getOwner().equals( playerName)) {
                 temp.remove(temp.get(i));
             }
         }
