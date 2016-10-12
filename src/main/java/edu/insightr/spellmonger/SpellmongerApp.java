@@ -105,7 +105,10 @@ public class SpellmongerApp {
         if (nextCard instanceof Creature) {
             ((Creature) nextCard).attack(opponent);
         } else if (nextCard instanceof Rituol) {
-            if (((Rituol) nextCard).isBonus()) {
+            if(nextCard instanceof  EnergyDrain) {
+                ((Rituol) nextCard).play(currentPlayer,opponent);
+            }
+            else if (((Rituol) nextCard).isBonus()) {
                 ((Rituol) nextCard).play(currentPlayer);
             } else {
                 ((Rituol) nextCard).play(opponent);
@@ -129,7 +132,10 @@ public class SpellmongerApp {
                 if (card instanceof Creature) {
                     ((Creature) card).attack(opponent);
                 } else if (card instanceof Rituol) {
-                    if (((Rituol) card).isBonus()) {
+                    if(card instanceof  EnergyDrain) {
+                        ((Rituol) card).play(currentPlayer,opponent);
+                    }
+                    else if (((Rituol) card).isBonus()) {
                         ((Rituol) card).play(currentPlayer);
                     } else {
                         ((Rituol) card).play(opponent);

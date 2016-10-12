@@ -17,6 +17,8 @@ public abstract class Rituol extends Card {
 
     public abstract void play(Player target);
 
+    public abstract void play(Player target, Player  emetter);
+
     public boolean isBonus() {
         return bonus;
     }

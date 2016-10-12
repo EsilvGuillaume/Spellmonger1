@@ -29,6 +29,11 @@ public class Blessing extends Rituol {
         System.out.println(this.getName() + " used, " + currentPlayer.getName() + " has regenerated " + lifeGain + " hp !");
     }
 
+    @Override
+    public void play(Player target, Player emetter) {
+
+    }
+
     public String getEffectDescription() {
         return effectDescription;
     }

@@ -27,6 +27,11 @@ public class Curse extends Rituol {
         }
     }
 
+    @Override
+    public void play(Player target, Player emetter) {
+
+    }
+
     public String getEffectDescription() {
         return effectDescription;
     }

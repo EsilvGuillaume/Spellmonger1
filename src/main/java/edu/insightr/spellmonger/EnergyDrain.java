@@ -17,8 +17,13 @@ public class EnergyDrain extends Rituol {
         bonus = true;
     }
 
-    public void play(Player currentPlayer) {
-        Player opponent = Player.getCurrentOpponent(); // not working
+    @Override
+    public void play(Player target) {
+
+    }
+
+    public void play(Player currentPlayer,Player opponent) {
+        //Player opponent = Player.getCurrentOpponent(); // not working
         if (opponent.getEnergy() > 1) {
             opponent.setEnergy(opponent.getEnergy() - 2);
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 2);
