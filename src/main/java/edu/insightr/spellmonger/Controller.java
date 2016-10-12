@@ -9,9 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by hugoalix on 12/10/2016.
- */
+
 public class Controller extends Application {
 
     @Override
@@ -36,4 +34,5 @@ public class Controller extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

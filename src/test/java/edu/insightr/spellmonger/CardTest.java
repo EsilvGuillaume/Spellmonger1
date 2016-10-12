@@ -1,11 +1,10 @@
 package edu.insightr.spellmonger;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-/**
- * Created by hugoalix on 12/10/2016.
- */
+import static org.junit.Assert.*;
+
+
 public class CardTest {
 
     @Test
@@ -15,4 +14,3 @@ public class CardTest {
 
     }
 }
-

@@ -1,8 +1,6 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by hugoalix on 05/10/2016.
- */
+
 public class Player {
 
     private String name;
@@ -15,7 +13,7 @@ public class Player {
     private static Player currentPlayer = new Player();
     private static Player currentOpponent = new Player();
 
-    Player(){
+    Player() {
         this.setName("");
         this.setHp(20);
         this.setEnergy(0);
@@ -23,7 +21,7 @@ public class Player {
         this.setNumberOfCreaOnBoard(0);
     }
 
-    Player(String name){
+    Player(String name) {
         this.setName(name);
         this.setHp(20);
         this.setEnergy(0);
@@ -48,8 +46,8 @@ public class Player {
     }
 
     @Override
-    public String toString(){
-        return this.getName() +" has "+ this.getHp() +" hp and "+ this.getEnergy() +" energy.";
+    public String toString() {
+        return this.getName() + " has " + this.getHp() + " hp and " + this.getEnergy() + " energy.";
     }
 
     public String getName() {

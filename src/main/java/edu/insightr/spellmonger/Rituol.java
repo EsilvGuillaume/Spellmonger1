@@ -1,21 +1,21 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by hugoalix on 05/10/2016.
- */
-public abstract class Rituol extends Card{
+
+public abstract class Rituol extends Card {
 
     String effectDescription = "";
     private boolean bonus = false; // false will indicate it is a malus
 
-    public Rituol(String name){
+    public Rituol(String name) {
         super(name);
     }
 
-    public Rituol(){
+    public Rituol() {
     }
 
     public abstract void play(Player target);
+
+    public abstract void play(Player target, Player  emetter);
 
     public boolean isBonus() {
         return bonus;

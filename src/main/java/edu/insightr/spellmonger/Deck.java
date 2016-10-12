@@ -2,33 +2,32 @@ package edu.insightr.spellmonger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Collections;
+import java.util.Random;
 
 
-/**
- * Created by hugoalix on 26/09/2016.
- */
 public class Deck {
+
+    Random randomGenerator;
 
     private String deckOwner; // type Player?
     private int size;
     private List<Card> deck = new ArrayList<Card>(); //
 
-    Deck(int size, String playerName){
+    Deck(int size, String playerName) {
         this.size = size;
         this.deck = createDeck(size, playerName);
         this.setDeckOwner(playerName);
     }
 
-    public void addToList(List<Card> list, Card card, int dupli){
+    public void addToList(List<Card> list, Card card, int dupli) {
         for (int i = 0; i < dupli; i++) {
             card.setOwner(deckOwner);
             list.add(card);
         }
     }
 
-    public List<Card> createDeck(int size, String playerName){
+    public List<Card> createDeck(int size, String playerName) {
 
         List<Card> possibleCards = new ArrayList<>();
         Bear bearTest = new Bear("bear", playerName);
@@ -37,24 +36,29 @@ public class Deck {
         Curse curseTest = new Curse("curse");
         Blessing blessingTest = new Blessing("blessing");
         EnergyDrain energyDrainTest = new EnergyDrain("energyDrain");
-        addToList(possibleCards, energyDrainTest, 2);
-        addToList(possibleCards, blessingTest, 2);
-        addToList(possibleCards, curseTest, 2);
-        addToList(possibleCards, wolfTest, 8);
-        addToList(possibleCards, eagleTest, 8);
-        addToList(possibleCards, bearTest, 8);
+
+        int creatureNumber = (int) (size * 0.75);
+        int rituolNumber = (int) (size * 0.25);
+
+        int uniqueCreaNumber = (int) (creatureNumber / 3);
+        int uniqueRituolNumber = (int) (rituolNumber / 3);
+
+        int cardMissingNumber = size - (uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
+
+        addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
+        addToList(possibleCards, blessingTest, uniqueRituolNumber);
+        addToList(possibleCards, curseTest, uniqueRituolNumber);
+        addToList(possibleCards, wolfTest, uniqueCreaNumber);
+        addToList(possibleCards, eagleTest, uniqueCreaNumber);
+        addToList(possibleCards, bearTest, uniqueCreaNumber);
+
+        randomGenerator = new Random();
+        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
+        addToList(possibleCards, possibleCards.get(randIndex), cardMissingNumber);
 
         Collections.shuffle(possibleCards);
 
         return possibleCards;
-
-        //Random randomGenerator = new Random();
-        /*for (int i = 0; i < size; i++) {
-            int randIndex = randomGenerator.nextInt(possibleCards.size());
-            (this.deck).add(possibleCards.get(randIndex));
-            possibleCards.get(randIndex).setOwner(deckOwner);
-        }*/
-        //return this.deck;
     }
 
     public int getSize() {

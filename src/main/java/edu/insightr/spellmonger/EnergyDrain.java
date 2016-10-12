@@ -1,27 +1,34 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by hugoalix on 05/10/2016.
- */
-public class EnergyDrain extends Rituol{
+
+public class EnergyDrain extends Rituol {
 
     private String effectDescription = "Energy Drain - consume 2 energies to your opponent and you win 2 energies";
     private boolean bonus;
 
-    public EnergyDrain(String name){
+    public EnergyDrain(String name) {
         super(name);
         bonus = true;
     }
 
-    public EnergyDrain(){
+    public EnergyDrain() {
         bonus = true;
     }
 
-    public void play(Player currentPlayer){
-        Player opponent = Player.getCurrentOpponent(); // not working
-        opponent.setEnergy(opponent.getEnergy()-2);
-        currentPlayer.setEnergy(currentPlayer.getEnergy()+2);
-        System.out.println(this.getName()+" used, "+opponent.getName()+" loses 2 energies, "+currentPlayer.getName()+" wins 2 energies");
+    @Override
+    public void play(Player target) {
+
+    }
+
+    public void play(Player currentPlayer,Player opponent) {
+        //Player opponent = Player.getCurrentOpponent(); // not working
+        if (opponent.getEnergy() > 1) {
+            opponent.setEnergy(opponent.getEnergy() - 2);
+            currentPlayer.setEnergy(currentPlayer.getEnergy() + 2);
+            System.out.println(this.getName() + " used, " + opponent.getName() + " loses 2 energies, " + currentPlayer.getName() + " wins 2 energies");
+        } else{
+            System.out.println(this.getName() + " used, but " + opponent.getName() + " did not lose 2 energies and " + currentPlayer.getName() + " did not win 2 energies because " + opponent.getName() + " did not have enough energy");
+        }
     }
 
     public String getEffectDescription() {

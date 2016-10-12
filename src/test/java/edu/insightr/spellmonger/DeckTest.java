@@ -1,6 +1,5 @@
 package edu.insightr.spellmonger;
 
-import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,13 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-
-/**
- * Created by hugoalix on 12/10/2016.
- */
+import static org.junit.Assert.*;
 
 public class DeckTest {
-
     @Test
     public void checkDeckSize() throws Exception {
         Random randomGenerator = new Random();
@@ -47,4 +42,3 @@ public class DeckTest {
     }
 
 }
-
