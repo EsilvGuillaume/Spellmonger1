@@ -23,7 +23,7 @@ public class EnergyDrain extends Rituol {
             opponent.setEnergy(opponent.getEnergy() - 2);
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 2);
             System.out.println(this.getName() + " used, " + opponent.getName() + " loses 2 energies, " + currentPlayer.getName() + " wins 2 energies");
-        } else {
+        } else{
             System.out.println(this.getName() + " used, but " + opponent.getName() + " did not lose 2 energies and " + currentPlayer.getName() + " did not win 2 energies because " + opponent.getName() + " did not have enough energy");
         }
     }
