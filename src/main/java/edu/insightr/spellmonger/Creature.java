@@ -81,7 +81,7 @@ public abstract class Creature extends Card {
     public static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
         for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).getOwner().equals( playerName)) {
+            if (!temp.get(i).getOwner().equals( playerName)) {
                 temp.remove(temp.get(i));
             }
         }
