@@ -17,7 +17,7 @@ public class Curse extends Rituol {
 
     public void play(Player opponent) {
         //Problem
-        if (Creature.getPlayerCreaOnBoard(opponent).isEmpty()) {
+        if (!Creature.getPlayerCreaOnBoard(opponent).isEmpty()) {
             opponent.setHp(opponent.getHp() - 3);
             System.out.println(this.getName() + " used, " + opponent.getName() + " loses 3 health points !");
         } else {
