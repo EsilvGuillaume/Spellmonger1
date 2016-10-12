@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Random;
 
-/**
- * Created by Guillaume on 26/09/2016.
- */
+
 public class Deck {
 
     Random randomGenerator;

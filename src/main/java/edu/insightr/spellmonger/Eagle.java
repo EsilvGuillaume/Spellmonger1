@@ -1,8 +1,6 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 02/10/2016.
- */
+
 public class Eagle extends Creature {
 
     public Eagle(String name) {

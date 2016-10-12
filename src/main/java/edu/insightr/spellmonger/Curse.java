@@ -1,8 +1,6 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 02/10/2016.
- */
+
 public class Curse extends Rituol {
 
     private String effectDescription = "Curse - Deals 3 damage to your opponent";
@@ -19,7 +17,7 @@ public class Curse extends Rituol {
 
     public void play(Player opponent) {
         //Problem
-        if (Creature.getPlayerCreaOnBoard(opponent).isEmpty()) {
+        if (!Creature.getPlayerCreaOnBoard(opponent).isEmpty()) {
             opponent.setHp(opponent.getHp() - 3);
             System.out.println(this.getName() + " used, " + opponent.getName() + " loses 3 health points !");
         } else {

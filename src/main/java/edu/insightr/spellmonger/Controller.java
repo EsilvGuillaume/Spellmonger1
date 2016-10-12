@@ -9,9 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by Guillaume on 11/10/2016.
- */
+
 public class Controller extends Application {
 
     @Override
