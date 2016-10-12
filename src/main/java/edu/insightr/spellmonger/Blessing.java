@@ -1,8 +1,6 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 02/10/2016.
- */
+
 public class Blessing extends Rituol {
 
     private String effectDescription = "Blessing - Restores 3 hp to you";

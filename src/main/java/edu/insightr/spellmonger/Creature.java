@@ -1,8 +1,5 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 01/10/2016.
- */
 
 import java.util.List;
 import java.util.ArrayList;

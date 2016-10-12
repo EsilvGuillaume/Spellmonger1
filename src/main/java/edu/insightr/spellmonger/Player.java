@@ -1,8 +1,6 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 26/09/2016.
- */
+
 public class Player {
 
     private String name;
