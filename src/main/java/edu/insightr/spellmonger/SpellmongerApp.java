@@ -3,6 +3,7 @@ package edu.insightr.spellmonger;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SpellmongerApp {
 
@@ -59,6 +60,8 @@ public class SpellmongerApp {
 
     public void drawACard(Player currentPlayer, Player opponent) {
 
+        verifyVaultOverclock(currentPlayer);
+
         Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
         for (Card card : currentPlayer.getDeckInfo().getDeck()) {
@@ -74,7 +77,7 @@ public class SpellmongerApp {
         if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
             nextCard.draw();
-            if (nextCard instanceof Rituol) {
+            if (nextCard instanceof Rituol || nextCard instanceof Enchantment) {
                 if (currentPlayer.equals(getPlayer1()))
                     getDiscard1().add(nextCard);
                 else
@@ -82,15 +85,7 @@ public class SpellmongerApp {
             }
         }
 
-        if (nextCard instanceof Creature) {
-            ((Creature) nextCard).attack(opponent);
-        } else if (nextCard instanceof Rituol) {
-            if (((Rituol) nextCard).isBonus()) {
-                ((Rituol) nextCard).play(currentPlayer);
-            } else {
-                ((Rituol) nextCard).play(opponent);
-            }
-        }
+        playCard(nextCard, currentPlayer, opponent);
 
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
@@ -105,19 +100,60 @@ public class SpellmongerApp {
         if (getPlayerCreaOnBoard() != null) {
             getPlayerCreaOnBoard().remove(nextCard);
 
+            //A GERER MAINTENANT QUE TOUTES LES CARTES NE SONT PAS JOUEES QUAND ON LES PIOCHE
+
+            //useless cases, only creature needed
             for (Card card : getPlayerCreaOnBoard()) {
                 if (card instanceof Creature) {
                     ((Creature) card).attack(opponent);
                 } else if (card instanceof Rituol) {
-                    if (((Rituol) card).isBonus()) {
-                        ((Rituol) card).play(currentPlayer);
+                    if (card instanceof EnergyDrain) {
+                        ((EnergyDrain) card).play(currentPlayer, opponent);
                     } else {
-                        ((Rituol) card).play(opponent);
+                        if (((Rituol) card).isBonus()) {
+                            ((Rituol) card).play(currentPlayer);
+                        } else {
+                            ((Rituol) card).play(opponent);
+                        }
                     }
+                } else if (nextCard instanceof Enchantment) {
+                    ((Enchantment) nextCard).play(currentPlayer);
                 }
             }
         }
 
+    }
+
+    void playCard(Card card, Player currentPlayer, Player opponent) {
+        if (card.getCost() <= currentPlayer.getEnergy()) {
+            if (card instanceof Creature) {
+                ((Creature) card).attack(opponent);
+            } else if (card instanceof Rituol) {
+                if (((Rituol) card).isBonus()) {
+                    ((Rituol) card).play(currentPlayer);
+                } else {
+                    ((Rituol) card).play(opponent);
+                }
+            } else if (card instanceof Enchantment) {
+                ((Enchantment) card).play(currentPlayer);
+            }
+            currentPlayer.setEnergy(currentPlayer.getEnergy() - card.getCost());
+        }
+        else{
+            System.out.println(card.getName()+" cost is too high to be played !");
+        }
+    }
+
+    void verifyVaultOverclock(Player currentPlayer) {
+        if (currentPlayer.isVaultOverclocking()) {
+            int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
+            if (randNumber > 35) {
+                currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+            } else {
+                currentPlayer.setVaultOverclocking(false);
+                System.out.println(currentPlayer.getName() + " loses his overclock of energy");
+            }
+        }
     }
 
     public List<Card> getDiscard1() {

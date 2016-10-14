@@ -13,10 +13,12 @@ public class Curse extends Rituol {
     public Curse(String name) {
         super(name);
         bonus = false;
+        this.setCost(1);
     }
 
     public Curse() {
         bonus = false;
+        this.setCost(1);
     }
 
     public void play(Player opponent) {

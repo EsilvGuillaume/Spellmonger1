@@ -124,7 +124,7 @@ public abstract class Creature extends Card {
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
             return null;
-        } else { // enters here, good
+        } else {
             for (int i = 0; i < opponentCrea.size(); i++) {
                 if (opponentCrea.get(i).getOwner() == opponent.getName()) {
                     potentialTargets.add(opponentCrea.get(i));
@@ -164,8 +164,6 @@ public abstract class Creature extends Card {
 
     public void attack(Player opponent) {
 
-        //Player opponent = Player.getCurrentOpponent();
-        //System.out.println("opponent :"+opponent.getName());
         Creature bestCreaTarget = findBestTarget(this.getHp(), this.getAttack(), opponent);
 
         if (bestCreaTarget == null) {

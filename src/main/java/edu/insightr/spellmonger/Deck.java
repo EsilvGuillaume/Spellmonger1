@@ -34,26 +34,30 @@ public class Deck {
         Eagle eagleTest = new Eagle("eagle", playerName);
         Wolf wolfTest = new Wolf("wolf", playerName);
         Curse curseTest = new Curse("curse");
+        Fox foxTest = new Fox("fox", playerName);
         Blessing blessingTest = new Blessing("blessing");
         EnergyDrain energyDrainTest = new EnergyDrain("energyDrain");
+        VaultOverclocking vaultTest = new VaultOverclocking("vault overclocking");
 
         int creatureNumber = (int) (size * 0.75);
-        int rituolNumber = (int) (size * 0.25);
+        int rituolOrEnchantNumber = (int) (size * 0.25);
 
-        int uniqueCreaNumber = (int) (creatureNumber / 3);
-        int uniqueRituolNumber = (int) (rituolNumber / 3);
+        int uniqueCreaNumber = (int) (creatureNumber / 4);
+        int uniqueRituolNumber = (int) (rituolOrEnchantNumber / 4);
 
-        int cardMissingNumber = size - (uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
+        int cardMissingNumber = size - (uniqueCreaNumber * 4 + uniqueRituolNumber * 4);
 
         addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
+        addToList(possibleCards, foxTest, uniqueCreaNumber);
         addToList(possibleCards, blessingTest, uniqueRituolNumber);
         addToList(possibleCards, curseTest, uniqueRituolNumber);
         addToList(possibleCards, wolfTest, uniqueCreaNumber);
         addToList(possibleCards, eagleTest, uniqueCreaNumber);
         addToList(possibleCards, bearTest, uniqueCreaNumber);
+        addToList(possibleCards, vaultTest, uniqueRituolNumber);
 
         randomGenerator = new Random();
-        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 3 + uniqueRituolNumber * 3);
+        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 4 + uniqueRituolNumber * 4);
         addToList(possibleCards, possibleCards.get(randIndex), cardMissingNumber);
 
         Collections.shuffle(possibleCards);

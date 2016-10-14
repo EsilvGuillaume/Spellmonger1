@@ -9,10 +9,12 @@ public class EnergyDrain extends Rituol {
     public EnergyDrain(String name) {
         super(name);
         bonus = true;
+        this.setCost(1);
     }
 
     public EnergyDrain() {
         bonus = true;
+        this.setCost(1);
     }
 
     @Override
@@ -21,7 +23,6 @@ public class EnergyDrain extends Rituol {
     }
 
     public void play(Player currentPlayer,Player opponent) {
-        //Player opponent = Player.getCurrentOpponent(); // not working
         if (opponent.getEnergy() > 1) {
             opponent.setEnergy(opponent.getEnergy() - 2);
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 2);

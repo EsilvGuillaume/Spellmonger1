@@ -9,6 +9,7 @@ public class Player {
     private boolean alive;
     private Deck deckInfo;
     private int numberOfCreaOnBoard;
+    private boolean vaultOverclocking;
 
     private static Player currentPlayer = new Player();
     private static Player currentOpponent = new Player();
@@ -17,16 +18,18 @@ public class Player {
         this.setName("");
         this.setHp(20);
         this.setEnergy(0);
-        this.setDeckInfo(new Deck(30, ""));
+        this.setDeckInfo(new Deck(40, ""));
         this.setNumberOfCreaOnBoard(0);
+        this.vaultOverclocking = false;
     }
 
     Player(String name) {
         this.setName(name);
         this.setHp(20);
         this.setEnergy(0);
-        this.setDeckInfo(new Deck(30, name));
+        this.setDeckInfo(new Deck(40, name));
         this.setNumberOfCreaOnBoard(0);
+        this.vaultOverclocking = false;
     }
 
     public static Player getCurrentPlayer() {
@@ -96,5 +99,13 @@ public class Player {
 
     public void setDeckInfo(Deck deckInfo) {
         this.deckInfo = deckInfo;
+    }
+
+    public boolean isVaultOverclocking() {
+        return vaultOverclocking;
+    }
+
+    public void setVaultOverclocking(boolean vaultOverclocking) {
+        this.vaultOverclocking = vaultOverclocking;
     }
 }

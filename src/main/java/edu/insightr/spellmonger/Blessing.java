@@ -9,10 +9,12 @@ public class Blessing extends Rituol {
     public Blessing(String name) {
         super(name);
         bonus = true;
+        this.setCost(1);
     }
 
     public Blessing() {
         bonus = true;
+        this.setCost(1);
     }
 
     public void play(Player currentPlayer) {

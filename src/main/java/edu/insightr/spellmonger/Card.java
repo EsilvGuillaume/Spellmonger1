@@ -5,6 +5,7 @@ public abstract class Card {
     private String name;
     private boolean draw;
     private String owner;
+    private int cost;
 
     public Card(String name, String owner) {
         setName(name);
@@ -55,5 +56,13 @@ public abstract class Card {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
