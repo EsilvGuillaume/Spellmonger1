@@ -1,8 +1,5 @@
 package edu.insightr.spellmonger;
 
-/**
- * Created by Guillaume on 01/10/2016.
- */
 
 import java.util.List;
 import java.util.ArrayList;
@@ -90,7 +87,7 @@ public abstract class Creature extends Card {
     public static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
         for (int i = 0; i < temp.size(); i++) {
-            if (temp.get(i).getOwner() != playerName) {
+            if (!temp.get(i).getOwner().equals( playerName)) {
                 temp.remove(temp.get(i));
             }
         }
