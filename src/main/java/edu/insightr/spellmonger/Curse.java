@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import static edu.insightr.spellmonger.SpellmongerApp.app;
+
 /**
  * Created by Guillaume on 02/10/2016.
  */
@@ -22,6 +24,10 @@ public class Curse extends Rituol {
         if (Creature.getPlayerCreaOnBoard(opponent).isEmpty()){
             opponent.setHp(opponent.getHp() - 3);
             System.out.println(this.getName() + " used, " + opponent.getName() + " loses 3 health points !");
+            if(opponent.getHp() <= 0){
+                app.setOnePlayerDead(true);
+                app.setWinner(this.getName());
+            }
         }
         else{
             System.out.println(this.getName()+" does nothing because opponent has no creature on board.");

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static edu.insightr.spellmonger.SpellmongerApp.*;
+
 
 public abstract class Creature extends Card {
 
@@ -20,6 +22,10 @@ public abstract class Creature extends Card {
 
     void killCreature() {
         allCreatures.remove(this);
+        if (app.getCurrentPlayer().equals(app.getPlayer1()))
+            app.getDiscard1().add(this);
+        else
+            app.getDiscard2().add(this);
     }
 
     public Creature(String name, String owner, int hp) {
@@ -96,6 +102,7 @@ public abstract class Creature extends Card {
         if (opponent.getHp() <= 0) {
             opponent.setAlive(false);
             System.out.println(opponent.getName() + " is dead !");
+            app.setOnePlayerDead(true);
         }
     }
 

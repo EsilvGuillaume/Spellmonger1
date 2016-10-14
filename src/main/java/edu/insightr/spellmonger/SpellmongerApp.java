@@ -7,80 +7,53 @@ import java.util.*;
 public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
-
-    //List<String> cardPool = new ArrayList<>(70);
-    List<Card> discard = new ArrayList<>();
-
-    static boolean onePlayerDead = false;
-    static Player currentPlayer;
-    static Player opponent;
-    static Player tmpPlayer;
-
-    static int currentCardNumber = 0;
-    static int roundCounter = 1;
-    static String winner = null;
-
-    static List<Creature> playerCreaOnBoard = new ArrayList<>();
-    static List<Creature> allCreaOnBoard = new ArrayList<>();
-
-
-    public SpellmongerApp() {
-
-    }
+    static SpellmongerApp app = new SpellmongerApp();
+    private List<Card> discard1 = new ArrayList<>();
+    private List<Card> discard2 = new ArrayList<>();
+    private Player player1;
+    private Player player2;
+    private boolean onePlayerDead = false;
+    private Player currentPlayer;
+    private Player opponent;
+    private Player tmpPlayer;
+    private int currentCardNumber = 0;
+    private int roundCounter = 1;
+    private String winner = null;
+    private List<Creature> playerCreaOnBoard = new ArrayList<>();
+    private List<Creature> allCreaOnBoard = new ArrayList<>();
 
     public static void main(String[] args) {
-        SpellmongerApp app = new SpellmongerApp();
 
-        Player player1 = new Player("Alice");
-        Player player2 = new Player("Bob");
+        app.setPlayer1(new Player("Alice"));
+        app.setPlayer2(new Player("Bob"));
+        app.setCurrentPlayer(app.getPlayer1());
+        app.setOpponent(app.getPlayer2());
 
-        currentPlayer = player1;
-        opponent = player2;
-
-        while (!onePlayerDead) {
-
-            logger.info("\n");
-            logger.info("***** ROUND " + roundCounter);
-
-            app.drawACard(currentPlayer, opponent); //, currentCardNumber);
-
-            app.endOfTurn(currentPlayer, opponent);//, player1, player2);
-
-            tmpPlayer = currentPlayer;
-            currentPlayer = opponent;
-            opponent = tmpPlayer;
-
-        }
-
-        logger.info("\n");
-        logger.info("******************************");
-        logger.info("THE WINNER IS " + winner + " !!!");
-        logger.info("******************************");
+        Controller ctrl = new Controller();
+        ctrl.main(args);
 
     }
 
-    public void endOfTurn(Player currentPlayer, Player opponent){ //, Player player1, Player player2){
+    public void endOfTurn(Player currentPlayer, Player opponent) { //, Player player1, Player player2){
         logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
         if (currentPlayer.getHp() <= 0) {
-            winner = opponent.getName();
-            onePlayerDead = true;
-        }
-        else if (opponent.getHp() <= 0) {
-            winner = currentPlayer.getName();
-            onePlayerDead = true;
-        }
-        else{
+            setWinner(opponent.getName());
+            setOnePlayerDead(true);
+        } else if (opponent.getHp() <= 0) {
+            setWinner(currentPlayer.getName());
+            setOnePlayerDead(true);
+        } else {
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
             opponent.setEnergy(opponent.getEnergy() + 1);
         }
 
-        currentCardNumber++;
-        roundCounter++;
+        setCurrentCardNumber(getCurrentCardNumber() + 1);
+        setRoundCounter(getRoundCounter() + 1);
 
-        if(roundCounter > 500){
-            onePlayerDead = true;
-            winner = "Time - It's a draw";
+        if (getRoundCounter() > 500) {
+            setOnePlayerDead(true);
+            setWinner("Time - It's a draw");
         }
     }
 
@@ -88,50 +61,51 @@ public class SpellmongerApp {
 
         Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
-        for(Card card : currentPlayer.getDeckInfo().getDeck())
-        {
+        for (Card card : currentPlayer.getDeckInfo().getDeck()) {
             card.setOwner(currentPlayer.getDeckInfo().getDeckOwner());
 
-            if (card.isDraw() == false){
+            if (card.isDraw() == false) {
                 nextCard = card;
                 currentPlayer.getDeckInfo().getDeck().remove(nextCard);
                 break;
             }
         }
 
-        if(nextCard != null) {
+        if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
             nextCard.draw();
-            discard.add(nextCard);
+            if (nextCard instanceof Rituol) {
+                if (currentPlayer.equals(getPlayer1()))
+                    getDiscard1().add(nextCard);
+                else
+                    getDiscard2().add(nextCard);
+            }
         }
 
-        if(nextCard instanceof Creature){
+        if (nextCard instanceof Creature) {
             ((Creature) nextCard).attack(opponent);
-        }
-        else if(nextCard instanceof Rituol){
-            if(((Rituol) nextCard).isBonus()){
+        } else if (nextCard instanceof Rituol) {
+            if (((Rituol) nextCard).isBonus()) {
                 ((Rituol) nextCard).play(currentPlayer);
-            }
-            else{
+            } else {
                 ((Rituol) nextCard).play(opponent);
             }
         }
 
-        playerCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
+        setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
-        allCreaOnBoard = Creature.getPlayerCreaOnBoard(currentPlayer);
-        for(Creature crea : Creature.getPlayerCreaOnBoard(opponent))
-        {
-            allCreaOnBoard.add(crea);
+        setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
+        for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
+            getAllCreaOnBoard().add(crea);
         }
 
         System.out.println("********All the creatures on the board :");
-        Creature.displayGroupOfCrea(allCreaOnBoard);
+        Creature.displayGroupOfCrea(getAllCreaOnBoard());
 
-        if(playerCreaOnBoard != null) {
-            playerCreaOnBoard.remove(nextCard);
+        if (getPlayerCreaOnBoard() != null) {
+            getPlayerCreaOnBoard().remove(nextCard);
 
-            for (Card card : playerCreaOnBoard) {
+            for (Card card : getPlayerCreaOnBoard()) {
                 if (card instanceof Creature) {
                     ((Creature) card).attack(opponent);
                 } else if (card instanceof Rituol) {
@@ -144,5 +118,109 @@ public class SpellmongerApp {
             }
         }
 
+    }
+
+    public List<Card> getDiscard1() {
+        return discard1;
+    }
+
+    public void setDiscard1(List<Card> discard1) {
+        this.discard1 = discard1;
+    }
+
+    public List<Card> getDiscard2() {
+        return discard2;
+    }
+
+    public void setDiscard2(List<Card> discard2) {
+        this.discard2 = discard2;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public boolean isOnePlayerDead() {
+        return onePlayerDead;
+    }
+
+    public void setOnePlayerDead(boolean onePlayerDead) {
+        this.onePlayerDead = onePlayerDead;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
+    }
+
+    public Player getTmpPlayer() {
+        return tmpPlayer;
+    }
+
+    public void setTmpPlayer(Player tmpPlayer) {
+        this.tmpPlayer = tmpPlayer;
+    }
+
+    public int getCurrentCardNumber() {
+        return currentCardNumber;
+    }
+
+    public void setCurrentCardNumber(int currentCardNumber) {
+        this.currentCardNumber = currentCardNumber;
+    }
+
+    public int getRoundCounter() {
+        return roundCounter;
+    }
+
+    public void setRoundCounter(int roundCounter) {
+        this.roundCounter = roundCounter;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public List<Creature> getPlayerCreaOnBoard() {
+        return playerCreaOnBoard;
+    }
+
+    public void setPlayerCreaOnBoard(List<Creature> playerCreaOnBoard) {
+        this.playerCreaOnBoard = playerCreaOnBoard;
+    }
+
+    public List<Creature> getAllCreaOnBoard() {
+        return allCreaOnBoard;
+    }
+
+    public void setAllCreaOnBoard(List<Creature> allCreaOnBoard) {
+        this.allCreaOnBoard = allCreaOnBoard;
     }
 }
