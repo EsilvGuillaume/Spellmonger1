@@ -7,6 +7,11 @@ public abstract class Rituol extends Card {
     String effectDescription = "";
     private boolean bonus = false; // false will indicate it is a malus
 
+    public Rituol(String name, String owner) {
+        super(name, owner);
+        this.setCost(1);
+    }
+
     public Rituol(String name) {
         super(name);
         this.setCost(1);

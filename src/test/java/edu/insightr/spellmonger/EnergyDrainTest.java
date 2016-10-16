@@ -11,7 +11,7 @@ public class EnergyDrainTest {
     public void playDrainPossible() throws Exception {
         Player p1 = new Player("p1");
         Player p2 = new Player("p2");
-        EnergyDrain ed = new EnergyDrain("energy drain");
+        EnergyDrain ed = new EnergyDrain();
 
         p1.setEnergy(2);
         p2.setEnergy(2);

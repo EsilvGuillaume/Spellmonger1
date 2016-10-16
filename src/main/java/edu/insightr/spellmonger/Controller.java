@@ -67,6 +67,7 @@ public class Controller extends Application {
 
     private void draw(ActionEvent event) {
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
+        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         app.drawACard(app.getCurrentPlayer(), app.getOpponent());
         app.endOfTurn(app.getCurrentPlayer(), app.getOpponent());
         app.setTmpPlayer(app.getCurrentPlayer());

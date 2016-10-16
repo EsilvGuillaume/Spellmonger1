@@ -30,8 +30,11 @@ public abstract class Card {
         return "name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
     }
 
-    public void draw() {
+    public void draw(Player player) {
         this.setDraw(true);
+        player.getHand().add(this);
+        player.getDeckInfo().getDeck().remove(this);
+        this.setOwner(player.getName()); //necessary?
     }
 
     public String getName() {

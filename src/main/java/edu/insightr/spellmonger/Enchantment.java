@@ -4,8 +4,8 @@ public abstract class Enchantment extends Card {
 
     String effectDescription = "";
 
-    public Enchantment(String name) {
-        super(name);
+    public Enchantment(String name, String owner) {
+        super(name, owner);
     }
 
     public Enchantment() {

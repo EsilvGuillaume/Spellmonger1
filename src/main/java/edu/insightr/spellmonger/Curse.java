@@ -10,8 +10,8 @@ public class Curse extends Rituol {
     private String effectDescription = "Curse - Deals 3 damage to your opponent";
     private boolean bonus;
 
-    public Curse(String name) {
-        super(name);
+    public Curse(String name, String owner) {
+        super(name, owner);
         bonus = false;
         this.setCost(1);
     }

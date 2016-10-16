@@ -9,8 +9,6 @@ public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
     static SpellmongerApp app = new SpellmongerApp();
-    private List<Card> discard1 = new ArrayList<>();
-    private List<Card> discard2 = new ArrayList<>();
     private Player player1;
     private Player player2;
     private boolean onePlayerDead = false;
@@ -29,10 +27,17 @@ public class SpellmongerApp {
         app.setPlayer2(new Player("Bob"));
         app.setCurrentPlayer(app.getPlayer1());
         app.setOpponent(app.getPlayer2());
+        app.drawFirstTwoCards();
 
         Controller ctrl = new Controller();
         ctrl.main(args);
+    }
 
+    public void drawFirstTwoCards() {
+        currentPlayer.getDeckInfo().getDeck().get(0).draw(currentPlayer);
+        currentPlayer.getDeckInfo().getDeck().get(1).draw(currentPlayer);
+        opponent.getDeckInfo().getDeck().get(0).draw(opponent);
+        opponent.getDeckInfo().getDeck().get(1).draw(opponent);
     }
 
     public void endOfTurn(Player currentPlayer, Player opponent) { //, Player player1, Player player2){
@@ -54,7 +59,7 @@ public class SpellmongerApp {
 
         if (getRoundCounter() > 500) {
             setOnePlayerDead(true);
-            setWinner("Time - It's a draw");
+            setWinner("Time Limit - It's a draw");
         }
     }
 
@@ -76,16 +81,18 @@ public class SpellmongerApp {
 
         if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
-            nextCard.draw();
-            if (nextCard instanceof Rituol || nextCard instanceof Enchantment) {
+            nextCard.draw(currentPlayer);
+            /*if (nextCard instanceof Rituol || nextCard instanceof Enchantment) {
                 if (currentPlayer.equals(getPlayer1()))
                     getDiscard1().add(nextCard);
                 else
                     getDiscard2().add(nextCard);
-            }
+            }*/
         }
 
-        playCard(nextCard, currentPlayer, opponent);
+        displayCardInHand(currentPlayer);
+
+        askToPlay();
 
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
@@ -98,49 +105,71 @@ public class SpellmongerApp {
         Creature.displayGroupOfCrea(getAllCreaOnBoard());
 
         if (getPlayerCreaOnBoard() != null) {
-            getPlayerCreaOnBoard().remove(nextCard);
+            //getPlayerCreaOnBoard().remove(nextCard);
 
-            //A GERER MAINTENANT QUE TOUTES LES CARTES NE SONT PAS JOUEES QUAND ON LES PIOCHE
-
-            //useless cases, only creature needed
             for (Card card : getPlayerCreaOnBoard()) {
                 if (card instanceof Creature) {
                     ((Creature) card).attack(opponent);
-                } else if (card instanceof Rituol) {
-                    if (card instanceof EnergyDrain) {
-                        ((EnergyDrain) card).play(currentPlayer, opponent);
-                    } else {
-                        if (((Rituol) card).isBonus()) {
-                            ((Rituol) card).play(currentPlayer);
-                        } else {
-                            ((Rituol) card).play(opponent);
-                        }
-                    }
-                } else if (nextCard instanceof Enchantment) {
-                    ((Enchantment) nextCard).play(currentPlayer);
                 }
             }
         }
-
     }
 
-    void playCard(Card card, Player currentPlayer, Player opponent) {
+    void displayCardInHand(Player player) {
+        System.out.println(player.getName() + "'s cards in hand :");
+        int i = 1;
+        for (Card card : player.getHand()) {
+            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")");
+            i++;
+        }
+    }
+
+    void askToPlay() {
+        Scanner reader = new Scanner(System.in);
+        Card cardToPlay = null;
+        int cardToPlayNumber = 0;
+        do {
+            System.out.println("What card do you play ? If none, enter 0");
+            cardToPlayNumber = reader.nextInt();
+            if (cardToPlayNumber == 0) {
+                //System.out.println("No card played");
+                break;
+            } else if (cardToPlayNumber > 0 && cardToPlayNumber - 1 < currentPlayer.getHand().size()) {
+                cardToPlay = currentPlayer.getHand().get(cardToPlayNumber - 1);
+                //playCard(cardToPlay, currentPlayer, opponent);
+                if (playCard(cardToPlay, currentPlayer, opponent))
+                    break; // remove if we can play several cards per turn
+            } else {
+                System.out.println("This card number is not valid.");
+            }
+        } while (cardToPlayNumber != 0 || cardToPlay != null); // == null if several cards can be played each turn
+    }
+
+    boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
-                ((Creature) card).attack(opponent);
+                //put on board?
+                //((Creature) card).attack(opponent); //creature will attack only once at the end of turn
             } else if (card instanceof Rituol) {
-                if (((Rituol) card).isBonus()) {
-                    ((Rituol) card).play(currentPlayer);
+                if (card instanceof EnergyDrain) {
+                    ((EnergyDrain) card).play(currentPlayer, opponent);
                 } else {
-                    ((Rituol) card).play(opponent);
+                    if (((Rituol) card).isBonus()) {
+                        ((Rituol) card).play(currentPlayer);
+                    } else {
+                        ((Rituol) card).play(opponent);
+                    }
                 }
             } else if (card instanceof Enchantment) {
                 ((Enchantment) card).play(currentPlayer);
             }
             currentPlayer.setEnergy(currentPlayer.getEnergy() - card.getCost());
-        }
-        else{
-            System.out.println(card.getName()+" cost is too high to be played !");
+            currentPlayer.getHand().remove(card);
+            currentPlayer.getDiscard().add(card);
+            return true;
+        } else {
+            System.out.println(card.getName() + " cost is too high to be played !");
+            return false;
         }
     }
 
@@ -154,22 +183,6 @@ public class SpellmongerApp {
                 System.out.println(currentPlayer.getName() + " loses his overclock of energy");
             }
         }
-    }
-
-    public List<Card> getDiscard1() {
-        return discard1;
-    }
-
-    public void setDiscard1(List<Card> discard1) {
-        this.discard1 = discard1;
-    }
-
-    public List<Card> getDiscard2() {
-        return discard2;
-    }
-
-    public void setDiscard2(List<Card> discard2) {
-        this.discard2 = discard2;
     }
 
     public Player getPlayer1() {
