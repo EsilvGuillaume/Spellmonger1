@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Bear extends Creature {
+public class Bear extends Creature{
 
-    //private String owner;
+    private String owner;
 
-    public Bear(String name, String owner) {
-        super(name + " [Bear]", owner);
+    public Bear(String name, String owner){
+        super(name+" [Bear]", owner);
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);
-        this.setCost(3);
     }
 
-    public Bear(String name) {
-        super(name + " [Bear]", "");
+    public Bear(String name){
+        super(name+" [Bear]", "");
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);
-        this.setCost(3);
     }
 
-    /*@Override
+    @Override
     public String getOwner() {
         return owner;
     }
@@ -32,5 +30,5 @@ public class Bear extends Creature {
     @Override
     public void setOwner(String owner) {
         this.owner = owner;
-    }*/
+    }
 }
