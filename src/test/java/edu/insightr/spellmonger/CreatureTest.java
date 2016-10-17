@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreatureTest {
@@ -24,11 +25,29 @@ public class CreatureTest {
 
     @Test
     public void attackCreature() throws Exception {
+        // Class Creature is Abstract, so How can I do it ?
 
     }
 
     @Test
     public void findBestTarget() throws Exception {
+
+        Player p = new Player("Player");
+        List<Creature> list = new ArrayList<Creature>();
+        Creature bestCrea = null;
+        Wolf w = new Wolf("Player");
+        Bear b = new Bear("Player");
+        Eagle e = new Eagle("Player");
+        e.setHp(30);
+        list.add(w);
+        list.add(b);
+        list.add(e);
+
+        Creature.getPlayerCreaOnBoard(p);
+        bestCrea = Creature.findBestTarget(1, 20, p);
+        System.out.print("loooooooooool");
+        System.out.print(bestCrea.toString());
+        //Assert.assertEquals(bestCrea,b );
 
     }
 

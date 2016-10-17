@@ -73,6 +73,8 @@ public abstract class Creature extends Card {
                     i.remove();
                 }
             }
+            System.out.print("1");
+
 
             return creaOnBoard;
         }
@@ -109,13 +111,16 @@ public abstract class Creature extends Card {
         }
     }
 
-    public Creature findBestTarget(int attack, int hp, Player opponent) {
+    public static Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
-        List<Creature> opponentCrea = getPlayerCreaOnBoard(opponent);
-
+        List<Creature> opponentCrea = new ArrayList<>();
+        opponentCrea= getPlayerCreaOnBoard(opponent);
+        System.out.print(opponentCrea.isEmpty());
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
+            System.out.print("2");
+
             return null;
         } else { // enters here, good
             for (int i = 0; i < opponentCrea.size(); i++) {
@@ -151,6 +156,7 @@ public abstract class Creature extends Card {
             if (target.getHp() == healthiest)
                 bestTarget = target;
         }
+        System.out.print("3");
 
         return bestTarget;
     }
