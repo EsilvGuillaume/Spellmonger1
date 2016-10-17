@@ -27,11 +27,6 @@ public class SpellmongerAppTest {
     }
 
     @Test
-    public void endOfTurn() throws Exception {
-
-    }
-
-    @Test
     public void drawACard() throws Exception {
 
     }
@@ -41,18 +36,30 @@ public class SpellmongerAppTest {
 
     }
 
-    @Test
-    public void askToPlay() throws Exception {
-
-    }
 
     @Test
     public void playCard() throws Exception {
+        Player p = new Player("p1");
+        Player p2 = new Player("p2");
+
+        Bear b = new Bear("name", "p1");
+        Assert.assertTrue(!SpellmongerApp.playCard(b, p, p2));
+
+
 
     }
 
     @Test
     public void verifyVaultOverclock() throws Exception {
+        Player p = new Player("P1");
+        p.setEnergy(0);
+        for(int i = 0; i<999; i++)
+        {
+            SpellmongerApp.verifyVaultOverclock(p);
+        }
+        Assert.assertTrue(p.getEnergy()>300|| p.getEnergy()<400);
+
+
 
     }
 }
