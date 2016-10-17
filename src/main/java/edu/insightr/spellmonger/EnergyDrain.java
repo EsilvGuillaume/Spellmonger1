@@ -6,17 +6,23 @@ public class EnergyDrain extends Rituol {
     private String effectDescription = "Energy Drain - consume 2 energies to your opponent and you win 2 energies";
     private boolean bonus;
 
-    public EnergyDrain(String name) {
-        super(name);
+    public EnergyDrain(String name, String owner) {
+        super(name, owner);
         bonus = true;
+        this.setCost(1);
     }
 
     public EnergyDrain() {
         bonus = true;
+        this.setCost(1);
     }
 
-    public void play(Player currentPlayer) {
-        Player opponent = Player.getCurrentOpponent(); // not working
+    @Override
+    public void play(Player target) {
+
+    }
+
+    public void play(Player currentPlayer,Player opponent) {
         if (opponent.getEnergy() > 1) {
             opponent.setEnergy(opponent.getEnergy() - 2);
             currentPlayer.setEnergy(currentPlayer.getEnergy() + 2);

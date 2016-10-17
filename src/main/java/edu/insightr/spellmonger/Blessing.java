@@ -6,13 +6,15 @@ public class Blessing extends Rituol {
     private String effectDescription = "Blessing - Restores 3 hp to you";
     private boolean bonus;
 
-    public Blessing(String name) {
-        super(name);
+    public Blessing(String name, String owner) {
+        super(name, owner);
         bonus = true;
+        this.setCost(1);
     }
 
     public Blessing() {
         bonus = true;
+        this.setCost(1);
     }
 
     public void play(Player currentPlayer) {
@@ -25,6 +27,11 @@ public class Blessing extends Rituol {
             currentPlayer.setHp(20);
         }
         System.out.println(this.getName() + " used, " + currentPlayer.getName() + " has regenerated " + lifeGain + " hp !");
+    }
+
+    @Override
+    public void play(Player target, Player emetter) {
+
     }
 
     public String getEffectDescription() {

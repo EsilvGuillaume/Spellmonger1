@@ -19,15 +19,22 @@
         <Text layoutX="205" layoutY="25" id="hand1Name" text="Hand 1"></Text>
         <Rectangle fx:id="hand2" x="180" y="490" width="90" height="130" fill="white"  stroke="black"/>
         <Text layoutX="205" layoutY="635" id="hand2Name" text="Hand 2"></Text>
-        <Text layoutX="65" layoutY="55" id="player1Name" text="Player 1"></Text>
+
+        <Text layoutX="65" layoutY="55" id="player1Name" fx:id="namePlayer1" text="Player 1"></Text>
+        <Text layoutX="65" layoutY="65" id="hpPlayer1" fx:id="hpPlayer1" text="20"></Text>
+        <Text layoutX="65" layoutY="75" id="manaPlayer1" fx:id="manaPlayer1" text="0"></Text>
+
         <Rectangle fx:id="discard1" x="580" y="30" width="90" height="130" fill="gray"  stroke="black"/>
         <Text layoutX="600" layoutY="25" id="discard1Name" text="Discard 1"></Text>
         <Rectangle fx:id="discard2" x="580" y="490" width="90" height="130" fill="gray"  stroke="black"/>
         <Text layoutX="600" layoutY="635" id="discard1Name" text="Discard 2"></Text>
-        <Text layoutX="65" layoutY="520" id="player2Name" text="Player 2"/>
 
-        <Button layoutX="480" prefWidth="80" layoutY="110" mnemonicParsing="false" text="Draw"/>
-        <Button layoutX="480" prefWidth="80" layoutY="510" mnemonicParsing="false" text="Draw"/>
+        <Text layoutX="65" layoutY="520" id="player2Name" fx:id="namePlayer2" text="Player 2"/>
+        <Text layoutX="65" layoutY="530" id="hpPlayer2" fx:id="hpPlayer2" text="20"/>
+        <Text layoutX="65" layoutY="540" id="manaPlayer2" fx:id="manaPlayer2" text="0"/>
+
+        <Button layoutX="480" prefWidth="80" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>
+        <Button layoutX="480" prefWidth="80" layoutY="510" mnemonicParsing="false" onAction="#draw" fx:id="draw2Button" text="Draw"/>
 
         <ScrollPane id="board1" layoutY="183" layoutX="10"> <!--fitToHeight="true" fitToWidth="true">-->
             <content>
