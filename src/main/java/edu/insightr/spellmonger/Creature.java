@@ -14,7 +14,7 @@ public abstract class Creature extends Card {
     private int attack;
     private boolean alive;
 
-    private static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
     private static ArrayList<Creature> temp;
 
     private void killCreature() {
