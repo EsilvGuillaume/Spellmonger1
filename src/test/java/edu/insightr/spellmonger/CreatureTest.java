@@ -58,31 +58,52 @@ public class CreatureTest {
 
     @Test
     public void getHp() throws Exception {
+        Bear b = new Bear("jsp", "p1");
+        Assert.assertEquals(3, b.getHp());
 
     }
 
     @Test
     public void setHp() throws Exception {
+        Bear b = new Bear("jsp", "p1");
+        b.setHp(4);
+        Assert.assertEquals(4, b.getHp());
 
     }
 
     @Test
     public void getAttack() throws Exception {
 
+        Bear b = new Bear("jsp", "p1");
+
+        Assert.assertEquals(3, b.getAttack());
+
     }
 
     @Test
     public void setAttack() throws Exception {
+
+        Bear b = new Bear("jsp", "p1");
+        b.setAttack(6);
+        Assert.assertEquals(6, b.getAttack());
 
     }
 
     @Test
     public void isAlive() throws Exception {
 
+        Bear b = new Bear("jsp", "p1");
+
+        Assert.assertTrue(b.isAlive());
+
     }
 
     @Test
     public void setAlive() throws Exception {
+
+        Bear b = new Bear("jsp", "p1");
+        b.setAlive(false);
+        Assert.assertTrue(!b.isAlive());
 
     }
 
