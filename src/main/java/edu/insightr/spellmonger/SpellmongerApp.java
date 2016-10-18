@@ -167,7 +167,7 @@ public class SpellmongerApp {
             currentPlayer.getHand().remove(card);
             currentPlayer.getDiscard().add(card);
             return true;
-        } else {
+        } else { 
             System.out.println(card.getName() + " cost is too high to be played !");
             return false;
         }
