@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -27,6 +28,12 @@ public class Controller extends Application {
             final FXMLLoader fxmlLoader = new FXMLLoader(url);
             final AnchorPane root = fxmlLoader.load();
             final Scene scene = new Scene(root, 1050, 650);
+
+            /*final Button draw1Button = new Button("drawl !");
+            final URL buttonCSSURL = getClass().getResource("/buttonDesign");
+            draw1Button.getStylesheets().add(buttonCSSURL.toExternalForm());*/
+
+            scene.getStylesheets().add(getClass().getResource("/design").toExternalForm());
             primaryStage.setScene(scene);
         } catch (IOException ex) {
             System.err.println("Loarding error: " + ex);
@@ -40,10 +47,10 @@ public class Controller extends Application {
     }
 
     @FXML
-    private Text namePlayer1;
+    private Label namePlayer1;
 
     @FXML
-    private Text namePlayer2;
+    private Label namePlayer2;
 
     @FXML
     private Button draw1Button;
@@ -52,16 +59,16 @@ public class Controller extends Application {
     private Button draw2Button;
 
     @FXML
-    private Text hpPlayer1;
+    private Label hpPlayer1;
 
     @FXML
-    private Text hpPlayer2;
+    private Label hpPlayer2;
 
     @FXML
-    private Text manaPlayer1;
+    private Label manaPlayer1;
 
     @FXML
-    private Text manaPlayer2;
+    private Label manaPlayer2;
 
     @FXML
 
