@@ -136,7 +136,7 @@ public class Controller extends Application {
         }
     }
 
-    public void displayInitialPlayers() {
+    private void displayInitialPlayers() {
         namePlayer1.setText(app.getPlayer1().getName());
         namePlayer2.setText(app.getPlayer2().getName());
     }
