@@ -1,0 +1,43 @@
+.root{
+    -fx-background-color: #fcc280;
+}
+
+.draw-button {
+-fx-font-size: 14pt;
+  -fx-background-radius: 50em;
+  -fx-min-width: 80px;
+  -fx-min-height: 40px;
+  -fx-background-color: #f25843;
+  -fx-padding: 0px;
+  -fx-text-fill : white;
+}
+
+.draw-button:hover{
+-fx-font-weight: bold;
+  -fx-background-color: #d81c1c;
+}
+
+.draw-button:pressed{
+  -fx-background-color: #d8511c;
+}
+
+.player-name {
+-fx-font-weight: bold;
+  -fx-text-fill : #ff8800;
+  -fx-font-size: 17pt;
+  -fx-font-family: Consolas;
+}
+
+.player-hp {
+-fx-font-weight: bold;
+-fx-text-fill : #10ef4f;
+  -fx-font-size: 18pt;
+  -fx-font-family: Consolas;
+}
+
+.player-energy {
+-fx-font-weight: bold;
+-fx-text-fill : #2eade8;
+  -fx-font-size: 17pt;
+  -fx-font-family: Consolas;
+}
