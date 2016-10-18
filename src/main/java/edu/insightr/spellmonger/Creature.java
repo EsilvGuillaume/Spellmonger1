@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static edu.insightr.spellmonger.SpellmongerApp.*;
+
 
 public abstract class Creature extends Card {
 
@@ -12,11 +14,17 @@ public abstract class Creature extends Card {
     private int attack;
     private boolean alive;
 
-    static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
-    static ArrayList<Creature> temp;
+    protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    private static ArrayList<Creature> temp;
 
-    void killCreature() {
+    private void killCreature() {
         allCreatures.remove(this);
+        if (this.getOwner() == app.getCurrentPlayer().getName()){
+            app.getCurrentPlayer().getDiscard().add(this);
+        }
+        else if (this.getOwner() == app.getOpponent().getName()){
+            app.getOpponent().getDiscard().add(this);
+        }
     }
 
     public Creature(String name, String owner, int hp) {
@@ -37,7 +45,7 @@ public abstract class Creature extends Card {
 
     @Override
     public String toString() {
-        return super.toString() + "hp = " + this.hp + ", attack = " + this.attack + ", alive = " + this.alive;
+        return super.toString() + ", hp = " + this.hp + ", attack = " + this.attack + ", alive = " + this.alive;
     }
 
     public static int getCreaDamageForPlayer(Player player) {
@@ -53,7 +61,7 @@ public abstract class Creature extends Card {
         int i = 1;
         System.out.println("********Displaying the creatures :");
         for (Creature crea : listOfCrea) {
-            System.out.println("Creature " + i + " : " + crea.getName());
+            System.out.println("Creature " + i + " : " + crea.getName()+" ("+crea.getOwner()+")");
             i++;
         }
         System.out.println("********END");
@@ -69,10 +77,16 @@ public abstract class Creature extends Card {
             Iterator<Creature> i = creaOnBoard.iterator();
             while (i.hasNext()) {
                 Creature crea = i.next();
-                if (!((crea.getOwner() == player.getName()) && (crea.isDraw()) && (crea.getHp() > 0))) {
+                /*if (!((crea.getOwner() == player.getName()) && (crea.isDraw()) && (crea.getHp() > 0) && (player.getHand().contains(crea)))) {
+                    i.remove();
+                }*/
+                //System.out.println("creature : "+crea.getName()+" / alive :"+crea.isAlive()+" / draw :"+crea.isDraw()+" / owner :"+crea.getOwner()+" / in hand :"+player.getHand().contains(crea));
+                if ((crea.getOwner() != player.getName()) || !(crea.isDraw()) || !(crea.isAlive()) || (player.getHand().contains(crea))) {
                     i.remove();
                 }
             }
+            System.out.print("1");
+
 
             return creaOnBoard;
         }
@@ -93,6 +107,7 @@ public abstract class Creature extends Card {
         if (opponent.getHp() <= 0) {
             opponent.setAlive(false);
             System.out.println(opponent.getName() + " is dead !");
+            app.setOnePlayerDead(true);
         }
     }
 
@@ -109,15 +124,18 @@ public abstract class Creature extends Card {
         }
     }
 
-    public Creature findBestTarget(int attack, int hp, Player opponent) {
+    public static Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
-        List<Creature> opponentCrea = getPlayerCreaOnBoard(opponent);
-
+        List<Creature> opponentCrea = new ArrayList<>();
+        opponentCrea= getPlayerCreaOnBoard(opponent);
+        System.out.print(opponentCrea.isEmpty());
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
+            System.out.print("2");
+
             return null;
-        } else { // enters here, good
+        } else {
             for (int i = 0; i < opponentCrea.size(); i++) {
                 if (opponentCrea.get(i).getOwner() == opponent.getName()) {
                     potentialTargets.add(opponentCrea.get(i));
@@ -151,14 +169,13 @@ public abstract class Creature extends Card {
             if (target.getHp() == healthiest)
                 bestTarget = target;
         }
+        System.out.print("3");
 
         return bestTarget;
     }
 
     public void attack(Player opponent) {
 
-        //Player opponent = Player.getCurrentOpponent();
-        //System.out.println("opponent :"+opponent.getName());
         Creature bestCreaTarget = findBestTarget(this.getHp(), this.getAttack(), opponent);
 
         if (bestCreaTarget == null) {

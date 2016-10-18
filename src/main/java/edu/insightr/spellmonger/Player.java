@@ -1,6 +1,9 @@
 package edu.insightr.spellmonger;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
     private String name;
@@ -9,6 +12,9 @@ public class Player {
     private boolean alive;
     private Deck deckInfo;
     private int numberOfCreaOnBoard;
+    private boolean vaultOverclocking;
+    private List<Card> hand = new ArrayList<>();
+    private List<Card> discard = new ArrayList<>();
 
     private static Player currentPlayer = new Player();
     private static Player currentOpponent = new Player();
@@ -16,17 +22,23 @@ public class Player {
     Player() {
         this.setName("");
         this.setHp(20);
-        this.setEnergy(0);
-        this.setDeckInfo(new Deck(30, ""));
+        this.setEnergy(1);
+        this.setDeckInfo(new Deck(40, ""));
         this.setNumberOfCreaOnBoard(0);
+        this.hand = new ArrayList<>(); // A CHANGER (2 card at the start)
+        this.discard = new ArrayList<>();
+        this.vaultOverclocking = false;
     }
 
     Player(String name) {
         this.setName(name);
         this.setHp(20);
-        this.setEnergy(0);
-        this.setDeckInfo(new Deck(30, name));
+        this.setEnergy(1);
+        this.setDeckInfo(new Deck(40, name));
         this.setNumberOfCreaOnBoard(0);
+        this.vaultOverclocking = false;
+        this.hand = new ArrayList<>(); // A CHANGER (2 card at the start)
+        this.discard = new ArrayList<>();
     }
 
     public static Player getCurrentPlayer() {
@@ -96,5 +108,29 @@ public class Player {
 
     public void setDeckInfo(Deck deckInfo) {
         this.deckInfo = deckInfo;
+    }
+
+    public boolean isVaultOverclocking() {
+        return vaultOverclocking;
+    }
+
+    public void setVaultOverclocking(boolean vaultOverclocking) {
+        this.vaultOverclocking = vaultOverclocking;
+    }
+
+    public List<Card> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<Card> hand) {
+        this.hand = hand;
+    }
+
+    public List<Card> getDiscard() {
+        return discard;
+    }
+
+    public void setDiscard(List<Card> discard) {
+        this.discard = discard;
     }
 }

@@ -8,6 +8,7 @@ public class Wolf extends Creature {
         this.setHp(2);
         this.setAttack(2);
         this.setAlive(true);
+        this.setCost(2);
     }
 
     public Wolf(String name, String owner) {
@@ -15,6 +16,7 @@ public class Wolf extends Creature {
         this.setHp(2);
         this.setAttack(2);
         this.setAlive(true);
+        this.setCost(2);
     }
 
 }
