@@ -32,15 +32,6 @@ public class Controller extends Application {
             final AnchorPane root = fxmlLoader.load();
             final Scene scene = new Scene(root, 1050, 650);
 
-            /*final Button draw1Button = new Button("drawl !");
-            final URL buttonCSSURL = getClass().getResource("/buttonDesign");
-            draw1Button.getStylesheets().add(buttonCSSURL.toExternalForm());*/
-
-            /*Image draw_card = new Image(getClass().getResourceAsStream("/img/card-back.png"));
-            Button draw1Button = new Button("lol", new ImageView(draw_card));
-            HBox layout  = new HBox();
-            layout.getChildren().addAll(draw1Button);*/
-
             scene.getStylesheets().add(getClass().getResource("/design").toExternalForm());
             primaryStage.setScene(scene);
         } catch (IOException ex) {

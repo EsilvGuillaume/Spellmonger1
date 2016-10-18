@@ -23,14 +23,4 @@ public class Bear extends Creature {
         this.setAlive(true);
         this.setCost(3);
     }
-
-    /*@Override
-    public String getOwner() {
-        return owner;
-    }
-
-    @Override
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }*/
 }

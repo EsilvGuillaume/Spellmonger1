@@ -19,10 +19,9 @@ public abstract class Creature extends Card {
 
     private void killCreature() {
         allCreatures.remove(this);
-        if (this.getOwner() == app.getCurrentPlayer().getName()){
+        if (this.getOwner() == app.getCurrentPlayer().getName()) {
             app.getCurrentPlayer().getDiscard().add(this);
-        }
-        else if (this.getOwner() == app.getOpponent().getName()){
+        } else if (this.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(this);
         }
     }
@@ -61,7 +60,7 @@ public abstract class Creature extends Card {
         int i = 1;
         System.out.println("********Displaying the creatures :");
         for (Creature crea : listOfCrea) {
-            System.out.println("Creature " + i + " : " + crea.getName()+" ("+crea.getOwner()+")");
+            System.out.println("Creature " + i + " : " + crea.getName() + " (" + crea.getOwner() + ")");
             i++;
         }
         System.out.println("********END");
@@ -81,7 +80,6 @@ public abstract class Creature extends Card {
                     i.remove();
                 }
             }
-
             return creaOnBoard;
         }
     }
@@ -89,7 +87,7 @@ public abstract class Creature extends Card {
     public static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
         for (int i = 0; i < temp.size(); i++) {
-            if (!temp.get(i).getOwner().equals( playerName)) {
+            if (!temp.get(i).getOwner().equals(playerName)) {
                 temp.remove(temp.get(i));
             }
         }
@@ -122,8 +120,8 @@ public abstract class Creature extends Card {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
         List<Creature> opponentCrea = new ArrayList<>();
-        opponentCrea= getPlayerCreaOnBoard(opponent);
-        System.out.print(opponentCrea.isEmpty());
+        opponentCrea = getPlayerCreaOnBoard(opponent);
+        //System.out.print(opponentCrea.isEmpty());
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
             return null;
