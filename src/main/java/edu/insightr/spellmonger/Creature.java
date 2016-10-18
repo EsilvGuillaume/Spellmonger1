@@ -81,7 +81,7 @@ public abstract class Creature extends Card {
                     i.remove();
                 }*/
                 //System.out.println("creature : "+crea.getName()+" / alive :"+crea.isAlive()+" / draw :"+crea.isDraw()+" / owner :"+crea.getOwner()+" / in hand :"+player.getHand().contains(crea));
-                if ((crea.getOwner() != player.getName()) || !(crea.isDraw()) || !(crea.isAlive())) //|| (player.getHand().contains(crea))) { Test sans, erreur quand deux fois même crea en main
+                if ((crea.getOwner() != player.getName()) || !(crea.isDraw()) || !(crea.isAlive() || player.getHand().contains(crea))) //|| (player.getHand().contains(crea))) { Test sans, erreur quand deux fois même crea en main
                 {
                     i.remove();
                 }
