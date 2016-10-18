@@ -14,19 +14,19 @@
             fx:controller="edu.insightr.spellmonger.Controller">
 
     <children>
-        <Rectangle styleClass="player-box" fx:id="player1" x="10" y="10" width="150" height="170"/>
-        <Rectangle styleClass="player-box" fx:id="player2" x="10" y="470" width="150" height="170"/>
-        <Rectangle fx:id="hand1" x="180" y="30" width="105" height="150" fill="white"  stroke="black"/>
-        <Text layoutX="205" layoutY="25" id="hand1Name" text="Hand 1"></Text>
-        <Rectangle fx:id="hand2" x="180" y="480" width="105" height="150" fill="white"  stroke="black"/>
-        <Text layoutX="205" layoutY="645" id="hand2Name" text="Hand 2"></Text>
+        <Rectangle styleClass="player-box" fx:id="player1" x="10" y="10" width="180" height="170"/>
+        <Rectangle styleClass="player-box" fx:id="player2" x="10" y="470" width="180" height="170"/>
+        <Rectangle fx:id="hand1" x="210" y="26" width="105" height="150" fill="white"  stroke="black"/>
+        <Text layoutX="235" layoutY="21" id="hand1Name" text="Hand 1"></Text>
+        <Rectangle fx:id="hand2" x="210" y="480" width="105" height="150" fill="white"  stroke="black"/>
+        <Text layoutX="235" layoutY="645" id="hand2Name" text="Hand 2"></Text>
 
         <Label styleClass="player-name" layoutX="30" layoutY="55" id="player1Name" fx:id="namePlayer1" text="Player 1"></Label>
         <Label styleClass="player-hp" layoutX="30" layoutY="80" id="hpPlayer1" fx:id="hpPlayer1" text="20"></Label>
         <Label styleClass="player-energy" layoutX="30" layoutY="105" id="manaPlayer1" fx:id="manaPlayer1" text="0"></Label>
 
-        <Rectangle styleClass="discard-box" fx:id="discard1" x="600" y="30" width="105" height="150" fill="gray"  stroke="black"/>
-        <Text layoutX="620" layoutY="25" id="discard1Name" text="Discard 1"></Text>
+        <Rectangle styleClass="discard-box" fx:id="discard1" x="600" y="26" width="105" height="150" fill="gray"  stroke="black"/>
+        <Text layoutX="620" layoutY="21" id="discard1Name" text="Discard 1"></Text>
         <Rectangle styleClass="discard-box" fx:id="discard2" x="600" y="480" width="105" height="150" fill="gray"  stroke="black"/>
         <Text layoutX="620" layoutY="645" id="discard1Name" text="Discard 2"></Text>
 

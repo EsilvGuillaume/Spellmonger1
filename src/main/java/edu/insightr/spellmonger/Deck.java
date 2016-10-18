@@ -30,14 +30,15 @@ public class Deck {
     public List<Card> createDeck(int size, String playerName) {
 
         List<Card> possibleCards = new ArrayList<>();
-        Bear bearTest = new Bear("bear", playerName);
+
+        /*Bear bearTest = new Bear("bear", playerName);
         Eagle eagleTest = new Eagle("eagle", playerName);
         Wolf wolfTest = new Wolf("wolf", playerName);
         Curse curseTest = new Curse("curse", playerName);
         Fox foxTest = new Fox("fox", playerName);
         Blessing blessingTest = new Blessing("blessing", playerName);
         EnergyDrain energyDrainTest = new EnergyDrain("energyDrain", playerName);
-        VaultOverclocking vaultTest = new VaultOverclocking("vault overclocking", playerName);
+        VaultOverclocking vaultTest = new VaultOverclocking("vault overclocking", playerName);*/
 
         int creatureNumber = (int) (size * 0.75);
         int rituolOrEnchantNumber = (int) (size * 0.25);
@@ -47,14 +48,38 @@ public class Deck {
 
         int cardMissingNumber = size - (uniqueCreaNumber * 4 + uniqueRituolNumber * 4);
 
-        addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
+        for (int i = 0; i < uniqueCreaNumber; i++){
+            Bear bear = new Bear("bear", playerName);
+            Eagle eagle = new Eagle("eagle", playerName);
+            Wolf wolf = new Wolf("wolf", playerName);
+            Fox fox = new Fox("fox", playerName);
+
+            addToList(possibleCards, wolf, uniqueCreaNumber);
+            addToList(possibleCards, eagle, uniqueCreaNumber);
+            addToList(possibleCards, fox, uniqueCreaNumber);
+            addToList(possibleCards, bear, uniqueCreaNumber);
+        }
+
+        for (int i = 0; i < uniqueRituolNumber; i++){
+            Curse curse = new Curse("curse", playerName);
+            Blessing blessing = new Blessing("blessing", playerName);
+            EnergyDrain energyDrain = new EnergyDrain("energyDrain", playerName);
+            VaultOverclocking vault = new VaultOverclocking("vault overclocking", playerName);
+
+            addToList(possibleCards, energyDrain, uniqueRituolNumber);
+            addToList(possibleCards, blessing, uniqueRituolNumber);
+            addToList(possibleCards, curse, uniqueRituolNumber);
+            addToList(possibleCards, vault, uniqueRituolNumber);
+        }
+
+        /*addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
         addToList(possibleCards, foxTest, uniqueCreaNumber);
         addToList(possibleCards, blessingTest, uniqueRituolNumber);
         addToList(possibleCards, curseTest, uniqueRituolNumber);
         addToList(possibleCards, wolfTest, uniqueCreaNumber);
         addToList(possibleCards, eagleTest, uniqueCreaNumber);
         addToList(possibleCards, bearTest, uniqueCreaNumber);
-        addToList(possibleCards, vaultTest, uniqueRituolNumber);
+        addToList(possibleCards, vaultTest, uniqueRituolNumber);*/
 
         randomGenerator = new Random();
         int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 4 + uniqueRituolNumber * 4);

@@ -120,7 +120,7 @@ public class SpellmongerApp {
         System.out.println(player.getName() + "'s cards in hand :");
         int i = 1;
         for (Card card : player.getHand()) {
-            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")");
+            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ") hash = "+card.getIdCode());
             i++;
         }
     }
