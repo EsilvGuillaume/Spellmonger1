@@ -145,7 +145,7 @@ public class SpellmongerApp {
         } while (cardToPlayNumber != 0 || cardToPlay != null); // == null if several cards can be played each turn
     }
 
-    boolean playCard(Card card, Player currentPlayer, Player opponent) {
+    static boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
                 //put on board?
@@ -173,7 +173,7 @@ public class SpellmongerApp {
         }
     }
 
-    void verifyVaultOverclock(Player currentPlayer) {
+    static void verifyVaultOverclock(Player currentPlayer) {
         if (currentPlayer.isVaultOverclocking()) {
             int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
             if (randNumber > 35) {
