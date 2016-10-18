@@ -1,33 +1,44 @@
 package edu.insightr.spellmonger;
 
+import java.util.Random;
+
 public abstract class Card {
 
     private String name;
     private boolean draw;
     private String owner;
     private int cost;
+    private int idCode;
+    int cardCreatedCount = 0;
 
     public Card(String name, String owner) {
+        Random rand = new Random();
         setName(name);
         setDraw(false);
         setOwner(owner);
+        setIdCode(System.identityHashCode(this) + cardCreatedCount);
+        cardCreatedCount++;
     }
 
     public Card(String name) {
         setName(name);
         setDraw(false);
         setOwner("");
+        setIdCode(this.hashCode());
+        cardCreatedCount++;
     }
 
     public Card() {
         setName("");
         setDraw(false);
         setOwner("");
+        setIdCode(this.hashCode());
+        cardCreatedCount++;
     }
 
     @Override
     public String toString() {
-        return "name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
+        return "code : "+this.idCode+", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
     }
 
     public void draw(Player player) {
@@ -67,5 +78,13 @@ public abstract class Card {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public int getIdCode() {
+        return idCode;
+    }
+
+    public void setIdCode(int idCode) {
+        this.idCode = idCode;
     }
 }

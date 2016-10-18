@@ -31,6 +31,7 @@ public class SpellmongerApp {
 
         Controller ctrl = new Controller();
         ctrl.main(args);
+
     }
 
     public void drawFirstTwoCards() {
@@ -119,7 +120,7 @@ public class SpellmongerApp {
         System.out.println(player.getName() + "'s cards in hand :");
         int i = 1;
         for (Card card : player.getHand()) {
-            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")");
+            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ") hash = "+card.getIdCode());
             i++;
         }
     }
@@ -167,7 +168,7 @@ public class SpellmongerApp {
             currentPlayer.getHand().remove(card);
             currentPlayer.getDiscard().add(card);
             return true;
-        } else {
+        } else { 
             System.out.println(card.getName() + " cost is too high to be played !");
             return false;
         }

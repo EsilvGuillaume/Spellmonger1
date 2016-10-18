@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -33,20 +36,20 @@ public class Controller extends Application {
             final URL buttonCSSURL = getClass().getResource("/buttonDesign");
             draw1Button.getStylesheets().add(buttonCSSURL.toExternalForm());*/
 
+            /*Image draw_card = new Image(getClass().getResourceAsStream("/img/card-back.png"));
+            Button draw1Button = new Button("lol", new ImageView(draw_card));
+            HBox layout  = new HBox();
+            layout.getChildren().addAll(draw1Button);*/
+
             scene.getStylesheets().add(getClass().getResource("/design").toExternalForm());
             primaryStage.setScene(scene);
         } catch (IOException ex) {
-            System.err.println("Loarding error: " + ex);
+            System.err.println("Loading error: " + ex);
         }
         primaryStage.setTitle("Card Game");
         primaryStage.show();
-    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @FXML
+    }@FXML
     private Label namePlayer1;
 
     @FXML
@@ -70,9 +73,26 @@ public class Controller extends Application {
     @FXML
     private Label manaPlayer2;
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
     @FXML
 
     private void draw(ActionEvent event) {
+
+        if(event.getSource()==draw1Button)
+        {
+        app.setCurrentPlayer(app.getPlayer1());
+            app.setOpponent(app.getPlayer2());
+        }
+        else
+        {
+        app.setCurrentPlayer(app.getPlayer2());
+            app.setOpponent(app.getPlayer1());
+        }
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         app.drawACard(app.getCurrentPlayer(), app.getOpponent());
@@ -83,7 +103,8 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-        } else {
+        } else if (app.getCurrentPlayer().equals(app.getPlayer2()))
+        {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
         }
@@ -93,16 +114,16 @@ public class Controller extends Application {
 
     private void refreshPlayerInfo(Player currPlayer, Player oppo){
         if (currPlayer == app.getPlayer1()){
-            hpPlayer1.setText(Integer.toString(currPlayer.getHp()));
-            manaPlayer1.setText(Integer.toString(currPlayer.getEnergy()));
-            hpPlayer2.setText(Integer.toString(oppo.getHp()));
-            manaPlayer2.setText(Integer.toString(oppo.getEnergy()));
+            hpPlayer1.setText("Hp : "+Integer.toString(currPlayer.getHp()));
+            manaPlayer1.setText("Energy : "+Integer.toString(currPlayer.getEnergy()));
+            hpPlayer2.setText("Hp : "+Integer.toString(oppo.getHp()));
+            manaPlayer2.setText("Energy : "+Integer.toString(oppo.getEnergy()));
         }
         else{
-            hpPlayer2.setText(Integer.toString(currPlayer.getHp()));
-            manaPlayer2.setText(Integer.toString(currPlayer.getEnergy()));
-            hpPlayer1.setText(Integer.toString(oppo.getHp()));
-            manaPlayer1.setText(Integer.toString(oppo.getEnergy()));
+            hpPlayer2.setText("Hp : "+Integer.toString(currPlayer.getHp()));
+            manaPlayer2.setText("Energy : "+Integer.toString(currPlayer.getEnergy()));
+            hpPlayer1.setText("Hp : "+Integer.toString(oppo.getHp()));
+            manaPlayer1.setText("Energy : "+Integer.toString(oppo.getEnergy()));
         }
     }
 

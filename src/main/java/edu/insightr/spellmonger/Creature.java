@@ -77,16 +77,10 @@ public abstract class Creature extends Card {
             Iterator<Creature> i = creaOnBoard.iterator();
             while (i.hasNext()) {
                 Creature crea = i.next();
-                /*if (!((crea.getOwner() == player.getName()) && (crea.isDraw()) && (crea.getHp() > 0) && (player.getHand().contains(crea)))) {
-                    i.remove();
-                }*/
-                //System.out.println("creature : "+crea.getName()+" / alive :"+crea.isAlive()+" / draw :"+crea.isDraw()+" / owner :"+crea.getOwner()+" / in hand :"+player.getHand().contains(crea));
                 if ((crea.getOwner() != player.getName()) || !(crea.isDraw()) || !(crea.isAlive()) || (player.getHand().contains(crea))) {
                     i.remove();
                 }
             }
-            System.out.print("1");
-
 
             return creaOnBoard;
         }
@@ -132,8 +126,6 @@ public abstract class Creature extends Card {
         System.out.print(opponentCrea.isEmpty());
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
-            System.out.print("2");
-
             return null;
         } else {
             for (int i = 0; i < opponentCrea.size(); i++) {
@@ -169,7 +161,6 @@ public abstract class Creature extends Card {
             if (target.getHp() == healthiest)
                 bestTarget = target;
         }
-        System.out.print("3");
 
         return bestTarget;
     }
