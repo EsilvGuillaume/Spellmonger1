@@ -2,9 +2,6 @@ package edu.insightr.spellmonger;
 
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 
-/**
- * Created by Guillaume on 02/10/2016.
- */
 public class Curse extends Rituol {
 
     private String effectDescription = "Curse - Deals 3 damage to your opponent";

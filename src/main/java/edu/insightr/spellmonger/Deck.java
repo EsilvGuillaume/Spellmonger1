@@ -31,15 +31,6 @@ public class Deck {
 
         List<Card> possibleCards = new ArrayList<>();
 
-        /*Bear bearTest = new Bear("bear", playerName);
-        Eagle eagleTest = new Eagle("eagle", playerName);
-        Wolf wolfTest = new Wolf("wolf", playerName);
-        Curse curseTest = new Curse("curse", playerName);
-        Fox foxTest = new Fox("fox", playerName);
-        Blessing blessingTest = new Blessing("blessing", playerName);
-        EnergyDrain energyDrainTest = new EnergyDrain("energyDrain", playerName);
-        VaultOverclocking vaultTest = new VaultOverclocking("vault overclocking", playerName);*/
-
         int creatureNumber = (int) (size * 0.75);
         int rituolOrEnchantNumber = (int) (size * 0.25);
 
@@ -71,15 +62,6 @@ public class Deck {
             addToList(possibleCards, curse, uniqueRituolNumber);
             addToList(possibleCards, vault, uniqueRituolNumber);
         }
-
-        /*addToList(possibleCards, energyDrainTest, uniqueRituolNumber);
-        addToList(possibleCards, foxTest, uniqueCreaNumber);
-        addToList(possibleCards, blessingTest, uniqueRituolNumber);
-        addToList(possibleCards, curseTest, uniqueRituolNumber);
-        addToList(possibleCards, wolfTest, uniqueCreaNumber);
-        addToList(possibleCards, eagleTest, uniqueCreaNumber);
-        addToList(possibleCards, bearTest, uniqueCreaNumber);
-        addToList(possibleCards, vaultTest, uniqueRituolNumber);*/
 
         randomGenerator = new Random();
         int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 4 + uniqueRituolNumber * 4);

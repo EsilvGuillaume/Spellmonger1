@@ -83,12 +83,6 @@ public class SpellmongerApp {
         if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
             nextCard.draw(currentPlayer);
-            /*if (nextCard instanceof Rituol || nextCard instanceof Enchantment) {
-                if (currentPlayer.equals(getPlayer1()))
-                    getDiscard1().add(nextCard);
-                else
-                    getDiscard2().add(nextCard);
-            }*/
         }
 
         displayCardInHand(currentPlayer);
@@ -120,7 +114,7 @@ public class SpellmongerApp {
         System.out.println(player.getName() + "'s cards in hand :");
         int i = 1;
         for (Card card : player.getHand()) {
-            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ") hash = "+card.getIdCode());
+            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")"); // hash = "+card.getIdCode());
             i++;
         }
     }
