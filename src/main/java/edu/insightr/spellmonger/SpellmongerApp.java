@@ -31,6 +31,7 @@ public class SpellmongerApp {
 
         Controller ctrl = new Controller();
         ctrl.main(args);
+
     }
 
     public void drawFirstTwoCards() {

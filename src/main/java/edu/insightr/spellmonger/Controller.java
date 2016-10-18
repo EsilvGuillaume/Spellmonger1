@@ -44,17 +44,12 @@ public class Controller extends Application {
             scene.getStylesheets().add(getClass().getResource("/design").toExternalForm());
             primaryStage.setScene(scene);
         } catch (IOException ex) {
-            System.err.println("Loarding error: " + ex);
+            System.err.println("Loading error: " + ex);
         }
         primaryStage.setTitle("Card Game");
         primaryStage.show();
-    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @FXML
+    }@FXML
     private Label namePlayer1;
 
     @FXML
@@ -78,9 +73,26 @@ public class Controller extends Application {
     @FXML
     private Label manaPlayer2;
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
     @FXML
 
     private void draw(ActionEvent event) {
+
+        if(event.getSource()==draw1Button)
+        {
+        app.setCurrentPlayer(app.getPlayer1());
+            app.setOpponent(app.getPlayer2());
+        }
+        else
+        {
+        app.setCurrentPlayer(app.getPlayer2());
+            app.setOpponent(app.getPlayer1());
+        }
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         app.drawACard(app.getCurrentPlayer(), app.getOpponent());
@@ -91,7 +103,8 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-        } else {
+        } else if (app.getCurrentPlayer().equals(app.getPlayer2()))
+        {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
         }
@@ -123,7 +136,7 @@ public class Controller extends Application {
         }
     }
 
-    private void displayInitialPlayers() {
+    public void displayInitialPlayers() {
         namePlayer1.setText(app.getPlayer1().getName());
         namePlayer2.setText(app.getPlayer2().getName());
     }
