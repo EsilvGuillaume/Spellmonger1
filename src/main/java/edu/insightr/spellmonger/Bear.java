@@ -9,7 +9,7 @@ public class Bear extends Creature {
     //private String owner;
 
     public Bear(String name, String owner) {
-        super(name + " [Bear]", owner);
+        super(name, owner);
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);
@@ -17,7 +17,7 @@ public class Bear extends Creature {
     }
 
     public Bear(String name) {
-        super(name + " [Bear]", "");
+        super(name, "");
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);

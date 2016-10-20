@@ -54,7 +54,7 @@ public class Deck {
         for (int i = 0; i < uniqueRituolNumber; i++){
             Curse curse = new Curse("curse", playerName);
             Blessing blessing = new Blessing("blessing", playerName);
-            EnergyDrain energyDrain = new EnergyDrain("energyDrain", playerName);
+            EnergyDrain energyDrain = new EnergyDrain("energy drain", playerName);
             VaultOverclocking vault = new VaultOverclocking("vault overclocking", playerName);
 
             addToList(possibleCards, energyDrain, uniqueRituolNumber);

@@ -14,82 +14,40 @@
             fx:controller="edu.insightr.spellmonger.Controller">
 
     <children>
+
         <Rectangle styleClass="player-box" fx:id="player1" x="10" y="10" width="180" height="170"/>
         <Rectangle styleClass="player-box" fx:id="player2" x="10" y="470" width="180" height="170"/>
-        <Rectangle fx:id="hand1" x="210" y="26" width="105" height="150" fill="white"  stroke="black"/>
-        <Text layoutX="235" layoutY="21" id="hand1Name" text="Hand 1"></Text>
-        <Rectangle fx:id="hand2" x="210" y="480" width="105" height="150" fill="white"  stroke="black"/>
-        <Text layoutX="235" layoutY="645" id="hand2Name" text="Hand 2"></Text>
 
-        <Label styleClass="player-name" layoutX="30" layoutY="55" id="player1Name" fx:id="namePlayer1" text="Player 1"></Label>
-        <Label styleClass="player-hp" layoutX="30" layoutY="80" id="hpPlayer1" fx:id="hpPlayer1" text="20"></Label>
-        <Label styleClass="player-energy" layoutX="30" layoutY="105" id="manaPlayer1" fx:id="manaPlayer1" text="0"></Label>
+        <Rectangle styleClass="hand-player" fx:id="hand1" x="210" y="26" width="105" height="150"/>
+        <Text layoutX="235" layoutY="21" id="hand1Name" text="Hand 1"></Text>
+        <Rectangle styleClass="hand-player" fx:id="hand2" x="210" y="480" width="105" height="150"/>
+        <Text layoutX="235" layoutY="645" id="hand2Name" text="Hand 2"></Text>
 
         <Rectangle styleClass="discard-box" fx:id="discard1" x="600" y="26" width="105" height="150" fill="gray"  stroke="black"/>
         <Text layoutX="620" layoutY="21" id="discard1Name" text="Discard 1"></Text>
         <Rectangle styleClass="discard-box" fx:id="discard2" x="600" y="480" width="105" height="150" fill="gray"  stroke="black"/>
         <Text layoutX="620" layoutY="645" id="discard1Name" text="Discard 2"></Text>
 
+        <Label styleClass="player-name" layoutX="30" layoutY="55" id="player1Name" fx:id="namePlayer1" text="Player 1"></Label>
+        <Label styleClass="player-hp" layoutX="30" layoutY="80" id="hpPlayer1" fx:id="hpPlayer1" text="20"></Label>
+        <Label styleClass="player-energy" layoutX="30" layoutY="105" id="manaPlayer1" fx:id="manaPlayer1" text="1"></Label>
+
         <Label styleClass="player-name" layoutX="30" layoutY="520" id="player2Name" fx:id="namePlayer2" text="Player 2"/>
         <Label styleClass="player-hp" layoutX="30" layoutY="545" id="hpPlayer2" fx:id="hpPlayer2" text="20"/>
-        <Label styleClass="player-energy" layoutX="30" layoutY="570" id="manaPlayer2" fx:id="manaPlayer2" text="0"/>
+        <Label styleClass="player-energy" layoutX="30" layoutY="570" id="manaPlayer2" fx:id="manaPlayer2" text="1"/>
 
-        <Button styleClass="draw-button" layoutX="480" prefWidth="100" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>
-        <Button styleClass="draw-button" layoutX="480" prefWidth="100" layoutY="510" mnemonicParsing="false" onAction="#draw" fx:id="draw2Button" text="Draw"/>
+        <Label styleClass="game-msg" layoutX="750" layoutY="500" id="player2Name" fx:id="gameMsg" text="Play !"/>
 
-        <ScrollPane id="board1" layoutY="183" layoutX="10"> <!--fitToHeight="true" fitToWidth="true">-->
-            <content>
-                <GridPane
-                        hgap="15"
-                        vgap="15"
-                        alignment="CENTER"
-                        prefHeight="140"
-                        prefWidth="1025">
+        <Button styleClass="draw-button" layoutX="480" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>
+        <Button styleClass="draw-button" layoutX="480" layoutY="510" mnemonicParsing="false" onAction="#draw" fx:id="draw2Button" text="Draw"/>
 
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="10.0" prefWidth="10"/>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="10.0" prefWidth="10"/>
-                    </columnConstraints>
+        <HBox fx:id="boardP1"/>
+        <HBox fx:id="boardP2"/>
 
-
-                </GridPane>
-            </content>
-
-        </ScrollPane>
-        <Rectangle fx:id="wolf1bis1" x="260" y="200" width="90" height="110" fill="white"  stroke="black"/>
-        <Rectangle fx:id="wolf1bis2" x="360" y="200" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="wolf1bis3" x="460" y="200" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="none1bis1" x="560" y="200" width="90" height="110" fill="gray" stroke="black"/>
-        <Rectangle fx:id="none1bis2" x="660" y="200" width="90" height="110" fill="gray" stroke="black"/>
-        <Text layoutX="290" layoutY="260" id="wolf1bis11" text="Wolf"/>
-        <Text layoutX="390" layoutY="260" id="wolf1bis12" text="Wolf"/>
-        <Text layoutX="490" layoutY="260" id="wolf1bis13" text="Wolf"/>
-
-        <ScrollPane id="board2" layoutY="323" layoutX="10">
-            <content>
-                <GridPane
-                        hgap="15"
-                        vgap="15"
-                        alignment="CENTER"
-                        prefHeight="140"
-                        prefWidth="1025">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="10.0" prefWidth="400"/>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100" minWidth="10.0" prefWidth="400"/>
-                    </columnConstraints>
-                </GridPane>
-            </content>
-        </ScrollPane>
-        <Rectangle fx:id="wolf2bis1" x="260" y="340" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="wolf2bis2" x="360" y="340" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="wolf2bis3" x="460" y="340" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="none2bis1" x="560" y="340" width="90" height="110" fill="white" stroke="black"/>
-        <Rectangle fx:id="none2bis2" x="660" y="340" width="90" height="110" fill="white" stroke="black"/>
-        <Text layoutX="290" layoutY="400" id="bearbis21" text="Bear"/>
-        <Text layoutX="390" layoutY="400" id="eaglebis21" text="Eagle"/>
-        <Text layoutX="490" layoutY="400" id="eaglebis22" text="Eagle"/>
-        <Text layoutX="590" layoutY="400" id="wolfbis21" text="Wolf"/>
-        <Text layoutX="690" layoutY="400" id="bearbis22" text="Bear"/>
+        <ScrollPane styleClass="board" fx:id="board1" layoutY="183" layoutX="10"/>
+        <GridPane fx:id="boardG1"/>
+        <ScrollPane styleClass="board" fx:id="board2" layoutY="323" layoutX="10"/>
+        <GridPane fx:id="boardG2"/>
 
     </children>
 

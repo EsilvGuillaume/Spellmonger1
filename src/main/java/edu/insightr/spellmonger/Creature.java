@@ -13,12 +13,14 @@ public abstract class Creature extends Card {
     private int hp;
     private int attack;
     private boolean alive;
+    private boolean putOnBoard;
 
     protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
     private static ArrayList<Creature> temp;
 
     private void killCreature() {
         allCreatures.remove(this);
+        app.getAllCreaOnBoard().remove(this);
         if (this.getOwner() == app.getCurrentPlayer().getName()) {
             app.getCurrentPlayer().getDiscard().add(this);
         } else if (this.getOwner() == app.getOpponent().getName()) {
@@ -32,6 +34,7 @@ public abstract class Creature extends Card {
         this.setAttack(hp);
         this.setAlive(true);
         allCreatures.add(this);
+        this.setPutOnBoard(false);
     }
 
     public Creature(String name, String owner) {
@@ -40,6 +43,7 @@ public abstract class Creature extends Card {
         this.setAttack(0);
         this.setAlive(true);
         allCreatures.add(this);
+        this.setPutOnBoard(false);
     }
 
     @Override
@@ -200,4 +204,11 @@ public abstract class Creature extends Card {
         this.alive = alive;
     }
 
+    public boolean isPutOnBoard() {
+        return putOnBoard;
+    }
+
+    public void setPutOnBoard(boolean putOnBoard) {
+        this.putOnBoard = putOnBoard;
+    }
 }

@@ -3,20 +3,25 @@ package edu.insightr.spellmonger;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 
@@ -38,55 +43,61 @@ public class Controller extends Application {
             System.err.println("Loading error: " + ex);
         }
         primaryStage.setTitle("Card Game");
+        primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
         primaryStage.show();
-
-    }@FXML
-    private Label namePlayer1;
+    }
 
     @FXML
-    private Label namePlayer2;
+    private Label namePlayer1, namePlayer2;
 
     @FXML
-    private Button draw1Button;
+    private Button draw1Button, draw2Button;
 
     @FXML
-    private Button draw2Button;
+    private Label hpPlayer1, hpPlayer2, manaPlayer1, manaPlayer2;
 
     @FXML
-    private Label hpPlayer1;
+    private Rectangle hand1, hand2;
 
-    @FXML
-    private Label hpPlayer2;
+    @FXML private Label gameMsg;
 
-    @FXML
-    private Label manaPlayer1;
+    @FXML private ScrollPane board1, board2;
 
-    @FXML
-    private Label manaPlayer2;
+    @FXML private HBox boardP1, boardP2;
 
+    @FXML private GridPane boardG1, boardG2;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    private void refreshBoard(ArrayList<String[]> cardNames)
+    {
+        displayBoard(cardNames);
+    }
 
     @FXML
-
     private void draw(ActionEvent event) {
-
-        if(event.getSource()==draw1Button)
-        {
-        app.setCurrentPlayer(app.getPlayer1());
+        resfreshIGMsg();
+        if (event.getSource() == draw1Button) {
+            app.setCurrentPlayer(app.getPlayer1());
             app.setOpponent(app.getPlayer2());
-        }
-        else
-        {
-        app.setCurrentPlayer(app.getPlayer2());
+        } else {
+            app.setCurrentPlayer(app.getPlayer2());
             app.setOpponent(app.getPlayer1());
         }
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         app.drawACard(app.getCurrentPlayer(), app.getOpponent());
+        resfreshIGMsg();
+
+        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+        resfreshIGMsg();
+
+        ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
+        refreshBoard(creaNames);
+
         app.endOfTurn(app.getCurrentPlayer(), app.getOpponent());
         app.setTmpPlayer(app.getCurrentPlayer());
         app.setCurrentPlayer(app.getOpponent());
@@ -94,28 +105,151 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-        } else if (app.getCurrentPlayer().equals(app.getPlayer2()))
-        {
+        } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
         }
         checkIfWinner();
-        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
     }
 
-    private void refreshPlayerInfo(Player currPlayer, Player oppo){
-        if (currPlayer == app.getPlayer1()){
-            hpPlayer1.setText("Hp : "+Integer.toString(currPlayer.getHp()));
-            manaPlayer1.setText("Energy : "+Integer.toString(currPlayer.getEnergy()));
-            hpPlayer2.setText("Hp : "+Integer.toString(oppo.getHp()));
-            manaPlayer2.setText("Energy : "+Integer.toString(oppo.getEnergy()));
+    void resfreshIGMsg(){
+        gameMsg.setText(app.getIgMsg());
+    }
+
+    private void refreshPlayerInfo(Player currPlayer, Player oppo) {
+        if (currPlayer == app.getPlayer1()) {
+            hpPlayer1.setText("Hp : " + Integer.toString(currPlayer.getHp()));
+            manaPlayer1.setText("Energy : " + Integer.toString(currPlayer.getEnergy()));
+            hpPlayer2.setText("Hp : " + Integer.toString(oppo.getHp()));
+            manaPlayer2.setText("Energy : " + Integer.toString(oppo.getEnergy()));
+        } else {
+            hpPlayer2.setText("Hp : " + Integer.toString(currPlayer.getHp()));
+            manaPlayer2.setText("Energy : " + Integer.toString(currPlayer.getEnergy()));
+            hpPlayer1.setText("Hp : " + Integer.toString(oppo.getHp()));
+            manaPlayer1.setText("Energy : " + Integer.toString(oppo.getEnergy()));
         }
-        else{
-            hpPlayer2.setText("Hp : "+Integer.toString(currPlayer.getHp()));
-            manaPlayer2.setText("Energy : "+Integer.toString(currPlayer.getEnergy()));
-            hpPlayer1.setText("Hp : "+Integer.toString(oppo.getHp()));
-            manaPlayer1.setText("Energy : "+Integer.toString(oppo.getEnergy()));
+    }
+
+    public void displayBoard(ArrayList<String[]> cardNames) {
+
+        board1.setContent(null);
+        board2.setContent(null);
+        boardP1=new HBox();
+        boardP2=new HBox();
+
+        int imageCol = 0;
+        Image[] images=new Image[cardNames.size()];
+        ImageView[]pics=new ImageView[cardNames.size()];
+
+        for (int i = 0; i < cardNames.size(); i++) {
+
+            images[i] = new Image(getClass().getResourceAsStream("/img/"+cardNames.get(i)[0]));
+            pics[i] = new ImageView(images[i]);
+
+            if (app.getCurrentPlayer().equals(app.getPlayer1())){
+                if (app.getCurrentPlayer().getName().equals(cardNames.get(i)[1])) {
+                    displayB1(pics[i], images[i], imageCol);
+                }else{
+                    displayB2(pics[i], images[i], imageCol);
+                }
+            }
+            else if(app.getCurrentPlayer().equals(app.getPlayer2())){
+                if (app.getCurrentPlayer().getName().equals(cardNames.get(i)[1])) {
+                    displayB2(pics[i], images[i], imageCol);
+                }else{
+                    displayB1(pics[i], images[i], imageCol);
+                }
+            }
         }
+    }
+
+    private void displayB1(ImageView pic, Image img, int j){
+
+        board1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        board1.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        boardG1.setAlignment(Pos.CENTER);
+        boardG1.setPadding(new Insets(5, 5, 5, 5));
+        boardG1.setHgap(20);
+        boardP1.setPadding(new Insets(14, 2, 2, 14));
+        boardP1.setSpacing(14);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setFillWidth(true);
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        boardG1.getColumnConstraints().add(columnConstraints);
+
+        pic.setFitWidth(110);
+        pic.setFitHeight(130);
+        pic.setImage(img);
+
+        boardG1.add(pic, j, 0);
+        boardP1.getChildren().add(pic);
+
+        /*System.out.println("BOARD1 ScrollPane GET CONTENT :"+board1.getContent());
+        System.out.println("BOARDG1 GridPane GET CHILDREND :"+boardG1.getChildren());
+        System.out.println("BOARDP1 HBox GET CHILDREND :"+boardP1.getChildren());*/
+
+        GridPane.setMargin(pic, new Insets(2,2,2,2));
+        board1.setContent(boardP1);
+    }
+
+    private void displayB2(ImageView pic, Image img, int j){
+
+        board2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        board2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        boardG2.setAlignment(Pos.CENTER);
+        boardG2.setPadding(new Insets(5, 5, 5, 5));
+        boardG2.setHgap(20);
+        boardP2.setPadding(new Insets(14, 2, 2, 14));
+        boardP2.setSpacing(14);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setFillWidth(true);
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        boardG2.getColumnConstraints().add(columnConstraints);
+
+        pic.setFitWidth(110);
+        pic.setFitHeight(130);
+        pic.setImage(img);
+
+        boardG2.add(pic, j, 0);
+        boardP2.getChildren().add(pic);
+
+        /*System.out.println("BOARD2 ScrollPane GET CONTENT :"+board2.getContent());
+        System.out.println("BOARDG2 GridPane GET CHILDREND :"+boardG2.getChildren());
+        System.out.println("BOARDP2 HBox GET CHILDREND :"+boardP2.getChildren());*/
+
+        GridPane.setMargin(pic, new Insets(2,2,2,2));
+        board2.setContent(boardP2);
+    }
+
+    private void displayB02(ImageView pic, Image img, int j){
+        GridPane gridpane = new GridPane();
+        board2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        board2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        gridpane.setAlignment(Pos.CENTER);
+        gridpane.setPadding(new Insets(5, 5, 5, 5));
+        gridpane.setHgap(20);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setFillWidth(true);
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        gridpane.getColumnConstraints().add(columnConstraints);
+
+        board2.setContent(gridpane);
+
+        pic.setFitWidth(110);
+        pic.setFitHeight(120);
+
+        pic.setImage(img);
+        VBox vb = new VBox();
+        vb.getChildren().addAll(pic);
+
+        gridpane.add(vb, j, 0);
+        GridPane.setMargin(pic, new Insets(2,2,2,2));
     }
 
     private void checkIfWinner() {
@@ -130,11 +264,6 @@ public class Controller extends Application {
     private void displayInitialPlayers() {
         namePlayer1.setText(app.getPlayer1().getName());
         namePlayer2.setText(app.getPlayer2().getName());
-    }
-
-    @FXML
-    private void draw2(ActionEvent event) {
-
     }
 
 }

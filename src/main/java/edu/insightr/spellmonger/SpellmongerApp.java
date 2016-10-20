@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -9,6 +11,7 @@ public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
     static SpellmongerApp app = new SpellmongerApp();
+    private static String igMsg = "Play !";
     private Player player1;
     private Player player2;
     private boolean onePlayerDead = false;
@@ -32,6 +35,14 @@ public class SpellmongerApp {
         Controller ctrl = new Controller();
         ctrl.main(args);
 
+    }
+
+    public static String getIgMsg() {
+        return igMsg;
+    }
+
+    public static void setIgMsg(String igMsg) {
+        SpellmongerApp.igMsg = igMsg;
     }
 
     public void drawFirstTwoCards() {
@@ -65,6 +76,8 @@ public class SpellmongerApp {
     }
 
     public void drawACard(Player currentPlayer, Player opponent) {
+
+        igMsg = "";
 
         verifyVaultOverclock(currentPlayer);
 
@@ -127,7 +140,7 @@ public class SpellmongerApp {
             System.out.println("What card do you play ? If none, enter 0");
             cardToPlayNumber = reader.nextInt();
             if (cardToPlayNumber == 0) {
-                //System.out.println("No card played");
+                setIgMsg(currentPlayer.getName() + " doesn't play any card.");
                 break;
             } else if (cardToPlayNumber > 0 && cardToPlayNumber - 1 < currentPlayer.getHand().size()) {
                 cardToPlay = currentPlayer.getHand().get(cardToPlayNumber - 1);
@@ -144,6 +157,7 @@ public class SpellmongerApp {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
                 //put on board?
+                ((Creature) card).setPutOnBoard(true);
                 //((Creature) card).attack(opponent); //creature will attack only once at the end of turn
             } else if (card instanceof Rituol) {
                 if (card instanceof EnergyDrain) {
@@ -162,8 +176,9 @@ public class SpellmongerApp {
             currentPlayer.getHand().remove(card);
             currentPlayer.getDiscard().add(card);
             return true;
-        } else { 
+        } else {
             System.out.println(card.getName() + " cost is too high to be played !");
+            //setIgMsg(card.getName()+"'s cost is too high to be played !");
             return false;
         }
     }
@@ -173,11 +188,52 @@ public class SpellmongerApp {
             int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
             if (randNumber > 35) {
                 currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+                setIgMsg(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
             } else {
                 currentPlayer.setVaultOverclocking(false);
                 System.out.println(currentPlayer.getName() + " loses his overclock of energy");
+                setIgMsg(currentPlayer.getName() + " loses his overclock of energy");
             }
         }
+    }
+
+    ArrayList<String[]> getNamesFromCreaList(List<Creature> creaOnBoard) {
+
+        ArrayList<String[]> creaNamesAndOwner = new ArrayList<String[]>();
+        String cardName = "";
+
+        for (int i = 0; i < creaOnBoard.size(); i++) {
+            if (creaOnBoard.get(i).isPutOnBoard() && creaOnBoard.get(i).isAlive()) {
+                if (creaOnBoard.get(i).getName() == "bear") {
+                    cardName = ("bear-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "eagle") {
+                    cardName = ("eagle-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "wolf") {
+                    cardName = ("wolf-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "fox") {
+                    cardName = ("fox-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "curse") {
+                    cardName = ("curse-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "blessing") {
+                    cardName = ("blessing-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "energy drain") {
+                    cardName = ("energy-drain-card.jpg");
+                }
+                if (creaOnBoard.get(i).getName() == "vault overclocking") {
+                    cardName = ("overclock-card.jpg");
+                }
+                //creaOnBoard.get(i).setPutOnBoard(true); // call elsewhere..?
+                String[] strToAdd = {cardName, creaOnBoard.get(i).getOwner()};
+                creaNamesAndOwner.add(strToAdd);
+            }
+        }
+        return creaNamesAndOwner;
     }
 
     public Player getPlayer1() {
@@ -267,4 +323,5 @@ public class SpellmongerApp {
     public void setAllCreaOnBoard(List<Creature> allCreaOnBoard) {
         this.allCreaOnBoard = allCreaOnBoard;
     }
+
 }

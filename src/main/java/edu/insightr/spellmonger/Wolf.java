@@ -4,7 +4,7 @@ package edu.insightr.spellmonger;
 public class Wolf extends Creature {
 
     public Wolf(String name) {
-        super(name + " [Wolf]", "");
+        super(name, "");
         this.setHp(2);
         this.setAttack(2);
         this.setAlive(true);
@@ -12,7 +12,7 @@ public class Wolf extends Creature {
     }
 
     public Wolf(String name, String owner) {
-        super(name + " [Wolf]", owner);
+        super(name, owner);
         this.setHp(2);
         this.setAttack(2);
         this.setAlive(true);
