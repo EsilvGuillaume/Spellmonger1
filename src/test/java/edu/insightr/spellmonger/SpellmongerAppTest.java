@@ -1,8 +1,10 @@
 package edu.insightr.spellmonger;
 
+import gherkin.lexer.Pl;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static edu.insightr.spellmonger.SpellmongerApp.app;
 import static org.junit.Assert.*;
 
 /**
@@ -39,13 +41,16 @@ public class SpellmongerAppTest {
 
     @Test
     public void playCard() throws Exception {
+        SpellmongerApp app = new SpellmongerApp();
         Player p = new Player("p1");
         Player p2 = new Player("p2");
-
-        Bear b = new Bear("name", "p1");
-        Assert.assertTrue(!SpellmongerApp.playCard(b, p, p2));
-
-
+        app.setCurrentPlayer(p);
+        app.setOpponent(p2);
+        app.drawFirstTwoCards();
+        Card tmpCard = p.getHand().get(0);
+        p.setEnergy(10);
+        app.playCard(p.getHand().get(0), p, p2);
+        Assert.assertTrue(!p.getHand().contains(tmpCard));
 
     }
 

@@ -26,6 +26,7 @@ public abstract class Creature extends Card {
         } else if (this.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(this);
         }
+        SpellmongerApp.setIgMsg(this.getName()+" was killed !");
     }
 
     public Creature(String name, String owner, int hp) {

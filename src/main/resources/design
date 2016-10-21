@@ -2,20 +2,32 @@
     -fx-background-color: #fcc280;
 }
 
-.hand-player{
-    -fx-fill: #fcc280;
-    -fx-stroke : black;
+.hand{
+    -fx-pref-width: 260;
+    -fx-pref-height: 163;
+    -fx-background: #fcc280;
+    -fx-border-color: black;
+    -fx-border-width : 2;
+}
+
+.pass-button{
+  -fx-font-size: 14pt;
+  -fx-background-radius: 50em;
+  -fx-min-width: 170px;
+  -fx-max-width: 170px;
+  -fx-min-height: 40px;
+  -fx-background-color: #f25843;
+  -fx-padding: 0px;
+  -fx-text-fill : white;
 }
 
 .draw-button {
-
   -fx-font-size: 14pt;
   -fx-background-radius: 50em;
   -fx-min-width: 100px;
   -fx-max-width: 100px;
   -fx-min-height: 40px;
   -fx-background-color: #f25843;
-
   -fx-padding: 0px;
 
   -fx-text-fill : white;
@@ -26,12 +38,12 @@
       -fx-background-position:left;
 }
 
-.draw-button:hover{
+.draw-button:hover, .pass-button:hover{
 -fx-font-weight: bold;
   -fx-background-color: #d81c1c;
 }
 
-.draw-button:pressed{
+.draw-button:pressed, .draw-button:pressed{
   -fx-background-color: #d8511c;
 }
 
