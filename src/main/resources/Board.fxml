@@ -42,6 +42,9 @@
 
         <ScrollPane styleClass="board" fx:id="board1" layoutY="183" layoutX="10"/>
         <GridPane fx:id="boardG1"/>
+        <Label styleClass="game-msg" layoutX="870" layoutY="70" id="progresstext" fx:id="progresstext" text="Timelapse to play turn: "/>
+        <ProgressBar fx:id="TimeToPlay" progress="0" prefWidth="200" layoutX="830" layoutY="85" />
+
         <ScrollPane styleClass="board" fx:id="board2" layoutY="323" layoutX="10"/>
         <GridPane fx:id="boardG2"/>
 

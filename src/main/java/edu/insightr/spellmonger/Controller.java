@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -81,6 +82,8 @@ public class Controller extends Application {
     private HBox boardP1, boardP2;
 
     @FXML
+    private ProgressBar TimeToPlay;
+    @FXML
     private GridPane boardG1, boardG2;
 
     public static void main(String[] args) {
@@ -127,6 +130,7 @@ public class Controller extends Application {
             refreshHand(app.getCurrentPlayer());
             resfreshIGMsg();
         }
+
     }
 
     @FXML
@@ -154,6 +158,8 @@ public class Controller extends Application {
         resfreshIGMsg();
         app.checkIfWinner();
     }
+
+
 
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
             if (card.getCost() <= currentPlayer.getEnergy()) {
@@ -209,10 +215,12 @@ public class Controller extends Application {
     private void refreshHand(Player currPlayer) {
 
         ArrayList<String> handCards = app.getNamesFromCardList(app.getCurrentPlayer().getHand());
-
+        ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
         int j = 0;
         Image[] images = new Image[handCards.size()];
         ImageView[] pics = new ImageView[handCards.size()];
+        Image[] imagesbis = new Image[handCardsbis.size()];
+        ImageView[] picsbis = new ImageView[handCardsbis.size()];
 
         if (currPlayer.equals(app.getPlayer1())) {
 
@@ -252,6 +260,7 @@ public class Controller extends Application {
 
                 GridPane.setMargin(pics[i], new Insets(2, 2, 2, 2));
                 hand1.setContent(handP1);
+
 
             }
 
