@@ -3,7 +3,7 @@
 }
 
 .hand{
-    -fx-pref-width: 260;
+    -fx-pref-width: 360;
     -fx-pref-height: 163;
     -fx-background: #fcc280;
     -fx-border-color: black;

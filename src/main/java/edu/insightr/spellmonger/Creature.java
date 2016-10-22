@@ -27,7 +27,7 @@ public abstract class Creature extends Card {
         } else if (this.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(this);
         }
-        app.setIgMsg(app.getIgMsg()+"\n"+this.getName()+" of "+this.getOwner()+" was killed by "+creatures.getName()+" of "+creatures.getOwner());
+        app.setIgMsg(app.getIgMsg()+"\n"+this.getName()+" of "+this.getOwner()+",\nwas killed by "+creatures.getName()+" of "+creatures.getOwner());
     }
 
     public Creature(String name, String owner, int hp) {

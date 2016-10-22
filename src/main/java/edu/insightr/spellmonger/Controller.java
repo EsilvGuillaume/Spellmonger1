@@ -156,7 +156,6 @@ public class Controller extends Application {
     }
 
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
-        if(checkcardhand(card, currentPlayer)) {
             if (card.getCost() <= currentPlayer.getEnergy()) {
                 setIgMsg ("");
                 app.playCard(card, currentPlayer, opponent);
@@ -166,14 +165,8 @@ public class Controller extends Application {
                 refreshHand(currentPlayer);
                 turnEnded();
             }
-        }
-            else if (checkcardhand(card,currentPlayer))
-            {
-                app.setIgMsg("It's not your card");
-                resfreshIGMsg();
-            }
             else {
-                app.setIgMsg("You have not enough energy, choose an other card");
+                app.setIgMsg("You have not enough energy,\n choose an other card");
                 resfreshIGMsg();
             }
         }
