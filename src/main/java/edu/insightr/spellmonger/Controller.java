@@ -29,6 +29,8 @@ import javafx.event.ActionEvent;
 
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
+import static java.lang.Thread.currentThread;
+import static java.lang.Thread.sleep;
 
 public class Controller extends Application {
 
@@ -95,9 +97,13 @@ public class Controller extends Application {
         if (event.getSource() == draw1Button) {
             app.setCurrentPlayer(app.getPlayer1());
             app.setOpponent(app.getPlayer2());
+            hand2.setDisable(true);
+            hand1.setDisable(false);
         } else {
             app.setCurrentPlayer(app.getPlayer2());
             app.setOpponent(app.getPlayer1());
+            hand1.setDisable(true);
+            hand2.setDisable(false);
         }
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
@@ -150,7 +156,7 @@ public class Controller extends Application {
     }
 
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
-        if (card.getOwner()==currentPlayer.getName()) {
+        if(checkcardhand(card, currentPlayer)) {
             if (card.getCost() <= currentPlayer.getEnergy()) {
                 app.playCard(card, currentPlayer, opponent);
                 ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
@@ -159,7 +165,8 @@ public class Controller extends Application {
                 refreshHand(currentPlayer);
                 turnEnded();
             }
-            else if (card.getOwner()!=currentPlayer.getName())
+        }
+            else if (checkcardhand(card,currentPlayer))
             {
                 app.setIgMsg("It's not your card");
                 resfreshIGMsg();
@@ -170,7 +177,8 @@ public class Controller extends Application {
             }
         }
 
-            }
+
+
 
     void removecardhand (Card card, Player currentPlayer)
     {
@@ -183,7 +191,18 @@ public class Controller extends Application {
             }
     }
 
+    boolean checkcardhand (Card card, Player currentPlayer)
+    {
+        for (int i=0;i<currentPlayer.getHand().size();i++)
+        {
+            if (card == currentPlayer.getHand().get(i)) {
 
+                return true;
+
+            }
+        }
+        return false;
+    }
 
     void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
