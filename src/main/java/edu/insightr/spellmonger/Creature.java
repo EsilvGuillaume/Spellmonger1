@@ -13,6 +13,7 @@ public abstract class Creature extends Card {
     private int hp;
     private int attack;
     private boolean alive;
+    private int played;
     private boolean putOnBoard;
 
     protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
@@ -43,6 +44,7 @@ public abstract class Creature extends Card {
         this.setHp(0);
         this.setAttack(0);
         this.setAlive(true);
+        this.setPlayed(0);
         allCreatures.add(this);
         this.setPutOnBoard(false);
     }
@@ -204,7 +206,13 @@ public abstract class Creature extends Card {
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+    public int getPlayed() {
+        return played;
+    }
 
+    public void setPlayed(int play) {
+        this.played = play;
+    }
     public boolean isPutOnBoard() {
         return putOnBoard;
     }

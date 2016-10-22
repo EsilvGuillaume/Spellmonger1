@@ -190,6 +190,7 @@ public class SpellmongerApp {
      boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
+                ((Creature) card).setPlayed(1);
                 //put on board?
                 ((Creature) card).setPutOnBoard(true);
                 //((Creature) card).attack(opponent); //creature will attack only once at the end of turn

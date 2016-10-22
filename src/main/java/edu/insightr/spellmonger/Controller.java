@@ -28,6 +28,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 
 import static edu.insightr.spellmonger.SpellmongerApp.app;
+import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
 
 public class Controller extends Application {
 
@@ -125,11 +126,13 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
+            setIgMsg("End of turn "+ app.getOpponent().getName());
         } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
+            setIgMsg("End of turn "+ app.getOpponent().getName());
         }
-        app.setIgMsg(app.getCurrentPlayer().getName()+" to draw");
+        app.setIgMsg(app.getIgMsg()+"\n" +app.getCurrentPlayer().getName()+" to draw");
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         resfreshIGMsg();
         app.checkIfWinner();
@@ -140,10 +143,21 @@ public class Controller extends Application {
             app.playCard(card, currentPlayer, opponent);
             ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
             refreshBoard(creaNames);
+            removecardhand(card, currentPlayer);
+            refreshHand(currentPlayer);
             turnEnded();
         }
     }
-
+    void removecardhand (Card card, Player currentPlayer)
+    {
+            for (int i=0;i<currentPlayer.getHand().size();i++)
+            {
+                if (card == currentPlayer.getHand().get(i))
+                {
+                    currentPlayer.getHand().remove(i);
+                }
+            }
+    }
     void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
     }
