@@ -101,15 +101,26 @@ public class Controller extends Application {
         }
         displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+        if (app.getCurrentPlayer().getHand().size()<5) {
+            app.drawACard(app.getCurrentPlayer(), app.getOpponent());
 
-        app.drawACard(app.getCurrentPlayer(), app.getOpponent());
+            draw1Button.setDisable(true);
+            draw2Button.setDisable(true);
 
-        draw1Button.setDisable(true);
-        draw2Button.setDisable(true);
+            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+            refreshHand(app.getCurrentPlayer());
+            resfreshIGMsg();
+        }
+        else
+        {
+            setIgMsg("You have already five cards, play one card if you want");
+            draw1Button.setDisable(true);
+            draw2Button.setDisable(true);
 
-        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-        refreshHand(app.getCurrentPlayer());
-        resfreshIGMsg();
+            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+            refreshHand(app.getCurrentPlayer());
+            resfreshIGMsg();
+        }
     }
 
     @FXML
@@ -139,15 +150,28 @@ public class Controller extends Application {
     }
 
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
-        if(card.getCost() <= currentPlayer.getEnergy()) {
-            app.playCard(card, currentPlayer, opponent);
-            ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
-            refreshBoard(creaNames);
-            removecardhand(card, currentPlayer);
-            refreshHand(currentPlayer);
-            turnEnded();
+        if (card.getOwner()==currentPlayer.getName()) {
+            if (card.getCost() <= currentPlayer.getEnergy()) {
+                app.playCard(card, currentPlayer, opponent);
+                ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
+                refreshBoard(creaNames);
+                removecardhand(card, currentPlayer);
+                refreshHand(currentPlayer);
+                turnEnded();
+            }
+            else if (card.getOwner()!=currentPlayer.getName())
+            {
+                app.setIgMsg("It's not your card");
+                resfreshIGMsg();
+            }
+            else {
+                app.setIgMsg("You have not enough energy, choose an other card");
+                resfreshIGMsg();
+            }
         }
-    }
+
+            }
+
     void removecardhand (Card card, Player currentPlayer)
     {
             for (int i=0;i<currentPlayer.getHand().size();i++)
@@ -158,6 +182,9 @@ public class Controller extends Application {
                 }
             }
     }
+
+
+
     void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
     }
