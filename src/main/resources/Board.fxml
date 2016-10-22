@@ -31,7 +31,7 @@
         <Label styleClass="player-hp" layoutX="30" layoutY="545" id="hpPlayer2" fx:id="hpPlayer2" text="20"/>
         <Label styleClass="player-energy" layoutX="30" layoutY="570" id="manaPlayer2" fx:id="manaPlayer2" text="1"/>
 
-        <Label styleClass="game-msg" layoutX="750" layoutY="500" id="player2Name" fx:id="gameMsg" text="Play !"/>
+        <Label styleClass="game-msg" layoutX="750" layoutY="470" id="player2Name" fx:id="gameMsg" text="Play !"/>
         <Button styleClass="pass-button" text="Play no card" layoutX="750" layoutY="580" onAction="#playNoCard"/>
 
         <Button styleClass="draw-button" layoutX="480" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>

@@ -143,11 +143,11 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-            setIgMsg("End of turn "+ app.getOpponent().getName());
+            setIgMsg(app.getIgMsg()+"\nEnd of turn "+ app.getOpponent().getName());
         } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
-            setIgMsg("End of turn "+ app.getOpponent().getName());
+            setIgMsg(app.getIgMsg()+"\nEnd of turn "+ app.getOpponent().getName());
         }
         app.setIgMsg(app.getIgMsg()+"\n" +app.getCurrentPlayer().getName()+" to draw");
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
@@ -158,6 +158,7 @@ public class Controller extends Application {
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
         if(checkcardhand(card, currentPlayer)) {
             if (card.getCost() <= currentPlayer.getEnergy()) {
+                setIgMsg ("");
                 app.playCard(card, currentPlayer, opponent);
                 ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
                 refreshBoard(creaNames);
@@ -206,6 +207,10 @@ public class Controller extends Application {
 
     void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
+    }
+    void resfreshIGMsgintoapp()
+    {
+        gameMsg.setText(SpellmongerApp.getIgMsg());
     }
 
     private void refreshHand(Player currPlayer) {

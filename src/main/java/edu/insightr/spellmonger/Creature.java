@@ -19,7 +19,7 @@ public abstract class Creature extends Card {
     protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
     private static ArrayList<Creature> temp;
 
-    private void killCreature() {
+    private void killCreature(Creature creatures) {
         allCreatures.remove(this);
         app.getAllCreaOnBoard().remove(this);
         if (this.getOwner() == app.getCurrentPlayer().getName()) {
@@ -27,7 +27,7 @@ public abstract class Creature extends Card {
         } else if (this.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(this);
         }
-        SpellmongerApp.setIgMsg(this.getName()+" was killed !");
+        app.setIgMsg(app.getIgMsg()+"\n"+this.getName()+" of "+this.getOwner()+" was killed by "+creatures.getName()+" of "+creatures.getOwner());
     }
 
     public Creature(String name, String owner, int hp) {
@@ -115,11 +115,11 @@ public abstract class Creature extends Card {
         this.setHp(this.getHp() - creature.getAttack());
         if (creature.getHp() <= 0) {
             creature.setAlive(false);
-            creature.killCreature();
+            creature.killCreature(this);
         }
         if (this.getHp() <= 0) {
             this.setAlive(false);
-            this.killCreature();
+            this.killCreature(creature);
         }
     }
 
