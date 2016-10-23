@@ -2,6 +2,13 @@
     -fx-background-color: #fcc280;
 }
 
+.card{
+ }
+
+ .currentCard{
+
+ }
+
 .hand{
     -fx-pref-width: 360;
     -fx-pref-height: 163;
@@ -57,7 +64,7 @@
 }
 
 .board{
-    -fx-pref-width :1025;
+    -fx-pref-width :800; /*1025*/
      -fx-pref-height : 140;
     -fx-background: #f4c292;
     -fx-border-color: #fc9d05;
@@ -69,6 +76,10 @@
 -fx-stroke : #fc9d05;
 -fx-stroke-width: 5;
 -fx-stroke-line-cap: butt;
+
+ -fx-min-width: 100px;
+ -fx-max-width: 100px;
+ -fx-min-height: 40px;
 }
 
 .player-name {

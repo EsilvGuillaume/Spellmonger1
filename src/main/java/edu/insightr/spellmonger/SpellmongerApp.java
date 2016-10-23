@@ -166,7 +166,7 @@ public class SpellmongerApp {
         }
     }
 
-    void askToPlay() {
+    /*void askToPlay() {
         Scanner reader = new Scanner(System.in);
         Card cardToPlay = null;
         int cardToPlayNumber = 0;
@@ -185,7 +185,7 @@ public class SpellmongerApp {
                 System.out.println("This card number is not valid.");
             }
         } while (cardToPlayNumber != 0 || cardToPlay != null); // == null if several cards can be played each turn
-    }
+    }*/
 
      boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
@@ -209,7 +209,9 @@ public class SpellmongerApp {
             }
             currentPlayer.setEnergy(currentPlayer.getEnergy() - card.getCost());
             currentPlayer.getHand().remove(card);
-            currentPlayer.getDiscard().add(card);
+            if (!(card instanceof Creature)) {
+                currentPlayer.getDiscard().add(card);
+            }
 
             cardPlayed();
 
@@ -235,39 +237,41 @@ public class SpellmongerApp {
         }
     }
 
+    String getCardImageName(Card card){
+        String cardName = "";
+        if (card.getName() == "bear") {
+            cardName = ("bear-card.jpg");
+        }
+        if (card.getName() == "eagle") {
+            cardName = ("eagle-card.jpg");
+        }
+        if (card.getName() == "wolf") {
+            cardName = ("wolf-card.jpg");
+        }
+        if (card.getName() == "fox") {
+            cardName = ("fox-card.jpg");
+        }
+        if (card.getName() == "curse") {
+            cardName = ("curse-card.jpg");
+        }
+        if (card.getName() == "blessing") {
+            cardName = ("blessing-card.jpg");
+        }
+        if (card.getName() == "energy drain") {
+            cardName = ("energy-drain-card.jpg");
+        }
+        if (card.getName() == "vault overclocking") {
+            cardName = ("overclock-card.jpg");
+        }
+        return cardName;
+    }
+
     ArrayList<String> getNamesFromCardList(List<Card> cardList) {
 
         ArrayList<String> cardNames = new ArrayList<String>();
-        String cardName = "";
 
         for (int i = 0; i < cardList.size(); i++) {
-            //if (cardList.get(i)==null) {
-            if (cardList.get(i).getName() == "bear") {
-                cardName = ("bear-card.jpg");
-            }
-            if (cardList.get(i).getName() == "eagle") {
-                cardName = ("eagle-card.jpg");
-            }
-            if (cardList.get(i).getName() == "wolf") {
-                cardName = ("wolf-card.jpg");
-            }
-            if (cardList.get(i).getName() == "fox") {
-                cardName = ("fox-card.jpg");
-            }
-            if (cardList.get(i).getName() == "curse") {
-                cardName = ("curse-card.jpg");
-            }
-            if (cardList.get(i).getName() == "blessing") {
-                cardName = ("blessing-card.jpg");
-            }
-            if (cardList.get(i).getName() == "energy drain") {
-                cardName = ("energy-drain-card.jpg");
-            }
-            if (cardList.get(i).getName() == "vault overclocking") {
-                cardName = ("overclock-card.jpg");
-            }
-            cardNames.add(cardName);
-            //}
+            cardNames.add(getCardImageName(cardList.get(i)));
         }
         return cardNames;
     }

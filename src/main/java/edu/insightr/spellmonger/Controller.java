@@ -1,7 +1,11 @@
 package edu.insightr.spellmonger;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -86,6 +90,8 @@ public class Controller extends Application {
     @FXML
     private GridPane boardG1, boardG2;
 
+    @FXML private ImageView currentCard, discard1, discard2;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -160,6 +166,48 @@ public class Controller extends Application {
     }
 
 
+    void refreshDiscard(){
+        if(app.getCurrentPlayer().getDiscard().size() > 0) {
+            Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
+            String nameOfImage = app.getCardImageName(lastDiscard);
+            Image image = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            ImageView pic = new ImageView();
+            if(app.getCurrentPlayer().equals(app.getPlayer1())){
+                discard1.setImage(image);
+                pic = discard1;
+            }
+           else{
+                discard2.setImage(image);
+                pic = discard2;
+            }
+            pic.hoverProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                    refreshCurrCard(image);
+                }
+            });
+        }
+        if(app.getOpponent().getDiscard().size() > 0) {
+            Card lastDiscard = (Card) app.getOpponent().getDiscard().get(app.getOpponent().getDiscard().size() - 1);
+            String nameOfImage = app.getCardImageName(lastDiscard);
+            Image image = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            ImageView pic = new ImageView();
+            if(app.getOpponent().equals(app.getPlayer1())){
+                discard1.setImage(image);
+                pic = discard1;
+            }
+            else{
+                discard2.setImage(image);
+                pic = discard2;
+            }
+            pic.hoverProperty().addListener(new ChangeListener() {
+                @Override
+                public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                    refreshCurrCard(image);
+                }
+            });
+        }
+    }
 
     void goPlayCard(Card card, Player currentPlayer, Player opponent){
             if (card.getCost() <= currentPlayer.getEnergy()) {
@@ -172,12 +220,11 @@ public class Controller extends Application {
                 turnEnded();
             }
             else {
-                app.setIgMsg("You have not enough energy,\n choose an other card");
+                app.setIgMsg("You have not enough energy,\n choose another card");
                 resfreshIGMsg();
             }
+            refreshDiscard();
         }
-
-
 
 
     void removecardhand (Card card, Player currentPlayer)
@@ -202,6 +249,11 @@ public class Controller extends Application {
             }
         }
         return false;
+    }
+
+    @FXML
+    public void refreshCurrCard(Image img) {
+        currentCard.setImage(img);
     }
 
     void resfreshIGMsg() {
@@ -233,6 +285,14 @@ public class Controller extends Application {
                 pics[i] = new ImageView(images[i]);
 
                 int index = i;
+
+                pics[i].hoverProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        refreshCurrCard(images[index]);
+                    }
+                });
+
                 pics[i].setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
                 );
@@ -275,6 +335,14 @@ public class Controller extends Application {
                 pics[i] = new ImageView(images[i]);
 
                 int index = i;
+
+                pics[i].hoverProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        refreshCurrCard(images[index]);
+                    }
+                });
+
                 pics[i].setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
                 );
@@ -374,12 +442,15 @@ public class Controller extends Application {
         pic.setFitHeight(130);
         pic.setImage(img);
 
+        pic.hoverProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                refreshCurrCard(img);
+            }
+        });
+
         boardG1.add(pic, j, 0);
         boardP1.getChildren().add(pic);
-
-        /*System.out.println("BOARD1 ScrollPane GET CONTENT :"+board1.getContent());
-        System.out.println("BOARDG1 GridPane GET CHILDREND :"+boardG1.getChildren());
-        System.out.println("BOARDP1 HBox GET CHILDREND :"+boardP1.getChildren());*/
 
         GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
         board1.setContent(boardP1);
@@ -405,12 +476,15 @@ public class Controller extends Application {
         pic.setFitHeight(130);
         pic.setImage(img);
 
+        pic.hoverProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                refreshCurrCard(img);
+            }
+        });
+
         boardG2.add(pic, j, 0);
         boardP2.getChildren().add(pic);
-
-        /*System.out.println("BOARD2 ScrollPane GET CONTENT :"+board2.getContent());
-        System.out.println("BOARDG2 GridPane GET CHILDREND :"+boardG2.getChildren());
-        System.out.println("BOARDP2 HBox GET CHILDREND :"+boardP2.getChildren());*/
 
         GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
         board2.setContent(boardP2);
