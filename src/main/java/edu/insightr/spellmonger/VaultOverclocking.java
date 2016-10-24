@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import javafx.scene.image.Image;
+
 public class VaultOverclocking extends Enchantment {
 
     private String effectDescription = "+1 energy each turn but 35% that the vault overburn and is empty";
@@ -7,10 +9,12 @@ public class VaultOverclocking extends Enchantment {
     public VaultOverclocking(String name, String owner) {
         super(name, owner);
         this.setCost(3);
+        setImg(new Image(getClass().getResourceAsStream("/img/overclock-card.jpg")));
     }
 
     public VaultOverclocking() {
         this.setCost(3);
+        setImg(new Image(getClass().getResourceAsStream("/img/overclock-card.jpg")));
     }
 
     public void play(Player currentPlayer) {

@@ -1,6 +1,8 @@
 package edu.insightr.spellmonger;
 
 
+import javafx.scene.image.Image;
+
 public class Blessing extends Rituol {
 
     private String effectDescription = "Blessing - Restores 3 hp to you";
@@ -10,11 +12,13 @@ public class Blessing extends Rituol {
         super(name, owner);
         bonus = true;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/blessing-card.jpg")));
     }
 
     public Blessing() {
         bonus = true;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/blessing-card.jpg")));
     }
 
     public void play(Player currentPlayer) {

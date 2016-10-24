@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import javafx.scene.image.Image;
+
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 
 public class Curse extends Rituol {
@@ -11,11 +13,13 @@ public class Curse extends Rituol {
         super(name, owner);
         bonus = false;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/curse-card.jpg")));
     }
 
     public Curse() {
         bonus = false;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/curse-card.jpg")));
     }
 
     public void play(Player opponent) {

@@ -34,7 +34,7 @@
         <Label styleClass="player-energy" layoutX="30" layoutY="570" id="manaPlayer2" fx:id="manaPlayer2" text="1"/>
 
         <Label styleClass="game-msg" layoutX="850" layoutY="470" id="player2Name" fx:id="gameMsg" text="Play !"/>
-        <Button styleClass="pass-button" text="Play no card" layoutX="820" layoutY="580" onAction="#playNoCard"/>
+        <Button styleClass="pass-button" text="Play no card" layoutX="825" layoutY="580" onAction="#playNoCard"/>
 
         <Button styleClass="draw-button" layoutX="580" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>
         <Button styleClass="draw-button" layoutX="580" layoutY="510" mnemonicParsing="false" onAction="#draw" fx:id="draw2Button" text="Draw"/>
@@ -53,7 +53,7 @@
         <HBox fx:id="handP1"/>
         <HBox fx:id="handP2"/>
 
-        <ScrollPane styleClass="hand" fx:id="hand1" layoutY="16" layoutX="210"/> <!-- 26 & 480-->
+        <ScrollPane styleClass="hand" fx:id="hand1" layoutY="16" layoutX="210"/>
         <GridPane fx:id="handG1"/>
 
         <ScrollPane styleClass="hand" fx:id="hand2" layoutY="474" layoutX="210"/>

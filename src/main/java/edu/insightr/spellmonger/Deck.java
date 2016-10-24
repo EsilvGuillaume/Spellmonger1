@@ -34,21 +34,23 @@ public class Deck {
         int creatureNumber = (int) (size * 0.75);
         int rituolOrEnchantNumber = (int) (size * 0.25);
 
-        int uniqueCreaNumber = (int) (creatureNumber / 4);
+        int uniqueCreaNumber = (int) (creatureNumber / 5);
         int uniqueRituolNumber = (int) (rituolOrEnchantNumber / 4);
 
-        int cardMissingNumber = size - (uniqueCreaNumber * 4 + uniqueRituolNumber * 4);
+        int cardMissingNumber = size - (uniqueCreaNumber * 5 + uniqueRituolNumber * 4);
 
         for (int i = 0; i < uniqueCreaNumber; i++){
             Bear bear = new Bear("bear", playerName);
             Eagle eagle = new Eagle("eagle", playerName);
             Wolf wolf = new Wolf("wolf", playerName);
             Fox fox = new Fox("fox", playerName);
+            Dragon dragon = new Dragon("dragon", playerName);
 
             addToList(possibleCards, wolf, uniqueCreaNumber);
             addToList(possibleCards, eagle, uniqueCreaNumber);
             addToList(possibleCards, fox, uniqueCreaNumber);
             addToList(possibleCards, bear, uniqueCreaNumber);
+            addToList(possibleCards, dragon, uniqueCreaNumber);
         }
 
         for (int i = 0; i < uniqueRituolNumber; i++){
@@ -64,7 +66,7 @@ public class Deck {
         }
 
         randomGenerator = new Random();
-        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 4 + uniqueRituolNumber * 4);
+        int randIndex = randomGenerator.nextInt(uniqueCreaNumber * 5 + uniqueRituolNumber * 4);
         addToList(possibleCards, possibleCards.get(randIndex), cardMissingNumber);
 
         Collections.shuffle(possibleCards);

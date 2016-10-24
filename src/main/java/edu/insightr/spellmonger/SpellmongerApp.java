@@ -79,8 +79,6 @@ public class SpellmongerApp {
 
         igMsg = "";
 
-        verifyVaultOverclock(currentPlayer);
-
         Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
         for (Card card : currentPlayer.getDeckInfo().getDeck()) {
@@ -102,29 +100,6 @@ public class SpellmongerApp {
         igMsg = currentPlayer.getName()+", choose a card to play";
     }
 
-        //askToPlay(); // (also plays card)
-
-        /*setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
-
-        setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
-        for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
-            getAllCreaOnBoard().add(crea);
-        }
-
-        System.out.println("********All the creatures on the board :");
-        Creature.displayGroupOfCrea(getAllCreaOnBoard());
-
-        if (getPlayerCreaOnBoard() != null) {
-            //getPlayerCreaOnBoard().remove(nextCard);
-
-            for (Card card : getPlayerCreaOnBoard()) {
-                if (card instanceof Creature) {
-                    ((Creature) card).attack(opponent);
-                }
-            }
-        }
-    }*/
-
     void cardPlayed(){
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
@@ -145,7 +120,6 @@ public class SpellmongerApp {
                 }
             }
         }
-        //checkIfWinner();
     }
 
     void checkIfWinner() {
@@ -165,27 +139,6 @@ public class SpellmongerApp {
             i++;
         }
     }
-
-    /*void askToPlay() {
-        Scanner reader = new Scanner(System.in);
-        Card cardToPlay = null;
-        int cardToPlayNumber = 0;
-        do {
-            System.out.println("What card do you play ? If none, enter 0");
-            cardToPlayNumber = reader.nextInt();
-            if (cardToPlayNumber == 0) {
-                setIgMsg(currentPlayer.getName() + " doesn't play any card.");
-                break;
-            } else if (cardToPlayNumber > 0 && cardToPlayNumber - 1 < currentPlayer.getHand().size()) {
-                cardToPlay = currentPlayer.getHand().get(cardToPlayNumber - 1);
-                //playCard(cardToPlay, currentPlayer, opponent);
-                if (playCard(cardToPlay, currentPlayer, opponent))
-                    break; // remove if we can play several cards per turn
-            } else {
-                System.out.println("This card number is not valid.");
-            }
-        } while (cardToPlayNumber != 0 || cardToPlay != null); // == null if several cards can be played each turn
-    }*/
 
      boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
@@ -228,6 +181,7 @@ public class SpellmongerApp {
             int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
             if (randNumber > 35) {
                 currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+                System.out.println(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
                 setIgMsg(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
             } else {
                 currentPlayer.setVaultOverclocking(false);
@@ -235,71 +189,6 @@ public class SpellmongerApp {
                 setIgMsg(currentPlayer.getName() + " loses his overclock of energy");
             }
         }
-    }
-
-    String getCardImageName(Card card){
-        String cardName = "";
-        if (card.getName() == "bear") {
-            cardName = ("bear-card.jpg");
-        }
-        if (card.getName() == "eagle") {
-            cardName = ("eagle-card.jpg");
-        }
-        if (card.getName() == "wolf") {
-            cardName = ("wolf-card.jpg");
-        }
-        if (card.getName() == "fox") {
-            cardName = ("fox-card.jpg");
-        }
-        if (card.getName() == "curse") {
-            cardName = ("curse-card.jpg");
-        }
-        if (card.getName() == "blessing") {
-            cardName = ("blessing-card.jpg");
-        }
-        if (card.getName() == "energy drain") {
-            cardName = ("energy-drain-card.jpg");
-        }
-        if (card.getName() == "vault overclocking") {
-            cardName = ("overclock-card.jpg");
-        }
-        return cardName;
-    }
-
-    ArrayList<String> getNamesFromCardList(List<Card> cardList) {
-
-        ArrayList<String> cardNames = new ArrayList<String>();
-
-        for (int i = 0; i < cardList.size(); i++) {
-            cardNames.add(getCardImageName(cardList.get(i)));
-        }
-        return cardNames;
-    }
-
-    ArrayList<String[]> getNamesFromCreaList(List<Creature> creaOnBoard) {
-
-        ArrayList<String[]> creaNamesAndOwner = new ArrayList<String[]>();
-        String cardName = "";
-
-        for (int i = 0; i < creaOnBoard.size(); i++) {
-            if (creaOnBoard.get(i).isPutOnBoard() && creaOnBoard.get(i).isAlive()) {
-                if (creaOnBoard.get(i).getName() == "bear") {
-                    cardName = ("bear-card.jpg");
-                }
-                if (creaOnBoard.get(i).getName() == "eagle") {
-                    cardName = ("eagle-card.jpg");
-                }
-                if (creaOnBoard.get(i).getName() == "wolf") {
-                    cardName = ("wolf-card.jpg");
-                }
-                if (creaOnBoard.get(i).getName() == "fox") {
-                    cardName = ("fox-card.jpg");
-                }
-                String[] strToAdd = {cardName, creaOnBoard.get(i).getOwner()};
-                creaNamesAndOwner.add(strToAdd);
-            }
-        }
-        return creaNamesAndOwner;
     }
 
     public Player getPlayer1() {

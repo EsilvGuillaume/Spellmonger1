@@ -1,6 +1,8 @@
 package edu.insightr.spellmonger;
 
 
+import javafx.scene.image.Image;
+
 public class Wolf extends Creature {
 
     public Wolf(String name) {
@@ -9,6 +11,7 @@ public class Wolf extends Creature {
         this.setAttack(2);
         this.setAlive(true);
         this.setCost(2);
+        setImg(new Image(getClass().getResourceAsStream("/img/wolf-card.jpg")));
     }
 
     public Wolf(String name, String owner) {
@@ -17,6 +20,7 @@ public class Wolf extends Creature {
         this.setAttack(2);
         this.setAlive(true);
         this.setCost(2);
+        setImg(new Image(getClass().getResourceAsStream("/img/wolf-card.jpg")));
     }
 
 }

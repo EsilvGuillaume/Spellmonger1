@@ -129,8 +129,8 @@ public class Controller extends Application {
         });
     }
 
-    private void refreshBoard(ArrayList<String[]> cardNames) {
-        displayBoard(cardNames);
+    private void refreshBoard(List<Creature> creaOnBoard) {
+        displayBoard(creaOnBoard);
     }
 
     @FXML
@@ -147,7 +147,7 @@ public class Controller extends Application {
             hand1.setDisable(true);
             hand2.setDisable(false);
         }
-        //displayInitialPlayers(); // PUT SOMEWHERE ELSE
+
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         if (app.getCurrentPlayer().getHand().size()<5) {
             app.drawACard(app.getCurrentPlayer(), app.getOpponent());
@@ -169,7 +169,6 @@ public class Controller extends Application {
             refreshHand(app.getCurrentPlayer());
             resfreshIGMsg();
         }
-
     }
 
     @FXML
@@ -179,6 +178,7 @@ public class Controller extends Application {
     }
 
     void turnEnded(){
+        app.verifyVaultOverclock(app.getOpponent());
         if(app.getCurrentPlayer().equals(app.getPlayer1())) {
             player2Box.setFill(Color.rgb(173, 237, 125));
             player1Box.setFill(Color.rgb(255, 240, 175));
@@ -201,6 +201,13 @@ public class Controller extends Application {
             setIgMsg(app.getIgMsg()+"\nEnd of turn "+ app.getOpponent().getName());
         }
         app.setIgMsg(app.getIgMsg()+"\n" +app.getCurrentPlayer().getName()+" to draw");
+        if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+            hand2.setDisable(true);
+            hand1.setDisable(false);
+        } else {
+            hand1.setDisable(true);
+            hand2.setDisable(false);
+        }
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         resfreshIGMsg();
         app.checkIfWinner();
@@ -210,8 +217,9 @@ public class Controller extends Application {
     void refreshDiscard(){
         if(app.getCurrentPlayer().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
-            String nameOfImage = app.getCardImageName(lastDiscard);
-            Image image = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            //String nameOfImage = app.getCardImageName(lastDiscard);
+            //Image image0 = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
             if(app.getCurrentPlayer().equals(app.getPlayer1())){
                 discard1.setImage(image);
@@ -231,8 +239,9 @@ public class Controller extends Application {
         }
         if(app.getOpponent().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getOpponent().getDiscard().get(app.getOpponent().getDiscard().size() - 1);
-            String nameOfImage = app.getCardImageName(lastDiscard);
-            Image image = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            //String nameOfImage = app.getCardImageName(lastDiscard);
+            //Image image0 = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
+            Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
             if(app.getOpponent().equals(app.getPlayer1())){
                 discard1.setImage(image);
@@ -256,8 +265,8 @@ public class Controller extends Application {
             if (card.getCost() <= currentPlayer.getEnergy()) {
                 setIgMsg ("");
                 app.playCard(card, currentPlayer, opponent);
-                ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
-                refreshBoard(creaNames);
+                //ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
+                refreshBoard(app.getAllCreaOnBoard());
                 removecardhand(card, currentPlayer);
                 refreshHand(currentPlayer);
                 turnEnded();
@@ -309,36 +318,39 @@ public class Controller extends Application {
 
     private void refreshHand(Player currPlayer) {
 
-        ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
-        ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
+        //ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
+        //ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
         int j = 0;
-        Image[] images = new Image[handCards.size()];
-        ImageView[] pics = new ImageView[handCards.size()];
-        Image[] imagesbis = new Image[handCardsbis.size()];
-        ImageView[] picsbis = new ImageView[handCardsbis.size()];
+        //Image[] images = new Image[handCards.size()];
+        //ImageView[] pics = new ImageView[handCards.size()];
+        //Image[] imagesbis = new Image[handCardsbis.size()];
+        //ImageView[] picsbis = new ImageView[handCardsbis.size()];
+        Image img;
+        ImageView pic;
 
         if (currPlayer.equals(app.getPlayer1())) {
 
             hand1.setContent(null);
             handP1 = new HBox();
 
-            for (int i = 0; i < handCards.size(); i++) {
+            for (int i = 0; i < currPlayer.getHand().size(); i++) {
 
-                images[i] = new Image(getClass().getResourceAsStream("/img/" + handCards.get(i)));
-                pics[i] = new ImageView(images[i]);
+                img = currPlayer.getHand().get(i).getImg();
+                pic = new ImageView(img);
+                final Image img0 = img;
 
                 int index = i;
 
-                pics[i].hoverProperty().addListener(new ChangeListener() {
+                pic.hoverProperty().addListener(new ChangeListener() {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        refreshCurrCard(images[index]);
+                        refreshCurrCard(img0);
                     }
                 });
 
-                addCursorEffect(pics[i]);
+                addCursorEffect(pic);
 
-                pics[i].setOnMouseClicked(e ->
+                pic.setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
                 );
 
@@ -356,17 +368,15 @@ public class Controller extends Application {
                 columnConstraints.setHgrow(Priority.ALWAYS);
                 handG1.getColumnConstraints().add(columnConstraints);
 
-                pics[i].setFitWidth(110);
-                pics[i].setFitHeight(130);
-                pics[i].setImage(images[i]);
+                pic.setFitWidth(110);
+                pic.setFitHeight(130);
+                pic.setImage(img);
 
-                handG1.add(pics[i], j, 0);
-                handP1.getChildren().add(pics[i]);
+                handG1.add(pic, j, 0);
+                handP1.getChildren().add(pic);
 
-                GridPane.setMargin(pics[i], new Insets(2, 2, 2, 2));
+                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
                 hand1.setContent(handP1);
-
-
             }
 
         } else {
@@ -374,23 +384,26 @@ public class Controller extends Application {
             hand2.setContent(null);
             handP2 = new HBox();
 
-            for (int i = 0; i < handCards.size(); i++) {
+            for (int i = 0; i < currPlayer.getHand().size(); i++) {
 
-                images[i] = new Image(getClass().getResourceAsStream("/img/" + handCards.get(i)));
-                pics[i] = new ImageView(images[i]);
+                //images[i] = new Image(getClass().getResourceAsStream("/img/" + handCards.get(i)));
+                //pics[i] = new ImageView(images[i]);
+                img = currPlayer.getHand().get(i).getImg();
+                pic = new ImageView(img);
+                final Image img0 = img;
 
                 int index = i;
 
-                pics[i].hoverProperty().addListener(new ChangeListener() {
+                pic.hoverProperty().addListener(new ChangeListener() {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        refreshCurrCard(images[index]);
+                        refreshCurrCard(img0);
                     }
                 });
 
-                addCursorEffect(pics[i]);
+                addCursorEffect(pic);
 
-                pics[i].setOnMouseClicked(e ->
+                pic.setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
                 );
 
@@ -408,14 +421,132 @@ public class Controller extends Application {
                 columnConstraints.setHgrow(Priority.ALWAYS);
                 handG2.getColumnConstraints().add(columnConstraints);
 
-                pics[i].setFitWidth(110);
-                pics[i].setFitHeight(130);
-                pics[i].setImage(images[i]);
+                pic.setFitWidth(110);
+                pic.setFitHeight(130);
+                pic.setImage(img);
 
-                handG2.add(pics[i], j, 0);
-                handP2.getChildren().add(pics[i]);
+                handG2.add(pic, j, 0);
+                handP2.getChildren().add(pic);
 
-                GridPane.setMargin(pics[i], new Insets(2, 2, 2, 2));
+                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
+                hand2.setContent(handP2);
+
+            }
+
+        }
+    }
+
+    private void refreshHand0(Player currPlayer) {
+
+        //ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
+        //ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
+        int j = 0;
+        //Image[] images = new Image[handCards.size()];
+        //ImageView[] pics = new ImageView[handCards.size()];
+        //Image[] imagesbis = new Image[handCardsbis.size()];
+        //ImageView[] picsbis = new ImageView[handCardsbis.size()];
+        Image img0;
+        ImageView pic;
+
+        if (currPlayer.equals(app.getPlayer1())) {
+
+            hand1.setContent(null);
+            handP1 = new HBox();
+
+            for (int i = 0; i < app.getCurrentPlayer().getHand().size(); i++) {
+
+                img0 = app.getCurrentPlayer().getHand().get(i).getImg();
+                pic = new ImageView(img0);
+                final Image img = img0;
+
+                int index = i;
+
+                pic.hoverProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        refreshCurrCard(img);
+                    }
+                });
+
+                addCursorEffect(pic);
+
+                pic.setOnMouseClicked(e ->
+                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
+                );
+
+                hand1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                hand1.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+                handG1.setAlignment(Pos.CENTER);
+                handG1.setPadding(new Insets(5, 5, 5, 5));
+                handG1.setHgap(20);
+                handP1.setPadding(new Insets(14, 2, 2, 14));
+                handP1.setSpacing(20);
+
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setFillWidth(true);
+                columnConstraints.setHgrow(Priority.ALWAYS);
+                handG1.getColumnConstraints().add(columnConstraints);
+
+                pic.setFitWidth(110);
+                pic.setFitHeight(130);
+                pic.setImage(img);
+
+                handG1.add(pic, j, 0);
+                handP1.getChildren().add(pic);
+
+                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
+                hand1.setContent(handP1);
+            }
+
+        } else {
+
+            hand2.setContent(null);
+            handP2 = new HBox();
+
+            for (int i = 0; i < app.getCurrentPlayer().getHand().size(); i++) {
+
+                img0 = app.getCurrentPlayer().getHand().get(i).getImg();
+                pic = new ImageView(img0);
+                final Image img = img0;
+
+                int index = i;
+
+                pic.hoverProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        refreshCurrCard(img);
+                    }
+                });
+
+                addCursorEffect(pic);
+
+                pic.setOnMouseClicked(e ->
+                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
+                );
+
+                hand2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                hand2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+                handG2.setAlignment(Pos.CENTER);
+                handG2.setPadding(new Insets(5, 5, 5, 5));
+                handG2.setHgap(20);
+                handP2.setPadding(new Insets(14, 2, 2, 14));
+                handP2.setSpacing(20);
+
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setFillWidth(true);
+                columnConstraints.setHgrow(Priority.ALWAYS);
+                handG2.getColumnConstraints().add(columnConstraints);
+
+                pic.setFitWidth(110);
+                pic.setFitHeight(130);
+                pic.setImage(img);
+
+                handG2.add(pic, j, 0);
+                handP2.getChildren().add(pic);
+
+                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
                 hand2.setContent(handP2);
 
             }
@@ -437,7 +568,7 @@ public class Controller extends Application {
         }
     }
 
-    public void displayBoard(ArrayList<String[]> cardNames) {
+    public void displayBoard(List<Creature> creaOnBoard) {
 
         board1.setContent(null);
         board2.setContent(null);
@@ -445,25 +576,27 @@ public class Controller extends Application {
         boardP2 = new HBox();
 
         int imageCol = 0;
-        Image[] images = new Image[cardNames.size()];
-        ImageView[] pics = new ImageView[cardNames.size()];
+        //Image[] images = new Image[cardNames.size()];
+        //ImageView[] pics = new ImageView[cardNames.size()];
+        Image img;
+        ImageView pic;
 
-        for (int i = 0; i < cardNames.size(); i++) {
+        for (int i = 0; i < creaOnBoard.size(); i++) {
 
-            images[i] = new Image(getClass().getResourceAsStream("/img/" + cardNames.get(i)[0]));
-            pics[i] = new ImageView(images[i]);
+            img = creaOnBoard.get(i).getImg();
+            pic = new ImageView(img);
 
             if (app.getCurrentPlayer().equals(app.getPlayer1())) {
-                if (app.getCurrentPlayer().getName().equals(cardNames.get(i)[1])) {
-                    displayB1(pics[i], images[i], imageCol);
+                if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
+                    displayB1(pic, img, imageCol);
                 } else {
-                    displayB2(pics[i], images[i], imageCol);
+                    displayB2(pic, img, imageCol);
                 }
             } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
-                if (app.getCurrentPlayer().getName().equals(cardNames.get(i)[1])) {
-                    displayB2(pics[i], images[i], imageCol);
+                if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
+                    displayB2(pic, img, imageCol);
                 } else {
-                    displayB1(pics[i], images[i], imageCol);
+                    displayB1(pic, img, imageCol);
                 }
             }
         }
