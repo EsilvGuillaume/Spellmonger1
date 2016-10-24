@@ -16,8 +16,8 @@
 
     <children>
 
-        <Rectangle styleClass="player-box" fx:id="player1" x="10" y="10" width="180" height="170"/>
-        <Rectangle styleClass="player-box" fx:id="player2" x="10" y="470" width="180" height="170"/>
+        <Rectangle styleClass="player-box" fx:id="player1Box" x="10" y="10" width="180" height="170"/>
+        <Rectangle styleClass="player-box" fx:id="player2Box" x="10" y="470" width="180" height="170"/>
 
         <Text layoutX="720" layoutY="21" id="discard1Name" text="Discard 1"></Text>
         <Text layoutX="720" layoutY="635" id="discard1Name" text="Discard 2"></Text>

@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,10 +22,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+//import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +51,9 @@ public class Controller extends Application {
             final AnchorPane root = fxmlLoader.load();
             final Scene scene = new Scene(root, 1050, 650);
 
+            Image cursorImage = new Image("img/cursor-basic.png");
+            scene.setCursor(new ImageCursor(cursorImage));
+
             scene.getStylesheets().add(getClass().getResource("/design").toExternalForm());
             primaryStage.setScene(scene);
         } catch (IOException ex) {
@@ -57,6 +64,8 @@ public class Controller extends Application {
         primaryStage.sizeToScene();
         primaryStage.show();
     }
+
+    @FXML private Rectangle player1Box, player2Box;
 
     @FXML
     private Label namePlayer1, namePlayer2;
@@ -96,6 +105,30 @@ public class Controller extends Application {
         launch(args);
     }
 
+    public void initialize() {
+        refreshHand(app.getPlayer1());
+        refreshHand(app.getPlayer2());
+        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+        displayInitialPlayers();
+    }
+
+    void addCursorEffect(Node node){
+        Image imageCursorExit = new Image("img/cursor-basic.png");
+        Image imageCursorEnter = new Image("img/cursor-hover.png");
+
+        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                (node.getScene()).setCursor(new ImageCursor(imageCursorEnter));
+            }
+        });
+
+        node.setOnMouseExited(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                (node.getScene()).setCursor(new ImageCursor(imageCursorExit));
+            }
+        });
+    }
+
     private void refreshBoard(ArrayList<String[]> cardNames) {
         displayBoard(cardNames);
     }
@@ -114,7 +147,7 @@ public class Controller extends Application {
             hand1.setDisable(true);
             hand2.setDisable(false);
         }
-        displayInitialPlayers(); // PUT SOMEWHERE ELSE
+        //displayInitialPlayers(); // PUT SOMEWHERE ELSE
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         if (app.getCurrentPlayer().getHand().size()<5) {
             app.drawACard(app.getCurrentPlayer(), app.getOpponent());
@@ -146,6 +179,14 @@ public class Controller extends Application {
     }
 
     void turnEnded(){
+        if(app.getCurrentPlayer().equals(app.getPlayer1())) {
+            player2Box.setFill(Color.rgb(173, 237, 125));
+            player1Box.setFill(Color.rgb(255, 240, 175));
+        }
+        else{
+            player1Box.setFill(Color.rgb(173, 237, 125));
+            player2Box.setFill(Color.rgb(255, 240, 175));
+        }
         app.endOfTurn(app.getCurrentPlayer(), app.getOpponent());
         app.setTmpPlayer(app.getCurrentPlayer());
         app.setCurrentPlayer(app.getOpponent());
@@ -186,6 +227,7 @@ public class Controller extends Application {
                     refreshCurrCard(image);
                 }
             });
+            addCursorEffect(pic);
         }
         if(app.getOpponent().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getOpponent().getDiscard().get(app.getOpponent().getDiscard().size() - 1);
@@ -206,6 +248,7 @@ public class Controller extends Application {
                     refreshCurrCard(image);
                 }
             });
+            addCursorEffect(pic);
         }
     }
 
@@ -266,7 +309,7 @@ public class Controller extends Application {
 
     private void refreshHand(Player currPlayer) {
 
-        ArrayList<String> handCards = app.getNamesFromCardList(app.getCurrentPlayer().getHand());
+        ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
         ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
         int j = 0;
         Image[] images = new Image[handCards.size()];
@@ -292,6 +335,8 @@ public class Controller extends Application {
                         refreshCurrCard(images[index]);
                     }
                 });
+
+                addCursorEffect(pics[i]);
 
                 pics[i].setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
@@ -342,6 +387,8 @@ public class Controller extends Application {
                         refreshCurrCard(images[index]);
                     }
                 });
+
+                addCursorEffect(pics[i]);
 
                 pics[i].setOnMouseClicked(e ->
                         goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
@@ -449,6 +496,8 @@ public class Controller extends Application {
             }
         });
 
+        addCursorEffect(pic);
+
         boardG1.add(pic, j, 0);
         boardP1.getChildren().add(pic);
 
@@ -482,6 +531,8 @@ public class Controller extends Application {
                 refreshCurrCard(img);
             }
         });
+
+        addCursorEffect(pic);
 
         boardG2.add(pic, j, 0);
         boardP2.getChildren().add(pic);

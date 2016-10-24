@@ -52,7 +52,7 @@ public class SpellmongerApp {
         opponent.getDeckInfo().getDeck().get(1).draw(opponent);
     }
 
-    public void endOfTurn(Player currentPlayer, Player opponent) { //, Player player1, Player player2){
+    public void endOfTurn(Player currentPlayer, Player opponent) {
         logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
         if (currentPlayer.getHp() <= 0) {
