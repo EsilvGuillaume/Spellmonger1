@@ -65,6 +65,7 @@ public class Controller extends Application {
         primaryStage.show();
     }
 
+
     @FXML private Rectangle player1Box, player2Box;
 
     @FXML
@@ -112,7 +113,7 @@ public class Controller extends Application {
         displayInitialPlayers();
     }
 
-    void addCursorEffect(Node node){
+    protected void addCursorEffect(Node node){
         Image imageCursorExit = new Image("img/cursor-basic.png");
         Image imageCursorEnter = new Image("img/cursor-hover.png");
 
@@ -290,8 +291,7 @@ public class Controller extends Application {
             }
     }
 
-    boolean checkcardhand (Card card, Player currentPlayer)
-    {
+    boolean checkcardhand (Card card, Player currentPlayer) {
         for (int i=0;i<currentPlayer.getHand().size();i++)
         {
             if (card == currentPlayer.getHand().get(i)) {
