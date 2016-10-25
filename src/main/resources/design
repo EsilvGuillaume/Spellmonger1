@@ -9,6 +9,20 @@
 
  }
 
+ .currHP{
+ -fx-font-weight: bold;
+ -fx-text-fill : green;
+   -fx-font-size: 12pt;
+   -fx-font-family: Consolas;
+ }
+
+ .currAttack{
+ -fx-font-weight: bold;
+ -fx-text-fill : red;
+   -fx-font-size: 12pt;
+   -fx-font-family: Consolas;
+ }
+
 .hand{
     -fx-pref-width: 360;
     -fx-pref-height: 163;

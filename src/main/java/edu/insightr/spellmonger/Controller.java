@@ -65,7 +65,8 @@ public class Controller extends Application {
         primaryStage.show();
     }
 
-    @FXML private Rectangle player1Box, player2Box;
+    @FXML
+    private Rectangle player1Box, player2Box;
 
     @FXML
     private Label namePlayer1, namePlayer2;
@@ -86,7 +87,7 @@ public class Controller extends Application {
     private GridPane handG1, handG2;
 
     @FXML
-    private Label gameMsg;
+    private Label gameMsg, currHP, currAttack;
 
     @FXML
     private ScrollPane board1, board2;
@@ -99,7 +100,8 @@ public class Controller extends Application {
     @FXML
     private GridPane boardG1, boardG2;
 
-    @FXML private ImageView currentCard, discard1, discard2;
+    @FXML
+    private ImageView currentCard, discard1, discard2;
 
     public static void main(String[] args) {
         launch(args);
@@ -112,7 +114,7 @@ public class Controller extends Application {
         displayInitialPlayers();
     }
 
-    void addCursorEffect(Node node){
+    void addCursorEffect(Node node) {
         Image imageCursorExit = new Image("img/cursor-basic.png");
         Image imageCursorEnter = new Image("img/cursor-hover.png");
 
@@ -149,7 +151,7 @@ public class Controller extends Application {
         }
 
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-        if (app.getCurrentPlayer().getHand().size()<5) {
+        if (app.getCurrentPlayer().getHand().size() < 5) {
             app.drawACard(app.getCurrentPlayer(), app.getOpponent());
 
             draw1Button.setDisable(true);
@@ -158,9 +160,7 @@ public class Controller extends Application {
             refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
             refreshHand(app.getCurrentPlayer());
             resfreshIGMsg();
-        }
-        else
-        {
+        } else {
             setIgMsg("You have already five cards, play one card if you want");
             draw1Button.setDisable(true);
             draw2Button.setDisable(true);
@@ -172,18 +172,17 @@ public class Controller extends Application {
     }
 
     @FXML
-    void playNoCard(){
+    void playNoCard() {
         app.cardPlayed();
         turnEnded();
     }
 
-    void turnEnded(){
+    void turnEnded() {
         app.verifyVaultOverclock(app.getOpponent());
-        if(app.getCurrentPlayer().equals(app.getPlayer1())) {
+        if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             player2Box.setFill(Color.rgb(173, 237, 125));
             player1Box.setFill(Color.rgb(255, 240, 175));
-        }
-        else{
+        } else {
             player1Box.setFill(Color.rgb(173, 237, 125));
             player2Box.setFill(Color.rgb(255, 240, 175));
         }
@@ -194,13 +193,13 @@ public class Controller extends Application {
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-            setIgMsg(app.getIgMsg()+"\nEnd of turn "+ app.getOpponent().getName());
+            setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
         } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
-            setIgMsg(app.getIgMsg()+"\nEnd of turn "+ app.getOpponent().getName());
+            setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
         }
-        app.setIgMsg(app.getIgMsg()+"\n" +app.getCurrentPlayer().getName()+" to draw");
+        app.setIgMsg(app.getIgMsg() + "\n" + app.getCurrentPlayer().getName() + " to draw");
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             hand2.setDisable(true);
             hand1.setDisable(false);
@@ -214,18 +213,15 @@ public class Controller extends Application {
     }
 
 
-    void refreshDiscard(){
-        if(app.getCurrentPlayer().getDiscard().size() > 0) {
+    void refreshDiscard() {
+        if (app.getCurrentPlayer().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
-            //String nameOfImage = app.getCardImageName(lastDiscard);
-            //Image image0 = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
             Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
-            if(app.getCurrentPlayer().equals(app.getPlayer1())){
+            if (app.getCurrentPlayer().equals(app.getPlayer1())) {
                 discard1.setImage(image);
                 pic = discard1;
-            }
-           else{
+            } else {
                 discard2.setImage(image);
                 pic = discard2;
             }
@@ -233,21 +229,19 @@ public class Controller extends Application {
                 @Override
                 public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                     refreshCurrCard(image);
+                    refreshCurrStats(lastDiscard);
                 }
             });
             addCursorEffect(pic);
         }
-        if(app.getOpponent().getDiscard().size() > 0) {
+        if (app.getOpponent().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getOpponent().getDiscard().get(app.getOpponent().getDiscard().size() - 1);
-            //String nameOfImage = app.getCardImageName(lastDiscard);
-            //Image image0 = new Image(getClass().getResourceAsStream("/img/"+nameOfImage));
             Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
-            if(app.getOpponent().equals(app.getPlayer1())){
+            if (app.getOpponent().equals(app.getPlayer1())) {
                 discard1.setImage(image);
                 pic = discard1;
-            }
-            else{
+            } else {
                 discard2.setImage(image);
                 pic = discard2;
             }
@@ -255,45 +249,39 @@ public class Controller extends Application {
                 @Override
                 public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                     refreshCurrCard(image);
+                    refreshCurrStats(lastDiscard);
                 }
             });
             addCursorEffect(pic);
         }
     }
 
-    void goPlayCard(Card card, Player currentPlayer, Player opponent){
-            if (card.getCost() <= currentPlayer.getEnergy()) {
-                setIgMsg ("");
-                app.playCard(card, currentPlayer, opponent);
-                //ArrayList<String[]> creaNames = app.getNamesFromCreaList(app.getAllCreaOnBoard());
-                refreshBoard(app.getAllCreaOnBoard());
-                removecardhand(card, currentPlayer);
-                refreshHand(currentPlayer);
-                turnEnded();
-            }
-            else {
-                app.setIgMsg("You have not enough energy,\n choose another card");
-                resfreshIGMsg();
-            }
-            refreshDiscard();
+    void goPlayCard(Card card, Player currentPlayer, Player opponent) {
+        if (card.getCost() <= currentPlayer.getEnergy()) {
+            setIgMsg("");
+            app.playCard(card, currentPlayer, opponent);
+            refreshBoard(app.getAllCreaOnBoard());
+            removecardhand(card, currentPlayer);
+            refreshHand(currentPlayer);
+            turnEnded();
+        } else {
+            app.setIgMsg("You have not enough energy,\n choose another card");
+            resfreshIGMsg();
         }
-
-
-    void removecardhand (Card card, Player currentPlayer)
-    {
-            for (int i=0;i<currentPlayer.getHand().size();i++)
-            {
-                if (card == currentPlayer.getHand().get(i))
-                {
-                    currentPlayer.getHand().remove(i);
-                }
-            }
+        refreshDiscard();
     }
 
-    boolean checkcardhand (Card card, Player currentPlayer)
-    {
-        for (int i=0;i<currentPlayer.getHand().size();i++)
-        {
+
+    void removecardhand(Card card, Player currentPlayer) {
+        for (int i = 0; i < currentPlayer.getHand().size(); i++) {
+            if (card == currentPlayer.getHand().get(i)) {
+                currentPlayer.getHand().remove(i);
+            }
+        }
+    }
+
+    boolean checkcardhand(Card card, Player currentPlayer) {
+        for (int i = 0; i < currentPlayer.getHand().size(); i++) {
             if (card == currentPlayer.getHand().get(i)) {
 
                 return true;
@@ -311,20 +299,32 @@ public class Controller extends Application {
     void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
     }
-    void resfreshIGMsgintoapp()
-    {
+
+    void resfreshIGMsgintoapp() {
         gameMsg.setText(SpellmongerApp.getIgMsg());
+    }
+
+    void refreshCurrStats(Card card) {
+        if (card instanceof Creature) {
+            int hp = ((Creature) card).getHp();
+            int attack = ((Creature) card).getAttack();
+            if (hp > 0) {
+                currHP.setText("HP : " + hp);
+                currAttack.setText("Atk : " + attack);
+            }
+            else{
+                currHP.setText("");
+                currAttack.setText("DEAD");
+            }
+        } else {
+            currHP.setText("");
+            currAttack.setText("");
+        }
     }
 
     private void refreshHand(Player currPlayer) {
 
-        //ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
-        //ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
         int j = 0;
-        //Image[] images = new Image[handCards.size()];
-        //ImageView[] pics = new ImageView[handCards.size()];
-        //Image[] imagesbis = new Image[handCardsbis.size()];
-        //ImageView[] picsbis = new ImageView[handCardsbis.size()];
         Image img;
         ImageView pic;
 
@@ -345,6 +345,9 @@ public class Controller extends Application {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         refreshCurrCard(img0);
+                        if(index < currPlayer.getHand().size()) {
+                            refreshCurrStats(currPlayer.getHand().get(index));
+                        }
                     }
                 });
 
@@ -386,8 +389,6 @@ public class Controller extends Application {
 
             for (int i = 0; i < currPlayer.getHand().size(); i++) {
 
-                //images[i] = new Image(getClass().getResourceAsStream("/img/" + handCards.get(i)));
-                //pics[i] = new ImageView(images[i]);
                 img = currPlayer.getHand().get(i).getImg();
                 pic = new ImageView(img);
                 final Image img0 = img;
@@ -398,124 +399,9 @@ public class Controller extends Application {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         refreshCurrCard(img0);
-                    }
-                });
-
-                addCursorEffect(pic);
-
-                pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
-                );
-
-                hand2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-                hand2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-                handG2.setAlignment(Pos.CENTER);
-                handG2.setPadding(new Insets(5, 5, 5, 5));
-                handG2.setHgap(20);
-                handP2.setPadding(new Insets(14, 2, 2, 14));
-                handP2.setSpacing(20);
-
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setFillWidth(true);
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                handG2.getColumnConstraints().add(columnConstraints);
-
-                pic.setFitWidth(110);
-                pic.setFitHeight(130);
-                pic.setImage(img);
-
-                handG2.add(pic, j, 0);
-                handP2.getChildren().add(pic);
-
-                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
-                hand2.setContent(handP2);
-
-            }
-
-        }
-    }
-
-    private void refreshHand0(Player currPlayer) {
-
-        //ArrayList<String> handCards = app.getNamesFromCardList(currPlayer.getHand());
-        //ArrayList<String> handCardsbis = app.getNamesFromCardList(app.getOpponent().getHand());
-        int j = 0;
-        //Image[] images = new Image[handCards.size()];
-        //ImageView[] pics = new ImageView[handCards.size()];
-        //Image[] imagesbis = new Image[handCardsbis.size()];
-        //ImageView[] picsbis = new ImageView[handCardsbis.size()];
-        Image img0;
-        ImageView pic;
-
-        if (currPlayer.equals(app.getPlayer1())) {
-
-            hand1.setContent(null);
-            handP1 = new HBox();
-
-            for (int i = 0; i < app.getCurrentPlayer().getHand().size(); i++) {
-
-                img0 = app.getCurrentPlayer().getHand().get(i).getImg();
-                pic = new ImageView(img0);
-                final Image img = img0;
-
-                int index = i;
-
-                pic.hoverProperty().addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        refreshCurrCard(img);
-                    }
-                });
-
-                addCursorEffect(pic);
-
-                pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
-                );
-
-                hand1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-                hand1.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-                handG1.setAlignment(Pos.CENTER);
-                handG1.setPadding(new Insets(5, 5, 5, 5));
-                handG1.setHgap(20);
-                handP1.setPadding(new Insets(14, 2, 2, 14));
-                handP1.setSpacing(20);
-
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setFillWidth(true);
-                columnConstraints.setHgrow(Priority.ALWAYS);
-                handG1.getColumnConstraints().add(columnConstraints);
-
-                pic.setFitWidth(110);
-                pic.setFitHeight(130);
-                pic.setImage(img);
-
-                handG1.add(pic, j, 0);
-                handP1.getChildren().add(pic);
-
-                GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
-                hand1.setContent(handP1);
-            }
-
-        } else {
-
-            hand2.setContent(null);
-            handP2 = new HBox();
-
-            for (int i = 0; i < app.getCurrentPlayer().getHand().size(); i++) {
-
-                img0 = app.getCurrentPlayer().getHand().get(i).getImg();
-                pic = new ImageView(img0);
-                final Image img = img0;
-
-                int index = i;
-
-                pic.hoverProperty().addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        refreshCurrCard(img);
+                        if(index < currPlayer.getHand().size()) {
+                            refreshCurrStats(currPlayer.getHand().get(index));
+                        }
                     }
                 });
 
@@ -576,8 +462,6 @@ public class Controller extends Application {
         boardP2 = new HBox();
 
         int imageCol = 0;
-        //Image[] images = new Image[cardNames.size()];
-        //ImageView[] pics = new ImageView[cardNames.size()];
         Image img;
         ImageView pic;
 
@@ -588,21 +472,21 @@ public class Controller extends Application {
 
             if (app.getCurrentPlayer().equals(app.getPlayer1())) {
                 if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
-                    displayB1(pic, img, imageCol);
+                    displayB1(pic, img, imageCol, creaOnBoard.get(i));
                 } else {
-                    displayB2(pic, img, imageCol);
+                    displayB2(pic, img, imageCol, creaOnBoard.get(i));
                 }
             } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
                 if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
-                    displayB2(pic, img, imageCol);
+                    displayB2(pic, img, imageCol, creaOnBoard.get(i));
                 } else {
-                    displayB1(pic, img, imageCol);
+                    displayB1(pic, img, imageCol, creaOnBoard.get(i));
                 }
             }
         }
     }
 
-    private void displayB1(ImageView pic, Image img, int j) {
+    private void displayB1(ImageView pic, Image img, int j, Card card) {
 
         board1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         board1.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -626,6 +510,7 @@ public class Controller extends Application {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 refreshCurrCard(img);
+                refreshCurrStats(card);
             }
         });
 
@@ -638,7 +523,7 @@ public class Controller extends Application {
         board1.setContent(boardP1);
     }
 
-    private void displayB2(ImageView pic, Image img, int j) {
+    private void displayB2(ImageView pic, Image img, int j, Card card) {
 
         board2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         board2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -662,6 +547,7 @@ public class Controller extends Application {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 refreshCurrCard(img);
+                refreshCurrStats(card);
             }
         });
 
@@ -673,42 +559,6 @@ public class Controller extends Application {
         GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
         board2.setContent(boardP2);
     }
-
-    private void displayB02(ImageView pic, Image img, int j) {
-        GridPane gridpane = new GridPane();
-        board2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        board2.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        gridpane.setAlignment(Pos.CENTER);
-        gridpane.setPadding(new Insets(5, 5, 5, 5));
-        gridpane.setHgap(20);
-
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setFillWidth(true);
-        columnConstraints.setHgrow(Priority.ALWAYS);
-        gridpane.getColumnConstraints().add(columnConstraints);
-
-        board2.setContent(gridpane);
-
-        pic.setFitWidth(110);
-        pic.setFitHeight(120);
-
-        pic.setImage(img);
-        VBox vb = new VBox();
-        vb.getChildren().addAll(pic);
-
-        gridpane.add(vb, j, 0);
-        GridPane.setMargin(pic, new Insets(2, 2, 2, 2));
-    }
-
-    /*private void checkIfWinner() {
-        if (app.isOnePlayerDead()) {
-            System.out.println("THE WINNER IS " + app.getWinner() + " !!!");
-            System.exit(0);
-        } else {
-            System.out.println("*****ROUND " + app.getRoundCounter());
-        }
-    }*/
 
     private void displayInitialPlayers() {
         namePlayer1.setText(app.getPlayer1().getName());

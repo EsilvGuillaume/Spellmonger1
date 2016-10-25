@@ -60,6 +60,8 @@
         <GridPane fx:id="handG2"/>
 
         <ImageView styleClass="currentCard" fx:id="currentCard" layoutY="200" layoutX="830" fitHeight="240" fitWidth="200"/>
+        <Label styleClass="currAttack" layoutX="830" layoutY="440" fx:id="currAttack" text=""></Label>
+        <Label styleClass="currHP" layoutX="970" layoutY="440" fx:id="currHP" text=""></Label>
 
     </children>
 
