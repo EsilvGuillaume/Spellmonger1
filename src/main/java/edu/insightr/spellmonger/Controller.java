@@ -1,11 +1,10 @@
 package edu.insightr.spellmonger;
 
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -18,12 +17,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -34,7 +39,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
@@ -107,6 +112,92 @@ public class Controller extends Application {
         launch(args);
     }
 
+    void makeItFade(Node node){
+        FadeTransition ft = new FadeTransition(Duration.millis(5000), node);
+        ft.setFromValue(1.0);
+        ft.setToValue(0.5);
+        ft.setRate(5);
+        ft.setCycleCount(Timeline.INDEFINITE);
+        ft.setAutoReverse(true);
+        ft.play();
+    }
+
+    void turnEnded(){ // actually just checks dead crea then call real end of turn method (go rename)
+
+        System.out.println("turnEnded entered - checking deaths");
+
+        FadeTransition ft = new FadeTransition();
+
+        if(app.getLastDeadCrea().isEmpty()){
+            turnEnded2();
+        }
+        else {
+            System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
+            for (Creature crea : app.getLastDeadCrea()) {
+                System.out.println(crea.getName()+" imageview is : "+crea.getPic());
+                ft = new FadeTransition(Duration.millis(3000), crea.getPic());
+
+                ft.setFromValue(1.0);
+                ft.setToValue(0.5);
+                ft.setRate(3);
+                ft.setCycleCount(1);
+                ft.play();
+            }
+            ft.setOnFinished(e -> turnEnded2());
+        }
+    }
+
+    void animCardPlayed(Node node){
+        double initX = node.getLayoutX();
+        double initY = node.getLayoutY();
+
+        FadeTransition ft = new FadeTransition(Duration.millis(3000), node);
+        ft.setFromValue(1.0);
+        ft.setToValue(0);
+        ft.setRate(3);
+        ft.setCycleCount(1);
+
+        TranslateTransition translateTransition =
+                new TranslateTransition(Duration.millis(2000), node);
+        translateTransition.setFromY(initY);
+        translateTransition.setToY(initY-50);
+        translateTransition.setCycleCount(1);
+
+        RotateTransition rotateTransition =
+                new RotateTransition(Duration.millis(2000), node);
+        rotateTransition.setByAngle(360f);
+        rotateTransition.setCycleCount(1);
+
+        ScaleTransition scaleTransition =
+                new ScaleTransition(Duration.millis(1000), node);
+        scaleTransition.setToX(1f);
+        scaleTransition.setToY(0.3f);
+        scaleTransition.setCycleCount(2);
+        scaleTransition.setAutoReverse(true);
+
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(
+                ft,
+                translateTransition,
+                rotateTransition,
+                scaleTransition
+        );
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+
+        parallelTransition.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                refreshHand(app.getOpponent());
+            }
+        });
+
+    }
+
+    public void makeItNormal(Node node){
+        // should stop fading player box
+    }
+
     public void initialize() {
         refreshHand(app.getPlayer1());
         refreshHand(app.getPlayer2());
@@ -174,10 +265,19 @@ public class Controller extends Application {
     @FXML
     void playNoCard() {
         app.cardPlayed();
+        refreshBoard(app.getAllCreaOnBoard());
+        refreshDiscard();
         turnEnded();
     }
 
-    void turnEnded() {
+    void turnEnded2() {
+
+        System.out.println("We begin turnEnded2");
+
+        app.getLastDeadCrea().clear();
+
+        refreshBoard(app.getAllCreaOnBoard());
+
         app.verifyVaultOverclock(app.getOpponent());
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
             player2Box.setFill(Color.rgb(173, 237, 125));
@@ -191,10 +291,14 @@ public class Controller extends Application {
         app.setCurrentPlayer(app.getOpponent());
         app.setOpponent(app.getTmpPlayer());
         if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+            makeItFade(player1Box);
+            makeItNormal(player2Box);
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
             setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
         } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
+            makeItFade(player2Box);
+            makeItNormal(player1Box);
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
             setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
@@ -211,7 +315,6 @@ public class Controller extends Application {
         resfreshIGMsg();
         app.checkIfWinner();
     }
-
 
     void refreshDiscard() {
         if (app.getCurrentPlayer().getDiscard().size() > 0) {
@@ -256,13 +359,16 @@ public class Controller extends Application {
         }
     }
 
-    void goPlayCard(Card card, Player currentPlayer, Player opponent) {
+    void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
+            animCardPlayed(cardToMove);
             setIgMsg("");
             app.playCard(card, currentPlayer, opponent);
-            refreshBoard(app.getAllCreaOnBoard());
+            //effect if crea dies
+            //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
             removecardhand(card, currentPlayer);
-            refreshHand(currentPlayer);
+            //refreshHand(currentPlayer); // now in anim
+
             turnEnded();
         } else {
             app.setIgMsg("You have not enough energy,\n choose another card");
@@ -270,7 +376,6 @@ public class Controller extends Application {
         }
         refreshDiscard();
     }
-
 
     void removecardhand(Card card, Player currentPlayer) {
         for (int i = 0; i < currentPlayer.getHand().size(); i++) {
@@ -311,8 +416,7 @@ public class Controller extends Application {
             if (hp > 0) {
                 currHP.setText("HP : " + hp);
                 currAttack.setText("Atk : " + attack);
-            }
-            else{
+            } else {
                 currHP.setText("");
                 currAttack.setText("DEAD");
             }
@@ -338,6 +442,7 @@ public class Controller extends Application {
                 img = currPlayer.getHand().get(i).getImg();
                 pic = new ImageView(img);
                 final Image img0 = img;
+                final ImageView movingPic = pic;
 
                 int index = i;
 
@@ -345,7 +450,7 @@ public class Controller extends Application {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         refreshCurrCard(img0);
-                        if(index < currPlayer.getHand().size()) {
+                        if (index < currPlayer.getHand().size()) {
                             refreshCurrStats(currPlayer.getHand().get(index));
                         }
                     }
@@ -354,7 +459,7 @@ public class Controller extends Application {
                 addCursorEffect(pic);
 
                 pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
+                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent(), movingPic)
                 );
 
                 hand1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -391,6 +496,7 @@ public class Controller extends Application {
 
                 img = currPlayer.getHand().get(i).getImg();
                 pic = new ImageView(img);
+                final ImageView movingPic = pic;
                 final Image img0 = img;
 
                 int index = i;
@@ -399,7 +505,7 @@ public class Controller extends Application {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         refreshCurrCard(img0);
-                        if(index < currPlayer.getHand().size()) {
+                        if (index < currPlayer.getHand().size()) {
                             refreshCurrStats(currPlayer.getHand().get(index));
                         }
                     }
@@ -408,7 +514,7 @@ public class Controller extends Application {
                 addCursorEffect(pic);
 
                 pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent())
+                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent(), movingPic)
                 );
 
                 hand2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -514,6 +620,10 @@ public class Controller extends Application {
             }
         });
 
+        //pic.setId(Integer.toString(card.getIdCode()));
+
+        ((Creature)card).setPic(pic);
+
         addCursorEffect(pic);
 
         boardG1.add(pic, j, 0);
@@ -550,6 +660,8 @@ public class Controller extends Application {
                 refreshCurrStats(card);
             }
         });
+
+        ((Creature)card).setPic(pic);
 
         addCursorEffect(pic);
 

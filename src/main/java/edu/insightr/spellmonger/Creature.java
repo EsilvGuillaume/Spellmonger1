@@ -1,6 +1,9 @@
 package edu.insightr.spellmonger;
 
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,12 +19,19 @@ public abstract class Creature extends Card {
     private int played;
     private boolean putOnBoard;
 
+    private ImageView pic;
+
     protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
     private static ArrayList<Creature> temp;
 
     private void killCreature(Creature creatures) {
         allCreatures.remove(this);
+
+        //Controller ctrl = new Controller(); // test
+        //ctrl.creaDies(this.getPic(), this); // test
+
         app.getAllCreaOnBoard().remove(this);
+        app.getLastDeadCrea().add(this);
         if (this.getOwner() == app.getCurrentPlayer().getName()) {
             app.getCurrentPlayer().getDiscard().add(this);
         } else if (this.getOwner() == app.getOpponent().getName()) {
@@ -219,5 +229,13 @@ public abstract class Creature extends Card {
 
     public void setPutOnBoard(boolean putOnBoard) {
         this.putOnBoard = putOnBoard;
+    }
+
+    public ImageView getPic() {
+        return pic;
+    }
+
+    public void setPic(ImageView pic) {
+        this.pic = pic;
     }
 }

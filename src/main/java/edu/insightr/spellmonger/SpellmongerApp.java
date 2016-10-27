@@ -23,6 +23,7 @@ public class SpellmongerApp {
     private String winner = null;
     private List<Creature> playerCreaOnBoard = new ArrayList<>();
     private List<Creature> allCreaOnBoard = new ArrayList<>();
+    private List<Creature> lastDeadCrea = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -279,4 +280,11 @@ public class SpellmongerApp {
         this.allCreaOnBoard = allCreaOnBoard;
     }
 
+    public List<Creature> getLastDeadCrea() {
+        return lastDeadCrea;
+    }
+
+    public void setLastDeadCrea(List<Creature> lastDeadCrea) {
+        this.lastDeadCrea = lastDeadCrea;
+    }
 }
