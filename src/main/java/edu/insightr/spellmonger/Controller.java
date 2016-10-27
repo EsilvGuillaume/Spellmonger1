@@ -123,7 +123,6 @@ public class Controller extends Application {
     }
 
     void turnEnded(){ // actually just checks dead crea then call real end of turn method (go rename)
-
         System.out.println("turnEnded entered - checking deaths");
 
         FadeTransition ft = new FadeTransition();
