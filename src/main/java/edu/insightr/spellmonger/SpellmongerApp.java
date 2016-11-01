@@ -16,7 +16,7 @@ public class SpellmongerApp {
     private Player player2;
     private boolean onePlayerDead = false;
     private Player currentPlayer;
-    private Player opponent;
+    private Player opponent; 
     private Player tmpPlayer;
     private int currentCardNumber = 0;
     private int roundCounter = 1;
