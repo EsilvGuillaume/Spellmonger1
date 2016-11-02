@@ -1,33 +1,49 @@
 package edu.insightr.spellmonger;
 
+import javafx.scene.image.Image;
+
+import java.util.Random;
+
 public abstract class Card {
 
     private String name;
     private boolean draw;
     private String owner;
     private int cost;
+    private int idCode;
+    int cardCreatedCount = 0;
+    private Image img;
 
     public Card(String name, String owner) {
+        //Random rand = new Random();
         setName(name);
         setDraw(false);
         setOwner(owner);
+        setIdCode(System.identityHashCode(this) + cardCreatedCount);
+        cardCreatedCount++;
+        //setImg(new Image(getClass().getResourceAsStream("/img/"+this.getName()+"-card.jpg")));
     }
 
     public Card(String name) {
         setName(name);
         setDraw(false);
         setOwner("");
+        setIdCode(this.hashCode());
+        cardCreatedCount++;
+        //setImg(new Image(getClass().getResourceAsStream("/img/"+name+"-card.jpg")));
     }
 
     public Card() {
         setName("");
         setDraw(false);
         setOwner("");
+        setIdCode(this.hashCode());
+        cardCreatedCount++;
     }
 
     @Override
     public String toString() {
-        return "name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
+        return "code : "+this.idCode+", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
     }
 
     public void draw(Player player) {
@@ -67,5 +83,21 @@ public abstract class Card {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public int getIdCode() {
+        return idCode;
+    }
+
+    public void setIdCode(int idCode) {
+        this.idCode = idCode;
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 }

@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -9,17 +11,19 @@ public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
     static SpellmongerApp app = new SpellmongerApp();
+    private static String igMsg = "Play !";
     private Player player1;
     private Player player2;
     private boolean onePlayerDead = false;
     private Player currentPlayer;
-    private Player opponent;
+    private Player opponent; 
     private Player tmpPlayer;
     private int currentCardNumber = 0;
     private int roundCounter = 1;
     private String winner = null;
     private List<Creature> playerCreaOnBoard = new ArrayList<>();
     private List<Creature> allCreaOnBoard = new ArrayList<>();
+    private List<Creature> lastDeadCrea = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -34,6 +38,14 @@ public class SpellmongerApp {
 
     }
 
+    public static String getIgMsg() {
+        return igMsg;
+    }
+
+    public static void setIgMsg(String igMsg) {
+        SpellmongerApp.igMsg = igMsg;
+    }
+
     public void drawFirstTwoCards() {
         currentPlayer.getDeckInfo().getDeck().get(0).draw(currentPlayer);
         currentPlayer.getDeckInfo().getDeck().get(1).draw(currentPlayer);
@@ -41,7 +53,7 @@ public class SpellmongerApp {
         opponent.getDeckInfo().getDeck().get(1).draw(opponent);
     }
 
-    public void endOfTurn(Player currentPlayer, Player opponent) { //, Player player1, Player player2){
+    public void endOfTurn(Player currentPlayer, Player opponent) {
         logger.info(opponent.getName() + " has " + opponent.getHp() + " life points and " + currentPlayer.getName() + " has " + currentPlayer.getHp() + " life points ");
 
         if (currentPlayer.getHp() <= 0) {
@@ -66,7 +78,7 @@ public class SpellmongerApp {
 
     public void drawACard(Player currentPlayer, Player opponent) {
 
-        verifyVaultOverclock(currentPlayer);
+        igMsg = "";
 
         Card nextCard = currentPlayer.getDeckInfo().getDeck().get(0);
 
@@ -83,18 +95,13 @@ public class SpellmongerApp {
         if (nextCard != null) {
             System.out.println(currentPlayer.getName() + " draws " + nextCard.getName());
             nextCard.draw(currentPlayer);
-            /*if (nextCard instanceof Rituol || nextCard instanceof Enchantment) {
-                if (currentPlayer.equals(getPlayer1()))
-                    getDiscard1().add(nextCard);
-                else
-                    getDiscard2().add(nextCard);
-            }*/
         }
 
         displayCardInHand(currentPlayer);
+        igMsg = currentPlayer.getName()+", choose a card to play";
+    }
 
-        askToPlay();
-
+    void cardPlayed(){
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
         setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
@@ -116,40 +123,30 @@ public class SpellmongerApp {
         }
     }
 
+    void checkIfWinner() {
+        if (app.isOnePlayerDead()) {
+            System.out.println("THE WINNER IS " + app.getWinner() + " !!!");
+            System.exit(0);
+        } else {
+            System.out.println("*****ROUND " + app.getRoundCounter());
+        }
+    }
+
     void displayCardInHand(Player player) {
         System.out.println(player.getName() + "'s cards in hand :");
         int i = 1;
         for (Card card : player.getHand()) {
-            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")");
+            System.out.println(i + "]" + card.getName() + " (" + card.getCost() + ")"); // hash = "+card.getIdCode());
             i++;
         }
     }
 
-    void askToPlay() {
-        Scanner reader = new Scanner(System.in);
-        Card cardToPlay = null;
-        int cardToPlayNumber = 0;
-        do {
-            System.out.println("What card do you play ? If none, enter 0");
-            cardToPlayNumber = reader.nextInt();
-            if (cardToPlayNumber == 0) {
-                //System.out.println("No card played");
-                break;
-            } else if (cardToPlayNumber > 0 && cardToPlayNumber - 1 < currentPlayer.getHand().size()) {
-                cardToPlay = currentPlayer.getHand().get(cardToPlayNumber - 1);
-                //playCard(cardToPlay, currentPlayer, opponent);
-                if (playCard(cardToPlay, currentPlayer, opponent))
-                    break; // remove if we can play several cards per turn
-            } else {
-                System.out.println("This card number is not valid.");
-            }
-        } while (cardToPlayNumber != 0 || cardToPlay != null); // == null if several cards can be played each turn
-    }
-
-    static boolean playCard(Card card, Player currentPlayer, Player opponent) {
+     boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
+                ((Creature) card).setPlayed(1);
                 //put on board?
+                ((Creature) card).setPutOnBoard(true);
                 //((Creature) card).attack(opponent); //creature will attack only once at the end of turn
             } else if (card instanceof Rituol) {
                 if (card instanceof EnergyDrain) {
@@ -166,10 +163,16 @@ public class SpellmongerApp {
             }
             currentPlayer.setEnergy(currentPlayer.getEnergy() - card.getCost());
             currentPlayer.getHand().remove(card);
-            currentPlayer.getDiscard().add(card);
+            if (!(card instanceof Creature)) {
+                currentPlayer.getDiscard().add(card);
+            }
+
+            cardPlayed();
+
             return true;
-        } else { 
+        } else {
             System.out.println(card.getName() + " cost is too high to be played !");
+            setIgMsg(card.getName()+"'s cost is too high to be played !");
             return false;
         }
     }
@@ -179,9 +182,12 @@ public class SpellmongerApp {
             int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
             if (randNumber > 35) {
                 currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+                System.out.println(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
+                setIgMsg(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
             } else {
                 currentPlayer.setVaultOverclocking(false);
                 System.out.println(currentPlayer.getName() + " loses his overclock of energy");
+                setIgMsg(currentPlayer.getName() + " loses his overclock of energy");
             }
         }
     }
@@ -272,5 +278,13 @@ public class SpellmongerApp {
 
     public void setAllCreaOnBoard(List<Creature> allCreaOnBoard) {
         this.allCreaOnBoard = allCreaOnBoard;
+    }
+
+    public List<Creature> getLastDeadCrea() {
+        return lastDeadCrea;
+    }
+
+    public void setLastDeadCrea(List<Creature> lastDeadCrea) {
+        this.lastDeadCrea = lastDeadCrea;
     }
 }

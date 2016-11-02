@@ -1,6 +1,8 @@
 package edu.insightr.spellmonger;
 
 
+import javafx.scene.image.Image;
+
 public class EnergyDrain extends Rituol {
 
     private String effectDescription = "Energy Drain - consume 2 energies to your opponent and you win 2 energies";
@@ -10,11 +12,13 @@ public class EnergyDrain extends Rituol {
         super(name, owner);
         bonus = true;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/energy-drain-card.jpg")));
     }
 
     public EnergyDrain() {
         bonus = true;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/energy-drain-card.jpg")));
     }
 
     @Override

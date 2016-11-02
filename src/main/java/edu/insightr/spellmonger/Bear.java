@@ -1,5 +1,7 @@
 package edu.insightr.spellmonger;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,28 +11,20 @@ public class Bear extends Creature {
     //private String owner;
 
     public Bear(String name, String owner) {
-        super(name + " [Bear]", owner);
+        super(name, owner);
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);
         this.setCost(3);
+        setImg(new Image(getClass().getResourceAsStream("/img/bear-card.jpg")));
     }
 
     public Bear(String name) {
-        super(name + " [Bear]", "");
+        super(name, "");
         this.setHp(3);
         this.setAttack(3);
         this.setAlive(true);
         this.setCost(3);
+        setImg(new Image(getClass().getResourceAsStream("/img/bear-card.jpg")));
     }
-
-    /*@Override
-    public String getOwner() {
-        return owner;
-    }
-
-    @Override
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }*/
 }

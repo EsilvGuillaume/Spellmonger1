@@ -1,10 +1,9 @@
 package edu.insightr.spellmonger;
 
+import javafx.scene.image.Image;
+
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 
-/**
- * Created by Guillaume on 02/10/2016.
- */
 public class Curse extends Rituol {
 
     private String effectDescription = "Curse - Deals 3 damage to your opponent";
@@ -14,11 +13,13 @@ public class Curse extends Rituol {
         super(name, owner);
         bonus = false;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/curse-card.jpg")));
     }
 
     public Curse() {
         bonus = false;
         this.setCost(1);
+        setImg(new Image(getClass().getResourceAsStream("/img/curse-card.jpg")));
     }
 
     public void play(Player opponent) {
