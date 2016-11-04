@@ -32,7 +32,7 @@ public class GamePhase {
     public void the_gets_a_new_card_from_his_her_deck_and_adds_it_to_his_her_existing_creatures(String arg1) throws Throwable {
         int hand = player.getHand().size();
         if (player.getName() == arg1)
-            Assert.assertThat(hand, is(equalTo(hand=1)));
+            Assert.assertThat(hand, is(equalTo(hand+1)));
     }
 
     @Then("^if the \"([^\"]*)\" has enough energy points to summon a creature he/she choose the corresponding creature and summon it$")
