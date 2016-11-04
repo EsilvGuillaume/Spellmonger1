@@ -11,22 +11,22 @@ Feature: SpellmongerGame
     And "oppositePlayer"'s draw button is diabled
 
     Then the "currentPlayer" gets a new card from his/her deck
-    And the "currentPlayer" adds it to his/her existing creatures
+    Then the "currentPlayer" adds it to his/her existing creatures
     Then if the "currentPlayer" has enough energy points to summon a creature
     Then the "currentPlayer" choose the corresponding creature and summon it
 
-    And if there are no creatures on the opposite field
+    Then if there are no creatures on the opposite field
     Then the creatures summoned by the the "currentPlayer" attack directly the "oppositePlayer"
 
-    But if there are creatures on the opposite field
+    Then if there are creatures on the opposite field
     Then the battle phase between creatures begins
-    And after the battle phase the remaining creatures deal their remaining strength as damage
+    Then after the battle phase the remaining creatures deal their remaining strength as damage
 
-    But if the "currentPlayer" wants to summon a ritual
-    Then he/she can sommun it directly and profits the effects of the ritual
+    Then if the "currentPlayer" wants to summon a ritual
+    Then he/she can summon it directly and profits the effects of the ritual
 
     Then the "oppositePlayer" becomes the "currentPlayer" and his/her draw button is enabled
-    And both "currentPlayer" and "oppositePlayer" get 1 energy point
+    Then both "currentPlayer" and "oppositePlayer" get 1 energy point
 
   Scenario: EndGame
     When a "player"'s life points attain 0
