@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-public abstract class Card {
+public class Card {
 
     private String name;
     private boolean draw;

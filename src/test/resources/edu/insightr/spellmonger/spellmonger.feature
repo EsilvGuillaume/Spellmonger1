@@ -10,10 +10,8 @@ Feature: SpellmongerGame
     Given the "currentPlayer" is the one who clicks first the draw button
     And "oppositePlayer"'s draw button is disabled
 
-    Then the "currentPlayer" gets a new card from his/her deck
-    Then the "currentPlayer" adds it to his/her existing creatures
-    Then if the "currentPlayer" has enough energy points to summon a creature
-    Then the "currentPlayer" choose the corresponding creature and summon it
+    Then the "currentPlayer" gets a new card from his/her deck and adds it to his/her existing creatures
+    Then if the "currentPlayer" has enough energy points to summon a creature he/she choose the corresponding creature and summon it
 
     Then if there are no creatures on the opposite field
     Then the creatures summoned by the the "currentPlayer" attack directly the "oppositePlayer"

@@ -3,9 +3,13 @@ package edu.insightr.spellmonger;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Created by Harry on 01/11/2016.
@@ -24,10 +28,10 @@ public class GameInitialisation {
         List<Card> hand = new ArrayList<>(arg2);
         if(player.getName() == "Alice")
         {
-            player.setHp(arg1);
-            player.setHand(hand);
-            player.setEnergy(arg3);
-            player.setDeckInfo(new Deck(arg4, ""));
+            Assert.assertThat(player.getHp(), is(equalTo(arg1)));
+            Assert.assertThat(player.getHand(), is(equalTo(hand)));
+            Assert.assertThat(player.getEnergy(), is(equalTo(arg3)));
+            Assert.assertThat(player.getDeckInfo(), is(equalTo(new Deck(arg4, ""))));
         }
     }
 
@@ -36,10 +40,10 @@ public class GameInitialisation {
         List<Card> hand = new ArrayList<>(arg2);
         if(player.getName() == "Bob")
         {
-            player.setHp(arg1);
-            player.setHand(hand);
-            player.setEnergy(arg3);
-            player.setDeckInfo(new Deck(arg4, ""));
+            Assert.assertThat(player.getHp(), is(equalTo(arg1)));
+            Assert.assertThat(player.getHand(), is(equalTo(hand)));
+            Assert.assertThat(player.getEnergy(), is(equalTo(arg3)));
+            Assert.assertThat(player.getDeckInfo(), is(equalTo(new Deck(arg4, ""))));
         }
     }
 
