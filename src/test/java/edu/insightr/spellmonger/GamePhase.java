@@ -8,7 +8,6 @@ import cucumber.api.java.en.Then;
  * Created by Harry on 01/11/2016.
  */
 public class GamePhase {
-
     @Given("^the \"([^\"]*)\" is the one who clicks first the draw button$")
     public void the_is_the_one_who_clicks_first_the_draw_button(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
@@ -81,8 +80,8 @@ public class GamePhase {
         throw new PendingException();
     }
 
-    @Then("^he/she can sommun it directly and profits the effects of the ritual$")
-    public void he_she_can_sommun_it_directly_and_profits_the_effects_of_the_ritual() throws Throwable {
+    @Then("^he/she can summon it directly and profits the effects of the ritual$")
+    public void he_she_can_summon_it_directly_and_profits_the_effects_of_the_ritual() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
@@ -98,5 +97,4 @@ public class GamePhase {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
-
 }
