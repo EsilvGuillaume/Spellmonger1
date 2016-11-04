@@ -24,13 +24,6 @@
     <dependencies>
         <!-- LOGS -->
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java8</artifactId>
-            <version>1.2.4</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency> 
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -41,6 +34,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>1.2.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

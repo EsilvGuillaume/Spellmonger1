@@ -14,8 +14,8 @@ public class GamePhase {
         throw new PendingException();
     }
 
-    @Given("^\"([^\"]*)\"'s draw button is diabled$")
-    public void s_draw_button_is_diabled(String arg1) throws Throwable {
+    @Given("^\"([^\"]*)\"'s draw button is disabled$")
+    public void s_draw_button_is_disabled(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
@@ -64,6 +64,12 @@ public class GamePhase {
 
     @Then("^the battle phase between creatures begins$")
     public void the_battle_phase_between_creatures_begins() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Then("^if there is a draw between creatures strenght then corresponding creatures make no move$")
+    public void if_there_is_a_draw_between_creatures_strenght_then_corresponding_creatures_make_no_move() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
