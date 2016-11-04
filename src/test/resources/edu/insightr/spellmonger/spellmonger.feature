@@ -8,7 +8,7 @@ Feature: SpellmongerGame
 
   Scenario: GamePhase
     Given the "currentPlayer" is the one who clicks first the draw button
-    And "oppositePlayer"'s draw button is diabled
+    And "oppositePlayer"'s draw button is disabled
 
     Then the "currentPlayer" gets a new card from his/her deck
     Then the "currentPlayer" adds it to his/her existing creatures
