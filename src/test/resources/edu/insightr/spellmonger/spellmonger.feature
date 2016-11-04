@@ -8,7 +8,7 @@ Feature: SpellmongerGame
 
   Scenario: GamePhase
     Given the "currentPlayer" is the one who clicks first the draw button
-    And "oppositePlayer"'s draw button is diabled
+    And "oppositePlayer"'s draw button is disabled
 
     Then the "currentPlayer" gets a new card from his/her deck
     Then the "currentPlayer" adds it to his/her existing creatures
@@ -20,6 +20,7 @@ Feature: SpellmongerGame
 
     Then if there are creatures on the opposite field
     Then the battle phase between creatures begins
+    Then if there is a draw between creatures strenght then corresponding creatures make no move
     Then after the battle phase the remaining creatures deal their remaining strength as damage
 
     Then if the "currentPlayer" wants to summon a ritual
