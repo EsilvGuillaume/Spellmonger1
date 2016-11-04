@@ -17,13 +17,21 @@
     </properties>
 
     <dependencyManagement>
-        <dependencies>
+        <dependencies> 
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <!-- LOGS -->
+
         <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java8</artifactId>
+            <version>1.2.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency> 
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
