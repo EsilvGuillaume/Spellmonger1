@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 
 public class Blessing extends Rituol {
 
+    //TODO : be careful to unused code !
+
     private String effectDescription = "Blessing - Restores 3 hp to you";
     private boolean bonus;
 
