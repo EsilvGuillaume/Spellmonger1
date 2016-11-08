@@ -46,28 +46,18 @@ public class GamePhase {
 
     }
 
-    @Then("^if there are no creatures on the opposite field$")
-    public void if_there_are_no_creatures_on_the_opposite_field() throws Throwable {
+    @Then("^if there are no creatures on the opposite field the creatures summoned by the the \"([^\"]*)\" attack directly the \"([^\"]*)\"$")
+    public void if_there_are_no_creatures_on_the_opposite_field_the_creatures_summoned_by_the_the_attack_directly_the(String arg1, String arg2) throws Throwable {
         System.out.println("");
     }
 
-    @Then("^the creatures summoned by the the \"([^\"]*)\" attack directly the \"([^\"]*)\"$")
-    public void the_creatures_summoned_by_the_the_attack_directly_the(String arg1, String arg2) throws Throwable {
+    @Then("^if there are creatures on the opposite field the battle phase between creatures begins$")
+    public void if_there_are_creatures_on_the_opposite_field_the_battle_phase_between_creatures_begins() throws Throwable {
         System.out.println("");
     }
 
-    @Then("^if there are creatures on the opposite field$")
-    public void if_there_are_creatures_on_the_opposite_field() throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^the battle phase between creatures begins$")
-    public void the_battle_phase_between_creatures_begins() throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^if there is a draw between creatures strenght then corresponding creatures make no move$")
-    public void if_there_is_a_draw_between_creatures_strenght_then_corresponding_creatures_make_no_move() throws Throwable {
+    @Then("^if there is a draw between creatures strength then corresponding creatures make no move$")
+    public void if_there_is_a_draw_between_creatures_strength_then_corresponding_creatures_make_no_move() throws Throwable {
         System.out.println("");
     }
 
@@ -76,13 +66,8 @@ public class GamePhase {
         System.out.println("");
     }
 
-    @Then("^if the \"([^\"]*)\" wants to summon a ritual$")
-    public void if_the_wants_to_summon_a_ritual(String arg1) throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^he/she can summon it directly and profits the effects of the ritual$")
-    public void he_she_can_summon_it_directly_and_profits_the_effects_of_the_ritual() throws Throwable {
+    @Then("^if the \"([^\"]*)\" wants to summon a ritual he/she can summon it directly and profits the effects of the ritual$")
+    public void if_the_wants_to_summon_a_ritual_he_she_can_summon_it_directly_and_profits_the_effects_of_the_ritual(String arg1) throws Throwable {
         System.out.println("");
     }
 

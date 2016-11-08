@@ -13,16 +13,13 @@ Feature: SpellmongerGame
     Then the "currentPlayer" gets a new card from his/her deck and adds it to his/her existing creatures
     Then if the "currentPlayer" has enough energy points to summon a creature he/she choose the corresponding creature and summon it
 
-    Then if there are no creatures on the opposite field
-    Then the creatures summoned by the the "currentPlayer" attack directly the "oppositePlayer"
+    Then if there are no creatures on the opposite field the creatures summoned by the the "currentPlayer" attack directly the "oppositePlayer"
 
-    Then if there are creatures on the opposite field
-    Then the battle phase between creatures begins
-    Then if there is a draw between creatures strenght then corresponding creatures make no move
+    Then if there are creatures on the opposite field the battle phase between creatures begins
+    Then if there is a draw between creatures strength then corresponding creatures make no move
     Then after the battle phase the remaining creatures deal their remaining strength as damage
 
-    Then if the "currentPlayer" wants to summon a ritual
-    Then he/she can summon it directly and profits the effects of the ritual
+    Then if the "currentPlayer" wants to summon a ritual he/she can summon it directly and profits the effects of the ritual
 
     Then the "oppositePlayer" becomes the "currentPlayer" and his/her draw button is enabled
     Then both "currentPlayer" and "oppositePlayer" get 1 energy point
