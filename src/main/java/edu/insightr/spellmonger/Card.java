@@ -43,7 +43,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "code : "+this.idCode+", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
+        return "code : " + this.idCode + ", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
     }
 
     public void draw(Player player) {
