@@ -3,7 +3,7 @@ package edu.insightr.spellmonger;
 
 import javafx.scene.image.Image;
 
-public class Eagle extends Creature {
+public class Eagle extends Flying {
 
     public Eagle(String name) {
         super(name, "");
