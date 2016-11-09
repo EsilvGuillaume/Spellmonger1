@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public class Bear extends Creature {
-
+    // TODO : no gui reference in the model. Don't define the images into the model.
     //private String owner;
 
     public Bear(String name, String owner) {
