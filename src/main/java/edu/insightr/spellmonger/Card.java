@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-public abstract class Card {
+public class Card {
 
     private String name;
     private boolean draw;
@@ -43,7 +43,7 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return "code : "+this.idCode+", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
+        return "code : " + this.idCode + ", name : " + this.name + ", draw : " + this.draw + ", owner : " + this.owner;
     }
 
     public void draw(Player player) {

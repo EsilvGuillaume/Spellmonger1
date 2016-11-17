@@ -48,6 +48,9 @@ import static java.lang.Thread.sleep;
 
 public class Controller extends Application {
 
+    // TODO : split Controller, View and Model
+    // TODO : clean your code, too many warnings !
+
     @Override
     public void start(final Stage primaryStage) {
         try {

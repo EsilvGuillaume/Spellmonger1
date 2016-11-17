@@ -11,7 +11,7 @@ import java.util.Iterator;
 import static edu.insightr.spellmonger.SpellmongerApp.*;
 
 
-public abstract class Creature extends Card {
+public class Creature extends Card {
 
     private int hp;
     private int attack;

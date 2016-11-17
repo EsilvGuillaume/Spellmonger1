@@ -42,7 +42,7 @@ public class Deck {
 
         int cardMissingNumber = size - (uniqueCreaNumber * differentCrea + uniqueRituolNumber * differentRituOrEnch);
 
-        for (int i = 0; i < uniqueCreaNumber; i++){
+        for (int i = 0; i < uniqueCreaNumber; i++) {
             Bear bear = new Bear("bear", playerName);
             Eagle eagle = new Eagle("eagle", playerName);
             Wolf wolf = new Wolf("wolf", playerName);
@@ -56,10 +56,10 @@ public class Deck {
             addToList(possibleCards, dragon, uniqueCreaNumber);
         }
 
-        for (int i = 0; i < uniqueRituolNumber; i++){
+        for (int i = 0; i < uniqueRituolNumber; i++) {
             Curse curse = new Curse("curse", playerName);
             Blessing blessing = new Blessing("blessing", playerName);
-            EnergyDrain energyDrain = new EnergyDrain("energy drain", playerName);
+            EnergyDrain energyDrain = new EnergyDrain("energy drain");
             VaultOverclocking vault = new VaultOverclocking("vault overclocking", playerName);
             SkinStrengthening skinStrength = new SkinStrengthening("skin strengthening", playerName);
 

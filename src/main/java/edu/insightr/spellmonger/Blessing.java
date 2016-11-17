@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 
 public class Blessing extends Rituol {
 
+    //TODO : be careful to unused code !
+
     private String effectDescription = "Blessing - Restores 3 hp to you";
     private boolean bonus;
 
@@ -30,6 +32,7 @@ public class Blessing extends Rituol {
             lifeGain = 20 - currentPlayer.getHp();
             currentPlayer.setHp(20);
         }
+        // TODO : don't use the Standard Output, prefer Loggers. Sometimes there's no standard output
         System.out.println(this.getName() + " used, " + currentPlayer.getName() + " has regenerated " + lifeGain + " hp !");
     }
 
