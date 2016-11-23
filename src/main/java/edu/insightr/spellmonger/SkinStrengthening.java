@@ -2,7 +2,6 @@ package edu.insightr.spellmonger;
 
 import javafx.scene.image.Image;
 
-import static edu.insightr.spellmonger.SpellmongerApp.app;
 
 public class SkinStrengthening extends Rituol {
 

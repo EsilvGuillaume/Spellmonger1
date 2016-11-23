@@ -3,11 +3,7 @@ package edu.insightr.spellmonger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-
-import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable,ControlledScreen{

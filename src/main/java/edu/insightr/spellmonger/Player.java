@@ -41,13 +41,7 @@ public class Player {
         this.discard = new ArrayList<>();
     }
 
-    public static Player getCurrentPlayer() {
-        return currentPlayer;
-    }
 
-    public static void setCurrentPlayer(Player currentPlayer) {
-        Player.currentPlayer = currentPlayer;
-    }
 
     public static Player getCurrentOpponent() {
         return currentOpponent;

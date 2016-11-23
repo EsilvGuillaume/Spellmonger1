@@ -4,7 +4,6 @@ package edu.insightr.spellmonger;
 public abstract class Rituol extends Card {
 
     private int cost = 1;
-    String effectDescription = "";
     private boolean bonus = false; // false will indicate it is a malus
 
     public Rituol(String name, String owner) {
@@ -29,9 +28,6 @@ public abstract class Rituol extends Card {
         return bonus;
     }
 
-    public void setBonus(boolean bonus) {
-        this.bonus = bonus;
-    }
 
     @Override
     public int getCost() {

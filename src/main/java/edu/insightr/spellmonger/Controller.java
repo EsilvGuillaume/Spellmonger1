@@ -9,42 +9,30 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+//import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-//import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javafx.util.Duration;
 
 import static edu.insightr.spellmonger.SpellmongerApp.app;
 import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
-import static java.lang.Thread.currentThread;
-import static java.lang.Thread.sleep;
+
 
 public class Controller extends Application {
 
@@ -103,8 +91,8 @@ public class Controller extends Application {
     @FXML
     private HBox boardP1, boardP2;
 
-    @FXML
-    private ProgressBar TimeToPlay;
+    //@FXML
+    //private ProgressBar TimeToPlay;
     @FXML
     private GridPane boardG1, boardG2;
 
@@ -115,7 +103,7 @@ public class Controller extends Application {
         launch(args);
     }
 
-    void makeItFade(Node node){
+    private void makeItFade(Node node){
         FadeTransition ft = new FadeTransition(Duration.millis(5000), node);
         ft.setFromValue(1.0);
         ft.setToValue(0.5);
@@ -125,7 +113,7 @@ public class Controller extends Application {
         ft.play();
     }
 
-    void turnEnded(){ // actually just checks dead crea then call real end of turn method (go rename)
+    private void turnEnded(){ // actually just checks dead crea then call real end of turn method (go rename)
         System.out.println("turnEnded entered - checking deaths");
 
         FadeTransition ft = new FadeTransition();
@@ -149,8 +137,7 @@ public class Controller extends Application {
         }
     }
 
-    void animCardPlayed(Node node){
-        double initX = node.getLayoutX();
+    private void animCardPlayed(Node node){
         double initY = node.getLayoutY();
 
         FadeTransition ft = new FadeTransition(Duration.millis(3000), node);
@@ -200,12 +187,12 @@ public class Controller extends Application {
         // should stop fading player box
     }
 
-    public void initialize() {
+    /*public void initialize() {
         refreshHand(app.getPlayer1());
         refreshHand(app.getPlayer2());
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         displayInitialPlayers();
-    }
+    }*/
 
     void addCursorEffect(Node node) {
         Image imageCursorExit = new Image("img/cursor-basic.png");
@@ -272,7 +259,7 @@ public class Controller extends Application {
         turnEnded();
     }
 
-    void turnEnded2() {
+    private void turnEnded2() {
 
         System.out.println("We begin turnEnded2");
 
@@ -318,7 +305,7 @@ public class Controller extends Application {
         app.checkIfWinner();
     }
 
-    void refreshDiscard() {
+   private void refreshDiscard() {
         if (app.getCurrentPlayer().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
             Image image = lastDiscard.getImg();
@@ -361,7 +348,7 @@ public class Controller extends Application {
         }
     }
 
-    void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
+   private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             animCardPlayed(cardToMove);
             setIgMsg("");
@@ -379,7 +366,7 @@ public class Controller extends Application {
         refreshDiscard();
     }
 
-    void removecardhand(Card card, Player currentPlayer) {
+    private void removecardhand(Card card, Player currentPlayer) {
         for (int i = 0; i < currentPlayer.getHand().size(); i++) {
             if (card == currentPlayer.getHand().get(i)) {
                 currentPlayer.getHand().remove(i);
@@ -387,23 +374,14 @@ public class Controller extends Application {
         }
     }
 
-    boolean checkcardhand(Card card, Player currentPlayer) {
-        for (int i = 0; i < currentPlayer.getHand().size(); i++) {
-            if (card == currentPlayer.getHand().get(i)) {
 
-                return true;
-
-            }
-        }
-        return false;
-    }
 
     @FXML
-    public void refreshCurrCard(Image img) {
+    private void refreshCurrCard(Image img) {
         currentCard.setImage(img);
     }
 
-    void resfreshIGMsg() {
+   private void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
     }
 
@@ -411,7 +389,7 @@ public class Controller extends Application {
         gameMsg.setText(SpellmongerApp.getIgMsg());
     }
 
-    void refreshCurrStats(Card card) {
+    private void refreshCurrStats(Card card) {
         if (card instanceof Creature) {
             int hp = ((Creature) card).getHp();
             int attack = ((Creature) card).getAttack();
@@ -562,7 +540,7 @@ public class Controller extends Application {
         }
     }
 
-    public void displayBoard(List<Creature> creaOnBoard) {
+    private void displayBoard(List<Creature> creaOnBoard) {
 
         board1.setContent(null);
         board2.setContent(null);

@@ -1,15 +1,13 @@
 package edu.insightr.spellmonger;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     public static String Menu_ID = "MENU";
-    public static String Menu_FILE = "/menu.fxml";
+    private static String Menu_FILE = "/menu.fxml";
 
     public static String Score_ID = "SCORE";
     public static String Score_FILE = "/score.fxml";

@@ -17,11 +17,6 @@ public class Blessing extends Rituol {
         setImg(new Image(getClass().getResourceAsStream("/img/blessing-card.jpg")));
     }
 
-    public Blessing() {
-        bonus = true;
-        this.setCost(1);
-        setImg(new Image(getClass().getResourceAsStream("/img/blessing-card.jpg")));
-    }
 
     public void play(Player currentPlayer) {
         int lifeGain = 0;

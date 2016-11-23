@@ -1,6 +1,5 @@
-package edu.insightr.spellmonger;/**
- * Created by aissa on 19/10/2016.
- */
+package edu.insightr.spellmonger;
+
 
 import javafx.application.Application;
 //import javafx.event.ActionEvent;
@@ -22,9 +21,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Font;
 
-import javax.swing.*;
-//import javafx.scene.layout.StackPane;
-//import javafx.scene.layout.HBox;
 
 
 

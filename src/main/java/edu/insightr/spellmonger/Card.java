@@ -2,8 +2,6 @@ package edu.insightr.spellmonger;
 
 import javafx.scene.image.Image;
 
-import java.util.Random;
-
 public class Card {
 
     private String name;
@@ -11,7 +9,7 @@ public class Card {
     private String owner;
     private int cost;
     private int idCode;
-    int cardCreatedCount = 0;
+    private int cardCreatedCount = 0;
     private Image img;
 
     public Card(String name, String owner) {
@@ -65,7 +63,7 @@ public class Card {
         return draw;
     }
 
-    public void setDraw(boolean draw) {
+    private void setDraw(boolean draw) {
         this.draw = draw;
     }
 
@@ -85,11 +83,7 @@ public class Card {
         this.cost = cost;
     }
 
-    public int getIdCode() {
-        return idCode;
-    }
-
-    public void setIdCode(int idCode) {
+    private void setIdCode(int idCode) {
         this.idCode = idCode;
     }
 

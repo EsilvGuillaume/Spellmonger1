@@ -1,6 +1,5 @@
 package edu.insightr.spellmonger;
 
-import edu.insightr.spellmonger.Tools;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

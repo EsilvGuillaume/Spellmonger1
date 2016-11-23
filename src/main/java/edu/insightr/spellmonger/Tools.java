@@ -1,14 +1,10 @@
 package edu.insightr.spellmonger;
 
-import  edu.insightr.spellmonger.Joueur;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 

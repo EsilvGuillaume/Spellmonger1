@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Deck {
 
-    Random randomGenerator;
+    private Random randomGenerator;
 
     private String deckOwner; // type Player?
     private int size;
@@ -20,7 +20,7 @@ public class Deck {
         this.setDeckOwner(playerName);
     }
 
-    public void addToList(List<Card> list, Card card, int dupli) {
+    private void addToList(List<Card> list, Card card, int dupli) {
         for (int i = 0; i < dupli; i++) {
             card.setOwner(deckOwner);
             list.add(card);

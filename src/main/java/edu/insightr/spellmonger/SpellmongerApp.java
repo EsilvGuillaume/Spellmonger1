@@ -1,9 +1,6 @@
 package edu.insightr.spellmonger;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import org.apache.log4j.Logger;
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -132,7 +129,7 @@ public class SpellmongerApp {
         }
     }
 
-    void displayCardInHand(Player player) {
+    private void displayCardInHand(Player player) {
         System.out.println(player.getName() + "'s cards in hand :");
         int i = 1;
         for (Card card : player.getHand()) {

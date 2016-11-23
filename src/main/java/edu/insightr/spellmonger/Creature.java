@@ -101,7 +101,7 @@ public class Creature extends Card {
         }
     }
 
-    public static List<Creature> getPlayerCreatures(String playerName) {
+    private static List<Creature> getPlayerCreatures(String playerName) {
         temp = allCreatures; // use clone?
         for (int i = 0; i < temp.size(); i++) {
             if (!temp.get(i).getOwner().equals(playerName)) {
@@ -111,7 +111,7 @@ public class Creature extends Card {
         return temp;
     }
 
-    public void attackOpponent(Player opponent) {
+    private void attackOpponent(Player opponent) {
         opponent.setHp(opponent.getHp() - this.getAttack());
         if (opponent.getHp() <= 0) {
             opponent.setAlive(false);
@@ -120,7 +120,7 @@ public class Creature extends Card {
         }
     }
 
-    public void attackCreature(Creature creature) {
+    private void attackCreature(Creature creature) {
         creature.setHp(creature.getHp() - this.getAttack());
         this.setHp(this.getHp() - creature.getAttack());
         if (creature.getHp() <= 0) {
@@ -133,7 +133,7 @@ public class Creature extends Card {
         }
     }
 
-    public static Creature findBestTarget(int attack, int hp, Player opponent) {
+    private static Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
         List<Creature> opponentCrea = new ArrayList<>();

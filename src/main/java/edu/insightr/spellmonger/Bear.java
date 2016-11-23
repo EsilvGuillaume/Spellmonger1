@@ -2,10 +2,6 @@ package edu.insightr.spellmonger;
 
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class Bear extends Creature {
     // TODO : no gui reference in the model. Don't define the images into the model.
     //private String owner;
