@@ -3,7 +3,14 @@ package edu.insightr.spellmonger;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import javafx.scene.control.*;
 import org.junit.Assert;
+
+import java.awt.*;
+import java.awt.Button;
+import java.awt.event.ActionEvent;
+import java.util.*;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -14,8 +21,9 @@ import static org.hamcrest.CoreMatchers.is;
 public class GamePhase {
 
     Player player = new Player();
-    Fox fox = new Fox("Fox");
-
+    Player current = new Player();
+    Player opponent = new Player();
+    List<Creature> creatures = new ArrayList<>();
 
 
     @Given("^the \"([^\"]*)\" is the one who clicks first the draw button$")
@@ -35,10 +43,11 @@ public class GamePhase {
             Assert.assertThat(hand, is(equalTo(hand+1)));
     }
 
-    @Then("^if the \"([^\"]*)\" has enough energy points to summon a creature he/she choose the corresponding creature and summon it$")
-    public void if_the_has_enough_energy_points_to_summon_a_creature_he_she_choose_the_corresponding_creature_and_summon_it(String arg1) throws Throwable {
+    @Then("^if the \"([^\"]*)\" has enough energy points to summon a \"([^\"]*)\" he/she choose the corresponding creature and summon it$")
+    public void if_the_has_enough_energy_points_to_summon_a_creature_he_she_choose_the_corresponding_creature_and_summon_it(String arg1, String arg2) throws Throwable {
+        Creature creature = new Creature(arg2, arg1);
         if(player.getName() == arg1) {
-            if(player.getEnergy() >= fox.getHp()){
+            if(player.getEnergy() >= creature.getHp()){
                 Assert.assertThat(player.getNumberOfCreaOnBoard(), is(equalTo(1)));
             }
 
@@ -48,7 +57,22 @@ public class GamePhase {
 
     @Then("^if there are no creatures on the opposite field the creatures summoned by the the \"([^\"]*)\" attack directly the \"([^\"]*)\"$")
     public void if_there_are_no_creatures_on_the_opposite_field_the_creatures_summoned_by_the_the_attack_directly_the(String arg1, String arg2) throws Throwable {
-        System.out.println("");
+
+        creatures = Creature.getPlayerCreaOnBoard(current);
+        int degats = 0;
+        int hpAvantDegats = opponent.getHp();
+        SpellmongerApp app = new SpellmongerApp();
+
+        for(Creature crea : creatures){
+            degats += crea.getAttack();
+        }
+         app.endOfTurn(current, opponent);
+
+        if(current.getName() == arg1 && opponent.getName() == arg2) {
+            if(opponent.getNumberOfCreaOnBoard() == 0){
+               Assert.assertThat(opponent.getHp(), is(equals(hpAvantDegats - degats)));
+            }
+        }
     }
 
     @Then("^if there are creatures on the opposite field the battle phase between creatures begins$")

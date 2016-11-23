@@ -223,7 +223,7 @@ public class Controller extends Application {
             app.setOpponent(app.getPlayer2());
             hand2.setDisable(true);
             hand1.setDisable(false);
-        } else {
+        } else if (event.getSource() == draw2Button ) {
             app.setCurrentPlayer(app.getPlayer2());
             app.setOpponent(app.getPlayer1());
             hand1.setDisable(true);
