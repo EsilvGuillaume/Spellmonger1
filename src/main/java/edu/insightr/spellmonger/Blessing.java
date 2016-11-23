@@ -36,20 +36,8 @@ public class Blessing extends Rituol {
 
     }
 
-    public String getEffectDescription() {
-        return effectDescription;
-    }
-
-    public void setEffectDescription(String effectDescription) {
-        this.effectDescription = effectDescription;
-    }
-
     public boolean isBonus() {
         return bonus;
-    }
-
-    public void setBonus(boolean bonus) {
-        this.bonus = bonus;
     }
 
 }

@@ -183,7 +183,7 @@ public class Controller extends Application {
 
     }
 
-    public void makeItNormal(Node node){
+    private void makeItNormal(Node node){
         // should stop fading player box
     }
 
