@@ -136,7 +136,7 @@ public class Creature extends Card {
     private static Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
-        List<Creature> opponentCrea = new ArrayList<>();
+        List<Creature> opponentCrea;
         opponentCrea = getPlayerCreaOnBoard(opponent);
         //System.out.print(opponentCrea.isEmpty());
         //we retrieve all opponent creatures on board
@@ -149,7 +149,6 @@ public class Creature extends Card {
                 }
             }
         }
-
         //we only keep the target we can kill (if they are none, we'll attack opponent)
         //System.out.print("size of potential targets : "+potentialTargets.size());
         for (int i = 0; i < potentialTargets.size(); i++) {
@@ -157,11 +156,12 @@ public class Creature extends Card {
                 potentialTargets.remove(potentialTargets.get(i));
             }
         }
-
         //we check on targets if we can stay alive while killing them
         for (int i = 0; i < potentialTargets.size(); i++) {
             if (potentialTargets.get(i).getAttack() >= hp) {
-                potentialTargets.remove(potentialTargets.get(i));
+                if(potentialTargets.get(i).getAttack()<= attack) {
+                    potentialTargets.remove(potentialTargets.get(i));
+                }
             }
         }
 
