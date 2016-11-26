@@ -4,7 +4,8 @@ package edu.insightr.spellmonger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static edu.insightr.spellmonger.SpellmongerApp.app;
+//import static edu.insightr.spellmonger.SpellmongerApp.app;
+import static edu.insightr.spellmonger.MenuController.app;
 import static org.junit.Assert.*;
 
 /**

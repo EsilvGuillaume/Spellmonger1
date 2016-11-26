@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static edu.insightr.spellmonger.SpellmongerApp.*;
+import static edu.insightr.spellmonger.MenuController.app;
 
 
 public class Creature extends Card {
