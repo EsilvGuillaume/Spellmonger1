@@ -1,16 +1,24 @@
 package edu.insightr.spellmonger;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class EnergyDrainTest {
+    Player p1;
+    Player p2;
+
+
+    @Before
+    public void init(){
+        p1 = new Player("p1");
+        p2 = new Player("p2");
+    }
 
     @Test
     public void playDrainPossible() throws Exception {
-        Player p1 = new Player("p1");
-        Player p2 = new Player("p2");
         EnergyDrain ed = new EnergyDrain();
 
         p1.setEnergy(2);
@@ -18,14 +26,12 @@ public class EnergyDrainTest {
 
         ed.play(p1, p2);
 
-        Assert.assertTrue(p1.getEnergy() == 4);
-        Assert.assertTrue(p2.getEnergy() == 0);
+        Assert.assertEquals(4, p1.getEnergy());
+        Assert.assertEquals(0,p2.getEnergy());
     }
 
     @Test
     public void playDrainImpossible() throws Exception {
-        Player p1 = new Player("p1");
-        Player p2 = new Player("p2");
         EnergyDrain ed = new EnergyDrain();
 
         p1.setEnergy(1);
@@ -33,8 +39,8 @@ public class EnergyDrainTest {
 
         ed.play(p1, p2);
 
-        Assert.assertTrue(p1.getEnergy() == 1);
-        Assert.assertTrue(p2.getEnergy() == 1);
+        Assert.assertEquals(1,p1.getEnergy());
+        Assert.assertEquals(1,p2.getEnergy());
     }
 
 }

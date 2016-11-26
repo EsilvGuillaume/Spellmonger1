@@ -19,7 +19,7 @@ public class VaultOverclocking extends Enchantment {
 
     public void play(Player currentPlayer) {
         currentPlayer.setVaultOverclocking(true);
-        System.out.println(currentPlayer.getName()+" overclocks his energy vault !");
+        System.out.println(currentPlayer.getName() + " overclocks his energy vault !");
     }
 
     public String getEffectDescription() {
