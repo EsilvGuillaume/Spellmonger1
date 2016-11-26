@@ -11,7 +11,7 @@ import java.util.*;
 public class Tools {
 
     public static void updateJsonFile(String Login,boolean isWinner){
-        String filepath = System.getProperty("user.dir")+"/src/main/resources/scores.json";
+        String filepath = System.getProperty("user.dir")+"/src/main/resources/score.json";
         Map<String, Joueur> m = Tools.readFileToMap(filepath);
         Joueur p = m.get(Login);
         if(p != null){

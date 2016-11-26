@@ -30,11 +30,14 @@ import java.util.List;
 
 import javafx.util.Duration;
 
-import static edu.insightr.spellmonger.SpellmongerApp.app;
+//import static edu.insightr.spellmonger.SpellmongerApp.app;
+import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
 
 
-public class Controller extends Application {
+public class Controller extends Application{
+
+    //ScreenController myController;
 
     // TODO : split Controller, View and Model
     // TODO : clean your code, too many warnings !
@@ -42,6 +45,7 @@ public class Controller extends Application {
     @Override
     public void start(final Stage primaryStage) {
         try {
+            System.out.println("player1 = "+app.getPlayer1().getName());
             final URL url = getClass().getResource("/Board.fxml");
             final FXMLLoader fxmlLoader = new FXMLLoader(url);
             final AnchorPane root = fxmlLoader.load();
@@ -187,12 +191,12 @@ public class Controller extends Application {
         // should stop fading player box
     }
 
-    /*public void initialize() {
+    public void initialize() {
         refreshHand(app.getPlayer1());
         refreshHand(app.getPlayer2());
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         displayInitialPlayers();
-    }*/
+    }
 
     void addCursorEffect(Node node) {
         Image imageCursorExit = new Image("img/cursor-basic.png");
@@ -223,7 +227,7 @@ public class Controller extends Application {
             app.setOpponent(app.getPlayer2());
             hand2.setDisable(true);
             hand1.setDisable(false);
-        } else {
+        } else if (event.getSource() == draw2Button ) {
             app.setCurrentPlayer(app.getPlayer2());
             app.setOpponent(app.getPlayer1());
             hand1.setDisable(true);
@@ -302,7 +306,13 @@ public class Controller extends Application {
         }
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         resfreshIGMsg();
-        app.checkIfWinner();
+        if(app.checkIfWinner()){
+            //myController.loadScreen(Main.Score_ID, Main.Score_FILE);
+            //myController.setScreen(Main.Score_ID);
+            //MenuController ctrll = new MenuController();
+            //ctrll.viewScore();
+            System.exit(0);
+        }
     }
 
    private void refreshDiscard() {

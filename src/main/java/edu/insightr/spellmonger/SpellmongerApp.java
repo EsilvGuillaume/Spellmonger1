@@ -1,19 +1,22 @@
 package edu.insightr.spellmonger;
 
 import org.apache.log4j.Logger;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static edu.insightr.spellmonger.MenuController.app;
 
 public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
-    static SpellmongerApp app = new SpellmongerApp();
+    //static SpellmongerApp app = new SpellmongerApp();
     private static String igMsg = "Play !";
     private Player player1;
     private Player player2;
     private boolean onePlayerDead = false;
     private Player currentPlayer;
-    private Player opponent; 
+    private Player opponent;
     private Player tmpPlayer;
     private int currentCardNumber = 0;
     private int roundCounter = 1;
@@ -22,18 +25,18 @@ public class SpellmongerApp {
     private List<Creature> allCreaOnBoard = new ArrayList<>();
     private List<Creature> lastDeadCrea = new ArrayList<>();
 
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
 
-        app.setPlayer1(new Player("Alice"));
+        /*app.setPlayer1(new Player("Alice"));
         app.setPlayer2(new Player("Bob"));
         app.setCurrentPlayer(app.getPlayer1());
         app.setOpponent(app.getPlayer2());
         app.drawFirstTwoCards();
 
         Controller ctrl = new Controller();
-        ctrl.main(args);
+        ctrl.main(args);*/
 
-    }
+    //}
 
     public static String getIgMsg() {
         return igMsg;
@@ -95,10 +98,10 @@ public class SpellmongerApp {
         }
 
         displayCardInHand(currentPlayer);
-        igMsg = currentPlayer.getName()+", choose a card to play";
+        igMsg = currentPlayer.getName() + ", choose a card to play";
     }
 
-    void cardPlayed(){
+    void cardPlayed() {
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
         setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
@@ -120,12 +123,22 @@ public class SpellmongerApp {
         }
     }
 
-    void checkIfWinner() {
+    boolean checkIfWinner() {
         if (app.isOnePlayerDead()) {
             System.out.println("THE WINNER IS " + app.getWinner() + " !!!");
-            System.exit(0);
+            //write scores
+            Tools.updateJsonFile(app.getWinner(), true);
+            if(app.getWinner().equals(player1.getName())){
+                Tools.updateJsonFile(getPlayer2().getName(), false);
+            }
+            else{
+                Tools.updateJsonFile(getPlayer1().getName(), false);
+            }
+            return true;
+            //System.exit(0);
         } else {
             System.out.println("*****ROUND " + app.getRoundCounter());
+            return false;
         }
     }
 
@@ -138,7 +151,7 @@ public class SpellmongerApp {
         }
     }
 
-     boolean playCard(Card card, Player currentPlayer, Player opponent) {
+    boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
                 ((Creature) card).setPlayed(1);
@@ -169,7 +182,7 @@ public class SpellmongerApp {
             return true;
         } else {
             System.out.println(card.getName() + " cost is too high to be played !");
-            setIgMsg(card.getName()+"'s cost is too high to be played !");
+            setIgMsg(card.getName() + "'s cost is too high to be played !");
             return false;
         }
     }
