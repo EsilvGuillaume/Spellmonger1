@@ -1,14 +1,27 @@
 package edu.insightr.spellmonger;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 public class CreatureTest {
+    Player player1,player;
+    Bear b;
+    Wolf w;
+    Eagle e;
+
+    @Before
+    public void init() {
+        player1 = new Player("p1");
+        b = new Bear("jsp", "p1");
+        b = new Bear("jsp2","Player");
+        w = new Wolf("jsp","Player");
+        e = new Eagle("jsp3","Player");
+    }
     @Test
     public void getPlayerCreatures() throws Exception {
-        Player player1 = new Player("p1");
         player1.setNumberOfCreaOnBoard(4);
         Assert.assertEquals(player1.getNumberOfCreaOnBoard(), 4);
     }
@@ -33,9 +46,6 @@ public class CreatureTest {
         Player p = new Player("Player");
         ArrayList<Creature> list = new ArrayList<Creature>();
         Creature bestCrea = null;
-        Wolf w = new Wolf("jsp","Player");
-        Bear b = new Bear("jsp2","Player");
-        Eagle e = new Eagle("jsp3","Player");
         list.add(w);
         list.add(b);
         list.add(e);
@@ -94,14 +104,12 @@ public class CreatureTest {
 
     @Test
     public void getHp() throws Exception {
-        Bear b = new Bear("jsp", "p1");
         Assert.assertEquals(3, b.getHp());
 
     }
 
     @Test
     public void setHp() throws Exception {
-        Bear b = new Bear("jsp", "p1");
         b.setHp(4);
         Assert.assertEquals(4, b.getHp());
 
@@ -109,17 +117,12 @@ public class CreatureTest {
 
     @Test
     public void getAttack() throws Exception {
-
-        Bear b = new Bear("jsp", "p1");
-
         Assert.assertEquals(3, b.getAttack());
 
     }
 
     @Test
     public void setAttack() throws Exception {
-
-        Bear b = new Bear("jsp", "p1");
         b.setAttack(6);
         Assert.assertEquals(6, b.getAttack());
 
@@ -127,17 +130,12 @@ public class CreatureTest {
 
     @Test
     public void isAlive() throws Exception {
-
-        Bear b = new Bear("jsp", "p1");
-
         Assert.assertTrue(b.isAlive());
 
     }
 
     @Test
     public void setAlive() throws Exception {
-
-        Bear b = new Bear("jsp", "p1");
         b.setAlive(false);
         Assert.assertTrue(!b.isAlive());
 
