@@ -3,6 +3,7 @@ package edu.insightr.spellmonger;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,14 @@ import static org.junit.Assert.*;
  * Created by Salem on 25/10/2016.
  */
 public class ControllerTest extends Controller{
+    Player p;
+
+    @Before
+    public void init() {
+        p = new Player("p1");
+    }
+
+    }
 
     @Test
     public void main() throws Exception {
@@ -50,7 +59,6 @@ public class ControllerTest extends Controller{
     public void removecardhand() throws Exception {
 
 
-        Player p = new Player("p1");
         List<Card> hand = new ArrayList<>();
         hand.add(new Bear("p1"));
         hand.add(new Wolf("p1"));
@@ -63,7 +71,6 @@ public class ControllerTest extends Controller{
 
     @Test
     public void checkcardhand() throws Exception {
-        Player p = new Player("p1");
         List<Card> hand = new ArrayList<>();
         Bear b = new Bear("p1");
         hand.add(b);
