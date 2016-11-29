@@ -14,6 +14,7 @@ public class CreatureTest {
 
     @Before
     public void init() {
+
         player1 = new Player("p1");
         b = new Bear("jsp", "p1");
         b = new Bear("jsp2","Player");

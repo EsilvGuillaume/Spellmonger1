@@ -2,6 +2,7 @@ package edu.insightr.spellmonger;
 
 //import gherkin.lexer.Pl;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 //import static edu.insightr.spellmonger.SpellmongerApp.app;
@@ -15,6 +16,14 @@ public class SpellmongerAppTest {
     @Test
     public void main() throws Exception {
 
+    }
+    Player p;
+    Deck d;
+
+    @Before
+    public void init() {
+        p = new Player("P1");
+        d = new Deck(50, "P1");
     }
 
     @Test
