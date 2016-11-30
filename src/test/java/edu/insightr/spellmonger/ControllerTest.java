@@ -21,12 +21,6 @@ public class ControllerTest extends Controller{
         p = new Player("p1");
     }
 
-    }
-
-    @Test
-    public void main() throws Exception {
-
-    }
 
 /*    @Test
     public void initialize() throws Exception {
