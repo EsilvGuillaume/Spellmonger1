@@ -1,8 +1,8 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
 import javafx.scene.image.Image;
 
-//import static edu.insightr.spellmonger.SpellmongerApp.app;
+//import static edu.insightr.spellmonger.model.SpellmongerApp.app;
 import static edu.insightr.spellmonger.MenuController.app;
 
 public class Curse extends Rituol {

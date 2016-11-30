@@ -1,4 +1,4 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
 import java.util.ArrayList;
 import java.util.List;

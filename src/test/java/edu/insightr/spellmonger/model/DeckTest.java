@@ -1,12 +1,13 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
+import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Deck;
+import edu.insightr.spellmonger.model.Player;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -21,7 +22,7 @@ public class DeckTest {
         @Before
         public void init() {
             p1 = new Player("p1");
-            p2 = new Player("p2");
+            p2 = new Player("secondPlayer");
             d1 = new Deck(20, "owner1");
             randomGenerator = new Random();
         }

@@ -1,45 +1,24 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import static edu.insightr.spellmonger.SpellmongerApp.*;
 import static edu.insightr.spellmonger.MenuController.app;
 
 
 public class Creature extends Card {
 
+    protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    private static ArrayList<Creature> temp;
     private int hp;
     private int attack;
     private boolean alive;
     private int played;
     private boolean putOnBoard;
-
     private ImageView pic;
-
-    protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
-    private static ArrayList<Creature> temp;
-
-    private void killCreature(Creature creatures) {
-        allCreatures.remove(this);
-
-        //Controller ctrl = new Controller(); // test
-        //ctrl.creaDies(this.getPic(), this); // test
-
-        app.getAllCreaOnBoard().remove(this);
-        app.getLastDeadCrea().add(this);
-        if (this.getOwner() == app.getCurrentPlayer().getName()) {
-            app.getCurrentPlayer().getDiscard().add(this);
-        } else if (this.getOwner() == app.getOpponent().getName()) {
-            app.getOpponent().getDiscard().add(this);
-        }
-        app.setIgMsg(app.getIgMsg()+"\n"+this.getName()+" of "+this.getOwner()+",\nwas killed by "+creatures.getName()+" of "+creatures.getOwner());
-    }
 
     public Creature(String name, String owner, int hp) {
         super(name, owner);
@@ -58,11 +37,6 @@ public class Creature extends Card {
         this.setPlayed(0);
         allCreatures.add(this);
         this.setPutOnBoard(false);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", hp = " + this.hp + ", attack = " + this.attack + ", alive = " + this.alive;
     }
 
     public static int getCreaDamageForPlayer(Player player) {
@@ -112,28 +86,6 @@ public class Creature extends Card {
         return temp;
     }
 
-    private void attackOpponent(Player opponent) {
-        opponent.setHp(opponent.getHp() - this.getAttack());
-        if (opponent.getHp() <= 0) {
-            opponent.setAlive(false);
-            System.out.println(opponent.getName() + " is dead !");
-            app.setOnePlayerDead(true);
-        }
-    }
-
-    private void attackCreature(Creature creature) {
-        creature.setHp(creature.getHp() - this.getAttack());
-        this.setHp(this.getHp() - creature.getAttack());
-        if (creature.getHp() <= 0) {
-            creature.setAlive(false);
-            creature.killCreature(this);
-        }
-        if (this.getHp() <= 0) {
-            this.setAlive(false);
-            this.killCreature(creature);
-        }
-    }
-
     private static Creature findBestTarget(int attack, int hp, Player opponent) {
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
@@ -160,7 +112,7 @@ public class Creature extends Card {
         //we check on targets if we can stay alive while killing them
         for (int i = 0; i < potentialTargets.size(); i++) {
             if (potentialTargets.get(i).getAttack() >= hp) {
-                if(potentialTargets.get(i).getAttack()<= attack) {
+                if (potentialTargets.get(i).getAttack() <= attack) {
                     potentialTargets.remove(potentialTargets.get(i));
                 }
             }
@@ -179,6 +131,49 @@ public class Creature extends Card {
         }
 
         return bestTarget;
+    }
+
+    private void killCreature(Creature creatures) {
+        allCreatures.remove(this);
+
+        //Controller ctrl = new Controller(); // test
+        //ctrl.creaDies(this.getPic(), this); // test
+
+        app.getAllCreaOnBoard().remove(this);
+        app.getLastDeadCrea().add(this);
+        if (this.getOwner() == app.getCurrentPlayer().getName()) {
+            app.getCurrentPlayer().getDiscard().add(this);
+        } else if (this.getOwner() == app.getOpponent().getName()) {
+            app.getOpponent().getDiscard().add(this);
+        }
+        app.setIgMsg(app.getIgMsg() + "\n" + this.getName() + " of " + this.getOwner() + ",\nwas killed by " + creatures.getName() + " of " + creatures.getOwner());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", hp = " + this.hp + ", attack = " + this.attack + ", alive = " + this.alive;
+    }
+
+    private void attackOpponent(Player opponent) {
+        opponent.setHp(opponent.getHp() - this.getAttack());
+        if (opponent.getHp() <= 0) {
+            opponent.setAlive(false);
+            System.out.println(opponent.getName() + " is dead !");
+            app.setOnePlayerDead(true);
+        }
+    }
+
+    private void attackCreature(Creature creature) {
+        creature.setHp(creature.getHp() - this.getAttack());
+        this.setHp(this.getHp() - creature.getAttack());
+        if (creature.getHp() <= 0) {
+            creature.setAlive(false);
+            creature.killCreature(this);
+        }
+        if (this.getHp() <= 0) {
+            this.setAlive(false);
+            this.killCreature(creature);
+        }
     }
 
     public void attack(Player opponent) {
@@ -217,6 +212,7 @@ public class Creature extends Card {
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+
     public int getPlayed() {
         return played;
     }
@@ -224,6 +220,7 @@ public class Creature extends Card {
     public void setPlayed(int play) {
         this.played = play;
     }
+
     public boolean isPutOnBoard() {
         return putOnBoard;
     }

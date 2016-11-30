@@ -1,5 +1,6 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
+import edu.insightr.spellmonger.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class CreatureTest {
+    SpellmongerApp app;
     Player player1,player;
     Bear b;
     Wolf w;
@@ -14,8 +16,9 @@ public class CreatureTest {
 
     @Before
     public void init() {
-
-        player1 = new Player("p1");
+        app = new SpellmongerApp();
+        app.initPlayer("p1", null);
+        player1 = app.getPlayer1();
         b = new Bear("jsp", "p1");
         b = new Bear("jsp2","Player");
         w = new Wolf("jsp","Player");
@@ -62,7 +65,7 @@ public class CreatureTest {
         @Test
     public void findBestTarget() throws Exception {
 
-//        Player p = new Player("Player")
+//        Player firstPlayer = new Player("Player")
 
             //;
 
@@ -86,9 +89,9 @@ public class CreatureTest {
 
             //
 
-            //Creature.getPlayerCreaOnBoard(p);
+            //Creature.getPlayerCreaOnBoard(firstPlayer);
 
-            //bestCrea = Creature.findBestTarget(1, 20, p);
+            //bestCrea = Creature.findBestTarget(1, 20, firstPlayer);
 
             //System.out.print("loooooooooool");
 

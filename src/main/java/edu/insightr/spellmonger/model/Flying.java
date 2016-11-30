@@ -1,4 +1,4 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
 /**
  * Created by Melvax on 09/11/2016.

@@ -1,8 +1,10 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
+import edu.insightr.spellmonger.utils.Tools;
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static edu.insightr.spellmonger.MenuController.app;
@@ -25,6 +27,10 @@ public class SpellmongerApp {
     private List<Creature> allCreaOnBoard = new ArrayList<>();
     private List<Creature> lastDeadCrea = new ArrayList<>();
 
+    public static String getIgMsg() {
+        return igMsg;
+    }
+
     //public static void main(String[] args) {
 
         /*app.setPlayer1(new Player("Alice"));
@@ -38,12 +44,28 @@ public class SpellmongerApp {
 
     //}
 
-    public static String getIgMsg() {
-        return igMsg;
-    }
-
     public static void setIgMsg(String igMsg) {
         SpellmongerApp.igMsg = igMsg;
+    }
+
+    public static void verifyVaultOverclock(Player currentPlayer) {
+        if (currentPlayer.isVaultOverclocking()) {
+            int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
+            if (randNumber > 35) {
+                currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
+                System.out.println(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
+                setIgMsg(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
+            } else {
+                currentPlayer.setVaultOverclocking(false);
+                System.out.println(currentPlayer.getName() + " loses his overclock of energy");
+                setIgMsg(currentPlayer.getName() + " loses his overclock of energy");
+            }
+        }
+    }
+
+    public void initPlayer(String playerOneName, String playerTwoName) {
+        player1 = new Player(playerOneName);
+        player2 = new Player(playerTwoName);
     }
 
     public void drawFirstTwoCards() {
@@ -101,7 +123,7 @@ public class SpellmongerApp {
         igMsg = currentPlayer.getName() + ", choose a card to play";
     }
 
-    void cardPlayed() {
+    public void cardPlayed() {
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
         setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
@@ -123,15 +145,14 @@ public class SpellmongerApp {
         }
     }
 
-    boolean checkIfWinner() {
+    public boolean checkIfWinner() {
         if (app.isOnePlayerDead()) {
             System.out.println("THE WINNER IS " + app.getWinner() + " !!!");
             //write scores
             Tools.updateJsonFile(app.getWinner(), true);
-            if(app.getWinner().equals(player1.getName())){
+            if (app.getWinner().equals(player1.getName())) {
                 Tools.updateJsonFile(getPlayer2().getName(), false);
-            }
-            else{
+            } else {
                 Tools.updateJsonFile(getPlayer1().getName(), false);
             }
             return true;
@@ -151,7 +172,7 @@ public class SpellmongerApp {
         }
     }
 
-    boolean playCard(Card card, Player currentPlayer, Player opponent) {
+    public boolean playCard(Card card, Player currentPlayer, Player opponent) {
         if (card.getCost() <= currentPlayer.getEnergy()) {
             if (card instanceof Creature) {
                 ((Creature) card).setPlayed(1);
@@ -184,21 +205,6 @@ public class SpellmongerApp {
             System.out.println(card.getName() + " cost is too high to be played !");
             setIgMsg(card.getName() + "'s cost is too high to be played !");
             return false;
-        }
-    }
-
-    static void verifyVaultOverclock(Player currentPlayer) {
-        if (currentPlayer.isVaultOverclocking()) {
-            int randNumber = ThreadLocalRandom.current().nextInt(1, 101);
-            if (randNumber > 35) {
-                currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
-                System.out.println(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
-                setIgMsg(currentPlayer.getName() + " gain 1 extra energy thanks to his overclock of energy");
-            } else {
-                currentPlayer.setVaultOverclocking(false);
-                System.out.println(currentPlayer.getName() + " loses his overclock of energy");
-                setIgMsg(currentPlayer.getName() + " loses his overclock of energy");
-            }
         }
     }
 

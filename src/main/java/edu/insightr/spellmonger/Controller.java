@@ -1,5 +1,9 @@
 package edu.insightr.spellmonger;
 
+import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Creature;
+import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.model.SpellmongerApp;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -30,9 +34,9 @@ import java.util.List;
 
 import javafx.util.Duration;
 
-//import static edu.insightr.spellmonger.SpellmongerApp.app;
+//import static edu.insightr.spellmonger.model.SpellmongerApp.app;
 import static edu.insightr.spellmonger.MenuController.app;
-import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
+import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 
 
 public class Controller extends Application{
