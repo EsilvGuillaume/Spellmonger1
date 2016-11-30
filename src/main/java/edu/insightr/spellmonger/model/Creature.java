@@ -1,13 +1,13 @@
 package edu.insightr.spellmonger.model;
 
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static edu.insightr.spellmonger.MenuController.app;
-
 
 public class Creature extends Card {
 
