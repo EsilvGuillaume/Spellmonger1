@@ -25,21 +25,24 @@ public class SpellmongerApp {
     private List<Creature> playerCreaOnBoard = new ArrayList<>();
     private List<Creature> allCreaOnBoard = new ArrayList<>();
     private List<Creature> lastDeadCrea = new ArrayList<>();
-
-    public SpellmongerApp(){
+    public SpellmongerApp() {
         igMsg = "Play !";
         player1 = new Player();
         player2 = new Player();
         onePlayerDead = false;
         currentPlayer = new Player();
         opponent = new Player();
-        tmpPlayer= new Player();
+        tmpPlayer = new Player();
         currentCardNumber = 0;
         roundCounter = 1;
         winner = null;
         playerCreaOnBoard = new ArrayList<>();
         allCreaOnBoard = new ArrayList<>();
         lastDeadCrea = new ArrayList<>();
+    }
+
+    public static String getIgMsg() {
+        return igMsg;
     }
 
     public static void setIgMsg(String igMsg) {
