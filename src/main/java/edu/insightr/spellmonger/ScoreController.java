@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -46,6 +47,11 @@ public class ScoreController implements Initializable, ControlledScreen {
     }
 
     public void launchGame() {
+        app = null;
+        System.gc();
+        Creature.allCreatures = new ArrayList<>();
+        app = new SpellmongerApp();
+
         app.setPlayer1(new Player("You"));
         app.setPlayer2(new Player("Opponent"));
         app.setCurrentPlayer(app.getPlayer1());

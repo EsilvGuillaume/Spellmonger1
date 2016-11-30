@@ -10,7 +10,6 @@ import static edu.insightr.spellmonger.MenuController.app;
 public class SpellmongerApp {
 
     private static final Logger logger = Logger.getLogger(SpellmongerApp.class);
-    //static SpellmongerApp app = new SpellmongerApp();
     private static String igMsg = "Play !";
     private Player player1;
     private Player player2;
@@ -25,18 +24,21 @@ public class SpellmongerApp {
     private List<Creature> allCreaOnBoard = new ArrayList<>();
     private List<Creature> lastDeadCrea = new ArrayList<>();
 
-    //public static void main(String[] args) {
-
-        /*app.setPlayer1(new Player("Alice"));
-        app.setPlayer2(new Player("Bob"));
-        app.setCurrentPlayer(app.getPlayer1());
-        app.setOpponent(app.getPlayer2());
-        app.drawFirstTwoCards();
-
-        Controller ctrl = new Controller();
-        ctrl.main(args);*/
-
-    //}
+    public SpellmongerApp(){
+        igMsg = "Play !";
+        player1 = new Player();
+        player2 = new Player();
+        onePlayerDead = false;
+        currentPlayer = new Player();
+        opponent = new Player();
+        tmpPlayer= new Player();
+        currentCardNumber = 0;
+        roundCounter = 1;
+        winner = null;
+        playerCreaOnBoard = new ArrayList<>();
+        allCreaOnBoard = new ArrayList<>();
+        lastDeadCrea = new ArrayList<>();
+    }
 
     public static String getIgMsg() {
         return igMsg;
@@ -102,6 +104,14 @@ public class SpellmongerApp {
     }
 
     void cardPlayed() {
+
+        //
+        System.out.println("********Creature.getPlayerCreaOnBoard(currentPlayer):");
+        Creature.displayGroupOfCrea(Creature.getPlayerCreaOnBoard(currentPlayer));
+        System.out.println("********Creature.getPlayerCreaOnBoard(opponent):");
+        Creature.displayGroupOfCrea(Creature.getPlayerCreaOnBoard(opponent));
+        //
+
         setPlayerCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
 
         setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));

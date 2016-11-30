@@ -50,6 +50,11 @@ public class MenuController implements Initializable, ControlledScreen {
     }
 
     public void launchGame() {
+        app = null;
+        System.gc();
+        Creature.allCreatures = new ArrayList<>();
+        app = new SpellmongerApp();
+
         app.setPlayer1(new Player(Login.getText()));
         app.setPlayer2(new Player("Opponent"));
         app.setCurrentPlayer(app.getPlayer1());

@@ -5,7 +5,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
 
     public static String Menu_ID = "MENU";
@@ -18,8 +17,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         ScreenController mainContainer = new ScreenController();
-        Controller ctrl = new Controller();
-        //System.out.println(Menu_FILE);
         mainContainer.loadScreen(Menu_ID, Menu_FILE);
 
         mainContainer.setScreen(Menu_ID);

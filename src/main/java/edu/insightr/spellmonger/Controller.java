@@ -37,8 +37,6 @@ import static edu.insightr.spellmonger.SpellmongerApp.setIgMsg;
 
 public class Controller extends Application{
 
-    //ScreenController myController;
-
     // TODO : split Controller, View and Model
     // TODO : clean your code, too many warnings !
 
@@ -97,6 +95,7 @@ public class Controller extends Application{
 
     //@FXML
     //private ProgressBar TimeToPlay;
+
     @FXML
     private GridPane boardG1, boardG2;
 
