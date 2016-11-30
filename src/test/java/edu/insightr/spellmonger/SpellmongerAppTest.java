@@ -13,25 +13,27 @@ import static org.junit.Assert.*;
  * Created by Salem on 17/10/2016.
  */
 public class SpellmongerAppTest {
-    @Test
-    public void main() throws Exception {
 
-    }
     Player p;
+    Player p2;
     Deck d;
+    SpellmongerApp app;
 
     @Before
     public void init() {
         p = new Player("P1");
         d = new Deck(50, "P1");
+        p2 = new Player("p2");
+        app = new SpellmongerApp();
+    }
+    @Test
+    public void main() throws Exception {
+
     }
 
     @Test
     public void drawFirstTwoCards() throws Exception {
-        Player p = new Player("P1");
-        Deck d = new Deck(50, "P1");
         p.setDeckInfo(d);
-
         p.getDeckInfo().getDeck().get(1).draw(p);
         p.getDeckInfo().getDeck().get(1).draw(p);
 
@@ -51,9 +53,6 @@ public class SpellmongerAppTest {
 
     @Test
     public void playCard() throws Exception {
-        SpellmongerApp app = new SpellmongerApp();
-        Player p = new Player("p1");
-        Player p2 = new Player("p2");
         app.setCurrentPlayer(p);
         app.setOpponent(p2);
         app.drawFirstTwoCards();
@@ -66,7 +65,6 @@ public class SpellmongerAppTest {
 
     @Test
     public void verifyVaultOverclock() throws Exception {
-        Player p = new Player("P1");
         p.setEnergy(0);
         for(int i = 0; i<999; i++)
         {
