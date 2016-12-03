@@ -362,17 +362,31 @@ public class Controller extends Application{
     }
 
    private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
-        if (card.getCost() <= currentPlayer.getEnergy()) {
-            animCardPlayed(cardToMove);
-            setIgMsg("");
-            app.playCard(card, currentPlayer, opponent);
-            //effect if crea dies
-            //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
-            removecardhand(card, currentPlayer);
-            //refreshHand(currentPlayer); // now in anim
 
-            turnEnded();
-        } else {
+           if (card.getCost() <= currentPlayer.getEnergy()) {
+               animCardPlayed(cardToMove);
+               setIgMsg("");
+               app.playCard(card, currentPlayer, opponent);
+               //effect if crea dies
+               //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
+               removecardhand(card, currentPlayer);
+               //refreshHand(currentPlayer); // now in anim
+
+                   app.setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
+                   for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
+                       app.getAllCreaOnBoard().add(crea);
+                   }
+                   Creature.displayGroupOfCrea(app.getAllCreaOnBoard());//affichage crea du board raffraichis
+
+                   refreshBoard(app.getAllCreaOnBoard());//refresh main + crea
+                   refreshHand(currentPlayer);
+
+            /*  if (currentPlayer.getEnergy() == 0) { // à décommenter si on veut faire passer le tour automatiquement lorsque le joueur n'a plus d'energie.
+                   app.cardPlayed();
+                   turnEnded();
+               }*/
+           }
+         else {
             app.setIgMsg("You have not enough energy,\n choose another card");
             resfreshIGMsg();
         }

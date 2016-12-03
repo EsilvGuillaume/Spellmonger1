@@ -207,7 +207,7 @@ public class SpellmongerApp {
                 currentPlayer.getDiscard().add(card);
             }
 
-            cardPlayed();
+            //cardPlayed();
 
             return true;
         } else {
