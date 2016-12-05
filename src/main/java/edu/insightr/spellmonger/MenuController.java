@@ -31,7 +31,6 @@ public class MenuController implements Initializable, ControlledScreen {
     }
 
     public void play() {
-        System.out.println("Play is pressed");
         myController.addData("NamePlayer", Login.getText());
         launchGame();
     }

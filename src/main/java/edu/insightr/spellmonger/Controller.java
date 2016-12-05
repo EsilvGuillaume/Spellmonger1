@@ -47,7 +47,6 @@ public class Controller extends Application{
     @Override
     public void start(final Stage primaryStage) {
         try {
-            System.out.println("player1 = "+app.getPlayer1().getName());
             final URL url = getClass().getResource("/Board.fxml");
             final FXMLLoader fxmlLoader = new FXMLLoader(url);
             final AnchorPane root = fxmlLoader.load();
@@ -129,9 +128,9 @@ public class Controller extends Application{
             turnEnded2();
         }
         else {
-            System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
+            //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
             for (Creature crea : app.getLastDeadCrea()) {
-                System.out.println(crea.getName()+" imageview is : "+crea.getPic());
+                //System.out.println(crea.getName()+" imageview is : "+crea.getPic());
                 ft = new FadeTransition(Duration.millis(3000), crea.getPic());
 
                 ft.setFromValue(1.0);
@@ -248,10 +247,7 @@ public class Controller extends Application{
             refreshHand(app.getCurrentPlayer());
             resfreshIGMsg();
         } else {
-            setIgMsg("You have already five cards, play one card if you want");
-            draw1Button.setDisable(true);
-            draw2Button.setDisable(true);
-
+            setIgMsg("You have already 5 cards! Play before you draw");
             refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
             refreshHand(app.getCurrentPlayer());
             resfreshIGMsg();
@@ -267,8 +263,6 @@ public class Controller extends Application{
     }
 
     private void turnEnded2() {
-
-        System.out.println("We begin turnEnded2");
 
         app.getLastDeadCrea().clear();
 
