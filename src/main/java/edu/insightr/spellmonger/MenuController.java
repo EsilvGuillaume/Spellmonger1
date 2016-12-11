@@ -1,28 +1,20 @@
 package edu.insightr.spellmonger;
 
-import javafx.application.Application;
+import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.model.SpellmongerApp;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static javafx.application.Application.launch;
 
 public class MenuController implements Initializable, ControlledScreen {
 
-    static SpellmongerApp app = new SpellmongerApp();
+    public static SpellmongerApp app = new SpellmongerApp();
 
     ScreenController myController;
 
@@ -39,7 +31,6 @@ public class MenuController implements Initializable, ControlledScreen {
     }
 
     public void play() {
-        System.out.println("Play is pressed");
         myController.addData("NamePlayer", Login.getText());
         launchGame();
     }
@@ -50,8 +41,7 @@ public class MenuController implements Initializable, ControlledScreen {
     }
 
     public void launchGame() {
-        app.setPlayer1(new Player(Login.getText()));
-        app.setPlayer2(new Player("Opponent"));
+        app.initPlayer(Login.getText(), "Opponent");
         app.setCurrentPlayer(app.getPlayer1());
         app.setOpponent(app.getPlayer2());
         app.drawFirstTwoCards();

@@ -1,10 +1,10 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
+import edu.insightr.spellmonger.model.EnergyDrain;
+import edu.insightr.spellmonger.model.Player;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class EnergyDrainTest {
     Player p1;
@@ -14,7 +14,7 @@ public class EnergyDrainTest {
     @Before
     public void init(){
         p1 = new Player("p1");
-        p2 = new Player("p2");
+        p2 = new Player("secondPlayer");
     }
 
     @Test

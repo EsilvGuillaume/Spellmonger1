@@ -1,4 +1,4 @@
-package edu.insightr.spellmonger;
+package edu.insightr.spellmonger.model;
 
 import javafx.beans.property.SimpleStringProperty;
 

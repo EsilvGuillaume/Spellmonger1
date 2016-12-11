@@ -1,107 +1,121 @@
 package edu.insightr.spellmonger;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import javafx.scene.control.*;
-import org.junit.Assert;
+import cucumber.api.java.en.When;
+import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Creature;
+import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.model.SpellmongerApp;
 
-import java.awt.*;
-import java.awt.Button;
-import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-/**
- * Created by Harry on 01/11/2016.
- */
 public class GamePhase {
-
-    Player player = new Player();
-    Player current = new Player();
-    Player opponent = new Player();
+    SpellmongerApp app = new SpellmongerApp();
     List<Creature> creatures = new ArrayList<>();
 
-
-    @Given("^the \"([^\"]*)\" is the one who clicks first the draw button$")
-    public void the_is_the_one_who_clicks_first_the_draw_button(String arg1) throws Throwable {
-        System.out.println("");
+    @Then("^Alice has (\\d+) life points and (\\d+) creatures and (\\d+) energy point and (\\d+) cards in his/her deck$")
+    public void alice_has_life_points_and_creatures_and_energy_point_and_cards_in_his_her_deck(int arg1, int arg2, int arg3, int arg4) throws Throwable {
+        List<Card> hand = new ArrayList<>(arg2);
+        Player player = app.getPlayer1();
+        if ("Alice".equals(player.getName())) {
+            assertThat(player.getHp(), is(equalTo(arg1)));
+            assertThat(player.getHand(), is(equalTo(hand)));
+            assertThat(player.getEnergy(), is(equalTo(arg3)));
+            assertThat(player.getDeckInfo().getSize(), is(equalTo(arg4)));
+        }
     }
 
-    @Given("^\"([^\"]*)\"'s draw button is disabled$")
-    public void s_draw_button_is_disabled(String arg1) throws Throwable {
-        System.out.println("");
+    @Then("^Bob has (\\d+) life points and (\\d+) creatures and (\\d+) energy point and (\\d+) cards in his/her deck$")
+    public void bob_has_life_points_and_creatures_and_energy_point_and_cards_in_his_her_deck(int arg1, int arg2, int arg3, int arg4) throws Throwable {
+        List<Card> hand = new ArrayList<>(arg2);
+        Player player = app.getPlayer2();
+        if ("Bob".equals(player.getName())) {
+            assertThat(player.getHp(), is(equalTo(arg1)));
+            assertThat(player.getHand(), is(equalTo(hand)));
+            assertThat(player.getEnergy(), is(equalTo(arg3)));
+            assertThat(player.getDeckInfo().getSize(), is(equalTo(arg4)));
+        }
+    }
+
+    @Given("^\"([^\"]*)\" and \"([^\"]*)\" join the game$")
+    public void andJoinTheGame(String firstPlayerName, String secondPlayerName) throws Throwable {
+        app.initPlayer(firstPlayerName, secondPlayerName);
     }
 
     @Then("^the \"([^\"]*)\" gets a new card from his/her deck and adds it to his/her existing creatures$")
     public void the_gets_a_new_card_from_his_her_deck_and_adds_it_to_his_her_existing_creatures(String arg1) throws Throwable {
-        int hand = player.getHand().size();
-        if (player.getName() == arg1)
-            Assert.assertThat(hand, is(equalTo(hand+1)));
+//        Player player = findPlayer(arg1);
+//        int hand = player.getHand().size();
+//        assertThat(hand, is(equalTo(hand + 1)));
     }
 
     @Then("^if the \"([^\"]*)\" has enough energy points to summon a \"([^\"]*)\" he/she choose the corresponding creature and summon it$")
     public void if_the_has_enough_energy_points_to_summon_a_creature_he_she_choose_the_corresponding_creature_and_summon_it(String arg1, String arg2) throws Throwable {
         Creature creature = new Creature(arg2, arg1);
-        if(player.getName() == arg1) {
-            if(player.getEnergy() >= creature.getHp()){
-                Assert.assertThat(player.getNumberOfCreaOnBoard(), is(equalTo(1)));
-            }
-
+        Player player = findPlayer(arg1);
+        if (player.getEnergy() >= creature.getHp()) {
+            // TODO : il faut jouer la créature pour quelle soit on borad !!!
+            assertThat(player.getNumberOfCreaOnBoard(), is(equalTo(1)));
         }
+    }
 
+    private Player findPlayer(String arg1) throws Exception {
+        Player returnedValue;
+        if (arg1.equals(app.getPlayer1().getName())) {
+            returnedValue = app.getPlayer1();
+        } else if (arg1.equals(app.getPlayer2().getName())) {
+            returnedValue = app.getPlayer2();
+        } else {
+            throw new Exception("unknown returnedValue " + arg1);
+        }
+        return returnedValue;
     }
 
     @Then("^if there are no creatures on the opposite field the creatures summoned by the the \"([^\"]*)\" attack directly the \"([^\"]*)\"$")
     public void if_there_are_no_creatures_on_the_opposite_field_the_creatures_summoned_by_the_the_attack_directly_the(String arg1, String arg2) throws Throwable {
 
+        Player current = app.getPlayer1();
+        Player opponent = app.getPlayer2();
         creatures = Creature.getPlayerCreaOnBoard(current);
         int degats = 0;
         int hpAvantDegats = opponent.getHp();
         SpellmongerApp app = new SpellmongerApp();
 
-        for(Creature crea : creatures){
+        for (Creature crea : creatures) {
             degats += crea.getAttack();
         }
-         app.endOfTurn(current, opponent);
+        app.endOfTurn(current, opponent);
 
-        if(current.getName() == arg1 && opponent.getName() == arg2) {
-            if(opponent.getNumberOfCreaOnBoard() == 0){
-               Assert.assertThat(opponent.getHp(), is(equals(hpAvantDegats - degats)));
+        if (current.getName() == arg1 && opponent.getName() == arg2) {
+            if (opponent.getNumberOfCreaOnBoard() == 0) {
+                assertThat(opponent.getHp(), is(equals(hpAvantDegats - degats)));
             }
         }
     }
 
-    @Then("^if there are creatures on the opposite field the battle phase between creatures begins$")
-    public void if_there_are_creatures_on_the_opposite_field_the_battle_phase_between_creatures_begins() throws Throwable {
-        System.out.println("");
+    @When("^a \"([^\"]*)\"'s life points attain (\\d+)$")
+    public void a_s_life_points_attain(String arg1, int arg2) throws Throwable {
+        Player player = findPlayer(arg1);
+        player.setHp(arg2);
     }
 
-    @Then("^if there is a draw between creatures strength then corresponding creatures make no move$")
-    public void if_there_is_a_draw_between_creatures_strength_then_corresponding_creatures_make_no_move() throws Throwable {
-        System.out.println("");
+    @Then("^the \"([^\"]*)\" is dead$")
+    public void theIsDead(String arg0) throws Throwable {
+        Player player = findPlayer(arg0);
+        assertThat(player.getHp(), is(equalTo(0)));
+        assertThat(player.isAlive(), is(equalTo(false)));
     }
 
-    @Then("^after the battle phase the remaining creatures deal their remaining strength as damage$")
-    public void after_the_battle_phase_the_remaining_creatures_deal_their_remaining_strength_as_damage() throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^if the \"([^\"]*)\" wants to summon a ritual he/she can summon it directly and profits the effects of the ritual$")
-    public void if_the_wants_to_summon_a_ritual_he_she_can_summon_it_directly_and_profits_the_effects_of_the_ritual(String arg1) throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^the \"([^\"]*)\" becomes the \"([^\"]*)\" and his/her draw button is enabled$")
-    public void the_becomes_the_and_his_her_draw_button_is_enabled(String arg1, String arg2) throws Throwable {
-        System.out.println("");
-    }
-
-    @Then("^both \"([^\"]*)\" and \"([^\"]*)\" get (\\d+) energy point$")
-    public void both_and_get_energy_point(String arg1, String arg2, int arg3) throws Throwable {
-        System.out.println("");
+    @Then("^the \"([^\"]*)\" is the winner$")
+    public void the_is_the_winner(String arg1) throws Throwable {
+        Player player = findPlayer(arg1);
+        // TODO : il y a un bug dans isAlive() !!!
+        assertThat(player.isAlive(), is(true));
     }
 }

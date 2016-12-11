@@ -1,5 +1,8 @@
 package edu.insightr.spellmonger;
 
+import edu.insightr.spellmonger.model.Joueur;
+import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.utils.Tools;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -46,8 +50,7 @@ public class ScoreController implements Initializable, ControlledScreen {
     }
 
     public void launchGame() {
-        app.setPlayer1(new Player("You"));
-        app.setPlayer2(new Player("Opponent"));
+        app.initPlayer("You", "Opponent");
         app.setCurrentPlayer(app.getPlayer1());
         app.setOpponent(app.getPlayer2());
         app.drawFirstTwoCards();
