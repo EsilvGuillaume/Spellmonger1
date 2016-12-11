@@ -3,7 +3,7 @@ package edu.insightr.spellmonger;
 
 import javafx.scene.image.Image;
 
-public class EnergyDrain extends Rituol {
+public class lùEnergyDrain extends Rituol {
 
     private String effectDescription = "Energy Drain - consume 2 energies to your opponent and you win 2 energies";
     private boolean bonus;
