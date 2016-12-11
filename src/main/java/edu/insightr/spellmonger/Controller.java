@@ -39,7 +39,7 @@ import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 
 
-public class Controller extends Application{
+public class Controller extends Application {
 
     // TODO : split Controller, View and Model
     // TODO : clean your code, too many warnings !
@@ -109,7 +109,7 @@ public class Controller extends Application{
         launch(args);
     }
 
-    private void makeItFade(Node node){
+    private void makeItFade(Node node) {
         FadeTransition ft = new FadeTransition(Duration.millis(5000), node);
         ft.setFromValue(1.0);
         ft.setToValue(0.5);
@@ -119,15 +119,14 @@ public class Controller extends Application{
         ft.play();
     }
 
-    private void turnEnded(){ // actually just checks dead crea then call real end of turn method (go rename)
+    private void turnEnded() { // actually just checks dead crea then call real end of turn method (go rename)
         System.out.println("turnEnded entered - checking deaths");
 
         FadeTransition ft = new FadeTransition();
 
-        if(app.getLastDeadCrea().isEmpty()){
+        if (app.getLastDeadCrea().isEmpty()) {
             turnEnded2();
-        }
-        else {
+        } else {
             //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
             for (Creature crea : app.getLastDeadCrea()) {
                 //System.out.println(crea.getName()+" imageview is : "+crea.getPic());
@@ -143,7 +142,7 @@ public class Controller extends Application{
         }
     }
 
-    private void animCardPlayed(Node node){
+    private void animCardPlayed(Node node) {
         double initY = node.getLayoutY();
 
         FadeTransition ft = new FadeTransition(Duration.millis(3000), node);
@@ -155,7 +154,7 @@ public class Controller extends Application{
         TranslateTransition translateTransition =
                 new TranslateTransition(Duration.millis(2000), node);
         translateTransition.setFromY(initY);
-        translateTransition.setToY(initY-50);
+        translateTransition.setToY(initY - 50);
         translateTransition.setCycleCount(1);
 
         RotateTransition rotateTransition =
@@ -189,7 +188,7 @@ public class Controller extends Application{
 
     }
 
-    private void makeItNormal(Node node){
+    private void makeItNormal(Node node) {
         // should stop fading player box
     }
 
@@ -229,7 +228,7 @@ public class Controller extends Application{
             app.setOpponent(app.getPlayer2());
             hand2.setDisable(true);
             hand1.setDisable(false);
-        } else if (event.getSource() == draw2Button ) {
+        } else if (event.getSource() == draw2Button) {
             app.setCurrentPlayer(app.getPlayer2());
             app.setOpponent(app.getPlayer1());
             hand1.setDisable(true);
@@ -303,7 +302,7 @@ public class Controller extends Application{
         }
         refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
         resfreshIGMsg();
-        if(app.checkIfWinner()){
+        if (app.checkIfWinner()) {
             //myController.loadScreen(Main.Score_ID, Main.Score_FILE);
             //myController.setScreen(Main.Score_ID);
             //MenuController ctrll = new MenuController();
@@ -312,7 +311,7 @@ public class Controller extends Application{
         }
     }
 
-   private void refreshDiscard() {
+    private void refreshDiscard() {
         if (app.getCurrentPlayer().getDiscard().size() > 0) {
             Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
             Image image = lastDiscard.getImg();
@@ -355,32 +354,32 @@ public class Controller extends Application{
         }
     }
 
-   private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
+    private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
 
-           if (card.getCost() <= currentPlayer.getEnergy()) {
-               animCardPlayed(cardToMove);
-               setIgMsg("");
-               app.playCard(card, currentPlayer, opponent);
-               //effect if crea dies
-               //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
-               removecardhand(card, currentPlayer);
-               //refreshHand(currentPlayer); // now in anim
+        if (card.getCost() <= currentPlayer.getEnergy()) {
+            animCardPlayed(cardToMove);
+            setIgMsg("");
+            app.playCard(card, currentPlayer, opponent);
+            //effect if crea dies
+            //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
+            removecardhand(card, currentPlayer);
+            //refreshHand(currentPlayer); // now in anim
 
-                   app.setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
-                   for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
-                       app.getAllCreaOnBoard().add(crea);
-                   }
-                   Creature.displayGroupOfCrea(app.getAllCreaOnBoard());//affichage crea du board raffraichis
+            app.setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
+            for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
+                app.getAllCreaOnBoard().add(crea);
+            }
+            Creature.displayGroupOfCrea(app.getAllCreaOnBoard());//affichage crea du board raffraichis
 
-                   refreshBoard(app.getAllCreaOnBoard());//refresh main + crea
-                   refreshHand(currentPlayer);
+            refreshBoard(app.getAllCreaOnBoard());//refresh main + crea
+            refreshHand(currentPlayer);
+            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
 
             /*  if (currentPlayer.getEnergy() == 0) { // à décommenter si on veut faire passer le tour automatiquement lorsque le joueur n'a plus d'energie.
                    app.cardPlayed();
                    turnEnded();
                }*/
-           }
-         else {
+        } else {
             app.setIgMsg("You have not enough energy,\n choose another card");
             resfreshIGMsg();
         }
@@ -396,13 +395,12 @@ public class Controller extends Application{
     }
 
 
-
     @FXML
     private void refreshCurrCard(Image img) {
         currentCard.setImage(img);
     }
 
-   private void resfreshIGMsg() {
+    private void resfreshIGMsg() {
         gameMsg.setText(app.getIgMsg());
     }
 
@@ -623,7 +621,7 @@ public class Controller extends Application{
 
         //pic.setId(Integer.toString(card.getIdCode()));
 
-        ((Creature)card).setPic(pic);
+        ((Creature) card).setPic(pic);
 
         addCursorEffect(pic);
 
@@ -662,7 +660,7 @@ public class Controller extends Application{
             }
         });
 
-        ((Creature)card).setPic(pic);
+        ((Creature) card).setPic(pic);
 
         addCursorEffect(pic);
 

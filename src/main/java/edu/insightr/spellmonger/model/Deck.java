@@ -31,11 +31,11 @@ public class Deck {
 
         List<Card> possibleCards = new ArrayList<>();
 
-        int creatureNumber = (int) (size * 0.75); // ~75% of crea in a deck
-        int rituolOrEnchantNumber = (int) (size * 0.25); // ~25% of ritual or enchant in a deck
+        int creatureNumber = (int) (size * 0.6); // ~75% of crea in a deck
+        int rituolOrEnchantNumber = (int) (size * 0.4); // ~25% of ritual or enchant in a deck
 
         int differentCrea = 5;
-        int differentRituOrEnch = 5;
+        int differentRituOrEnch = 6;
 
         int uniqueCreaNumber = (int) (creatureNumber / differentCrea);
         int uniqueRituolNumber = (int) (rituolOrEnchantNumber / differentRituOrEnch);
@@ -62,12 +62,14 @@ public class Deck {
             EnergyDrain energyDrain = new EnergyDrain("energy drain");
             VaultOverclocking vault = new VaultOverclocking("vault overclocking", playerName);
             SkinStrengthening skinStrength = new SkinStrengthening("skin strengthening", playerName);
+            MagmaFlood magmaFlood = new MagmaFlood("magma flood", playerName);
 
             addToList(possibleCards, energyDrain, uniqueRituolNumber);
             addToList(possibleCards, blessing, uniqueRituolNumber);
             addToList(possibleCards, curse, uniqueRituolNumber);
             addToList(possibleCards, vault, uniqueRituolNumber);
             addToList(possibleCards, skinStrength, uniqueRituolNumber);
+            addToList(possibleCards, magmaFlood, uniqueRituolNumber);
         }
 
         randomGenerator = new Random();

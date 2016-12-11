@@ -133,7 +133,23 @@ public class Creature extends Card {
         return bestTarget;
     }
 
-    private void killCreature(Creature creatures) {
+    static public void killCreature(Creature creatures) {
+        allCreatures.remove(creatures);
+
+        //Controller ctrl = new Controller(); // test
+        //ctrl.creaDies(this.getPic(), this); // test
+
+        app.getAllCreaOnBoard().remove(creatures);
+        app.getLastDeadCrea().add(creatures);
+        if (creatures.getOwner() == app.getCurrentPlayer().getName()) {
+            app.getCurrentPlayer().getDiscard().add(creatures);
+        } else if (creatures.getOwner() == app.getOpponent().getName()) {
+            app.getOpponent().getDiscard().add(creatures);
+        }
+        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + ",\nwas killed by " + creatures.getName() + " of " + creatures.getOwner());
+    }
+
+    /*private void killCreature(Creature creatures) {
         allCreatures.remove(this);
 
         //Controller ctrl = new Controller(); // test
@@ -147,7 +163,7 @@ public class Creature extends Card {
             app.getOpponent().getDiscard().add(this);
         }
         app.setIgMsg(app.getIgMsg() + "\n" + this.getName() + " of " + this.getOwner() + ",\nwas killed by " + creatures.getName() + " of " + creatures.getOwner());
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -168,11 +184,13 @@ public class Creature extends Card {
         this.setHp(this.getHp() - creature.getAttack());
         if (creature.getHp() <= 0) {
             creature.setAlive(false);
-            creature.killCreature(this);
+            //creature.killCreature(this);
+            killCreature((creature));
         }
         if (this.getHp() <= 0) {
             this.setAlive(false);
-            this.killCreature(creature);
+            //this.killCreature(creature);
+            killCreature(this);
         }
     }
 
