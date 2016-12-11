@@ -4,6 +4,7 @@ import edu.insightr.spellmonger.model.Card;
 import edu.insightr.spellmonger.model.Creature;
 import edu.insightr.spellmonger.model.Player;
 import edu.insightr.spellmonger.model.SpellmongerApp;
+import edu.insightr.spellmonger.utils.MyModel;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -30,6 +31,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.util.Duration;
@@ -105,6 +107,8 @@ public class Controller extends Application {
     @FXML
     private ImageView currentCard, discard1, discard2;
 
+    private MyModel Model = new MyModel();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -121,25 +125,24 @@ public class Controller extends Application {
 
     private void turnEnded() { // actually just checks dead crea then call real end of turn method (go rename)
         System.out.println("turnEnded entered - checking deaths");
-
         FadeTransition ft = new FadeTransition();
-
-        if (app.getLastDeadCrea().isEmpty()) {
-            turnEnded2();
-        } else {
+        ArrayList<Creature> temp = Model.checkdeadcrea();
             //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
-            for (Creature crea : app.getLastDeadCrea()) {
-                //System.out.println(crea.getName()+" imageview is : "+crea.getPic());
-                ft = new FadeTransition(Duration.millis(3000), crea.getPic());
-
-                ft.setFromValue(1.0);
-                ft.setToValue(0.5);
-                ft.setRate(3);
-                ft.setCycleCount(1);
-                ft.play();
+            if (temp.isEmpty()) {
+                turnEnded2();
             }
-            ft.setOnFinished(e -> turnEnded2());
-        }
+            else
+            {
+                for (Creature crea : temp) {
+                    ft = new FadeTransition(Duration.millis(3000), crea.getPic());
+                    ft.setFromValue(1.0);
+                    ft.setToValue(0.5);
+                    ft.setRate(3);
+                    ft.setCycleCount(1);
+                    ft.play();
+                }
+                ft.setOnFinished(e -> turnEnded2());
+            }
     }
 
     private void animCardPlayed(Node node) {
@@ -182,7 +185,7 @@ public class Controller extends Application {
         parallelTransition.onFinishedProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                refreshHand(app.getOpponent());
+                refreshHand(Model.getOpponent());
             }
         });
 
@@ -193,9 +196,9 @@ public class Controller extends Application {
     }
 
     public void initialize() {
-        refreshHand(app.getPlayer1());
-        refreshHand(app.getPlayer2());
-        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+        refreshHand(Model.getPlayer(1));
+        refreshHand(Model.getPlayer(2));
+        refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
         displayInitialPlayers();
     }
 
@@ -224,85 +227,75 @@ public class Controller extends Application {
     private void draw(ActionEvent event) {
         resfreshIGMsg();
         if (event.getSource() == draw1Button) {
-            app.setCurrentPlayer(app.getPlayer1());
-            app.setOpponent(app.getPlayer2());
+            Model.DrawPlayer(1);
             hand2.setDisable(true);
             hand1.setDisable(false);
         } else if (event.getSource() == draw2Button) {
-            app.setCurrentPlayer(app.getPlayer2());
-            app.setOpponent(app.getPlayer1());
+          Model.DrawPlayer(2);
             hand1.setDisable(true);
             hand2.setDisable(false);
         }
 
-        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-        if (app.getCurrentPlayer().getHand().size() < 5) {
-            app.drawACard(app.getCurrentPlayer(), app.getOpponent());
-
+        refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
+        if (Model.GetSizeHand(1) < 5) {
+    Model.DrawCard(Model.getCurrent(),Model.getOpponent());
             draw1Button.setDisable(true);
             draw2Button.setDisable(true);
-
-            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-            refreshHand(app.getCurrentPlayer());
+            refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
+            refreshHand(Model.getCurrent());
             resfreshIGMsg();
         } else {
             setIgMsg("You have already 5 cards! Play before you draw");
-            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-            refreshHand(app.getCurrentPlayer());
+            refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
+            refreshHand(Model.getCurrent());
             resfreshIGMsg();
         }
     }
 
     @FXML
     void playNoCard() {
-        app.cardPlayed();
-        refreshBoard(app.getAllCreaOnBoard());
+       Model.CardPlay();
+        refreshBoard(Model.CheckCreaBoard());
         refreshDiscard();
         turnEnded();
     }
 
     private void turnEnded2() {
 
-        app.getLastDeadCrea().clear();
 
-        refreshBoard(app.getAllCreaOnBoard());
-
-        app.verifyVaultOverclock(app.getOpponent());
-        if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+        refreshBoard(Model.CheckCreaBoard());
+        Model.TurnEndModel();
+        if (Model.getCurrent().equals(Model.getPlayer(1))) {
             player2Box.setFill(Color.rgb(173, 237, 125));
             player1Box.setFill(Color.rgb(255, 240, 175));
         } else {
             player1Box.setFill(Color.rgb(173, 237, 125));
             player2Box.setFill(Color.rgb(255, 240, 175));
         }
-        app.endOfTurn(app.getCurrentPlayer(), app.getOpponent());
-        app.setTmpPlayer(app.getCurrentPlayer());
-        app.setCurrentPlayer(app.getOpponent());
-        app.setOpponent(app.getTmpPlayer());
-        if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+        if (Model.getCurrent().equals(Model.getPlayer(1))) {
             makeItFade(player1Box);
             makeItNormal(player2Box);
             draw1Button.setDisable(false);
             draw2Button.setDisable(true);
-            setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
-        } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
+            setIgMsg(Model.MsgIg() + "\nEnd of turn " + Model.getOpponent().getName());
+        } else if (Model.getCurrent().equals(Model.getPlayer(2))) {
             makeItFade(player2Box);
             makeItNormal(player1Box);
             draw1Button.setDisable(true);
             draw2Button.setDisable(false);
-            setIgMsg(app.getIgMsg() + "\nEnd of turn " + app.getOpponent().getName());
+            setIgMsg(Model.MsgIg() + "\nEnd of turn " + Model.getOpponent().getName());
         }
-        app.setIgMsg(app.getIgMsg() + "\n" + app.getCurrentPlayer().getName() + " to draw");
-        if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+        Model.setMsg(Model.MsgIg() + "\n" + Model.getCurrent().getName() + " to draw");
+        if (Model.getCurrent().equals(Model.getPlayer(1))) {
             hand2.setDisable(true);
             hand1.setDisable(false);
         } else {
             hand1.setDisable(true);
             hand2.setDisable(false);
         }
-        refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
+        refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
         resfreshIGMsg();
-        if (app.checkIfWinner()) {
+        if (Model.CheckWinner()) {
             //myController.loadScreen(Main.Score_ID, Main.Score_FILE);
             //myController.setScreen(Main.Score_ID);
             //MenuController ctrll = new MenuController();
@@ -312,11 +305,11 @@ public class Controller extends Application {
     }
 
     private void refreshDiscard() {
-        if (app.getCurrentPlayer().getDiscard().size() > 0) {
-            Card lastDiscard = (Card) app.getCurrentPlayer().getDiscard().get(app.getCurrentPlayer().getDiscard().size() - 1);
+        if (Model.getCurrent().getDiscard().size() > 0) {
+            Card lastDiscard = (Card) Model.getCurrent().getDiscard().get(Model.getCurrent().getDiscard().size() - 1);
             Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
-            if (app.getCurrentPlayer().equals(app.getPlayer1())) {
+            if (Model.getCurrent().equals(Model.getPlayer(1))) {
                 discard1.setImage(image);
                 pic = discard1;
             } else {
@@ -332,11 +325,11 @@ public class Controller extends Application {
             });
             addCursorEffect(pic);
         }
-        if (app.getOpponent().getDiscard().size() > 0) {
-            Card lastDiscard = (Card) app.getOpponent().getDiscard().get(app.getOpponent().getDiscard().size() - 1);
+        if (Model.getOpponent().getDiscard().size() > 0) {
+            Card lastDiscard = (Card) Model.getOpponent().getDiscard().get(Model.getOpponent().getDiscard().size() - 1);
             Image image = lastDiscard.getImg();
             ImageView pic = new ImageView();
-            if (app.getOpponent().equals(app.getPlayer1())) {
+            if (Model.getOpponent().equals(Model.getPlayer(1))) {
                 discard1.setImage(image);
                 pic = discard1;
             } else {
@@ -356,42 +349,29 @@ public class Controller extends Application {
 
     private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
 
-        if (card.getCost() <= currentPlayer.getEnergy()) {
+        if (Model.GoPlayCardModel(card, currentPlayer, opponent, cardToMove)) {
             animCardPlayed(cardToMove);
-            setIgMsg("");
-            app.playCard(card, currentPlayer, opponent);
+            Model.setMsg("");
             //effect if crea dies
             //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
             removecardhand(card, currentPlayer);
             //refreshHand(currentPlayer); // now in anim
-
-            app.setAllCreaOnBoard(Creature.getPlayerCreaOnBoard(currentPlayer));
-            for (Creature crea : Creature.getPlayerCreaOnBoard(opponent)) {
-                app.getAllCreaOnBoard().add(crea);
-            }
-            Creature.displayGroupOfCrea(app.getAllCreaOnBoard());//affichage crea du board raffraichis
-
-            refreshBoard(app.getAllCreaOnBoard());//refresh main + crea
+            Creature.displayGroupOfCrea(Model.CheckCreaBoard());//affichage crea du board raffraichis
+            refreshBoard(Model.CheckCreaBoard());//refresh main + crea
             refreshHand(currentPlayer);
-            refreshPlayerInfo(app.getCurrentPlayer(), app.getOpponent());
-
+            refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
             /*  if (currentPlayer.getEnergy() == 0) { // à décommenter si on veut faire passer le tour automatiquement lorsque le joueur n'a plus d'energie.
                    app.cardPlayed();
                    turnEnded();
                }*/
         } else {
-            app.setIgMsg("You have not enough energy,\n choose another card");
             resfreshIGMsg();
         }
         refreshDiscard();
     }
 
     private void removecardhand(Card card, Player currentPlayer) {
-        for (int i = 0; i < currentPlayer.getHand().size(); i++) {
-            if (card == currentPlayer.getHand().get(i)) {
-                currentPlayer.getHand().remove(i);
-            }
-        }
+        Model.RemoveHandCard(card, currentPlayer);
     }
 
 
@@ -401,11 +381,11 @@ public class Controller extends Application {
     }
 
     private void resfreshIGMsg() {
-        gameMsg.setText(app.getIgMsg());
+        gameMsg.setText(Model.MsgIg());
     }
 
     void resfreshIGMsgintoapp() {
-        gameMsg.setText(SpellmongerApp.getIgMsg());
+        gameMsg.setText(Model.MsgIg());
     }
 
     private void refreshCurrStats(Card card) {
@@ -431,7 +411,7 @@ public class Controller extends Application {
         Image img;
         ImageView pic;
 
-        if (currPlayer.equals(app.getPlayer1())) {
+        if (currPlayer.equals(Model.getPlayer(1))) {
 
             hand1.setContent(null);
             handP1 = new HBox();
@@ -458,7 +438,7 @@ public class Controller extends Application {
                 addCursorEffect(pic);
 
                 pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent(), movingPic)
+                        goPlayCard(Model.getCurrent().getHand().get(index), Model.getCurrent(), Model.getOpponent(), movingPic)
                 );
 
                 hand1.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -513,7 +493,7 @@ public class Controller extends Application {
                 addCursorEffect(pic);
 
                 pic.setOnMouseClicked(e ->
-                        goPlayCard(app.getCurrentPlayer().getHand().get(index), app.getCurrentPlayer(), app.getOpponent(), movingPic)
+                        goPlayCard(Model.getCurrent().getHand().get(index), Model.getCurrent(), Model.getOpponent(), movingPic)
                 );
 
                 hand2.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -546,7 +526,7 @@ public class Controller extends Application {
     }
 
     private void refreshPlayerInfo(Player currPlayer, Player oppo) {
-        if (currPlayer == app.getPlayer1()) {
+        if (currPlayer == Model.getPlayer(1)) {
             hpPlayer1.setText("Hp : " + Integer.toString(currPlayer.getHp()));
             manaPlayer1.setText("Energy : " + Integer.toString(currPlayer.getEnergy()));
             hpPlayer2.setText("Hp : " + Integer.toString(oppo.getHp()));
@@ -575,14 +555,14 @@ public class Controller extends Application {
             img = creaOnBoard.get(i).getImg();
             pic = new ImageView(img);
 
-            if (app.getCurrentPlayer().equals(app.getPlayer1())) {
-                if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
+            if (Model.getCurrent().equals(Model.getPlayer(1))) {
+                if (Model.getCurrent().getName().equals(creaOnBoard.get(i).getOwner())) {
                     displayB1(pic, img, imageCol, creaOnBoard.get(i));
                 } else {
                     displayB2(pic, img, imageCol, creaOnBoard.get(i));
                 }
-            } else if (app.getCurrentPlayer().equals(app.getPlayer2())) {
-                if (app.getCurrentPlayer().getName().equals(creaOnBoard.get(i).getOwner())) {
+            } else if (Model.getCurrent().equals(Model.getPlayer(2))) {
+                if (Model.getCurrent().getName().equals(creaOnBoard.get(i).getOwner())) {
                     displayB2(pic, img, imageCol, creaOnBoard.get(i));
                 } else {
                     displayB1(pic, img, imageCol, creaOnBoard.get(i));
@@ -672,8 +652,8 @@ public class Controller extends Application {
     }
 
     private void displayInitialPlayers() {
-        namePlayer1.setText(app.getPlayer1().getName());
-        namePlayer2.setText(app.getPlayer2().getName());
+        namePlayer1.setText(Model.getPlayer(1).getName());
+        namePlayer2.setText(Model.getPlayer(2).getName());
     }
 
 }
