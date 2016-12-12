@@ -1,4 +1,4 @@
-package edu.insightr.spellmonger.utils;
+package edu.insightr.spellmonger.model;
 import edu.insightr.spellmonger.model.Card;
 import edu.insightr.spellmonger.model.Creature;
 import edu.insightr.spellmonger.model.Player;
