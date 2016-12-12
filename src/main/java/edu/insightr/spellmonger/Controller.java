@@ -262,6 +262,8 @@ public class Controller extends Application {
 
     @FXML
     void playNoCard() {
+        refreshHand(Model.getCurrent());
+        refreshHand(Model.getOpponent());
         Model.CardPlay();
         //refreshBoard(Model.CheckCreaBoard());
         refreshDiscard();
