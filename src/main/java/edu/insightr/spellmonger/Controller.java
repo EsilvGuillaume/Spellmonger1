@@ -37,6 +37,8 @@ import java.util.List;
 import javafx.util.Duration;
 
 //import static edu.insightr.spellmonger.model.SpellmongerApp.app;
+import javax.swing.*;
+
 import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 

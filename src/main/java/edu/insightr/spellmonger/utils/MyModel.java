@@ -6,6 +6,7 @@ import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class MyModel {
     }
      public boolean CheckWinner()
      {
+         if(app.checkIfWinner())
+         {
+             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(),"Le vainqueur est : "+app.getWinner()+"", "Winner",  JOptionPane.PLAIN_MESSAGE);
+         }
          return app.checkIfWinner();
      }
     public String MsgIg ()
