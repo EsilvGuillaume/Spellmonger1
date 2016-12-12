@@ -14,6 +14,11 @@ public class CreatureTest {
     Wolf w;
     Eagle e;
 
+    private static final int ATTACK_CREATURE = 6;
+
+
+
+
     @Before
     public void init() {
         app = new SpellmongerApp();
@@ -127,8 +132,8 @@ public class CreatureTest {
 
     @Test
     public void setAttack() throws Exception {
-        b.setAttack(6);
-        Assert.assertEquals(6, b.getAttack());
+        b.setAttack(ATTACK_CREATURE);
+        Assert.assertEquals(ATTACK_CREATURE, b.getAttack());
 
     }
 

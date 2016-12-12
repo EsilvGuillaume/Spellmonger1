@@ -36,6 +36,9 @@ import java.util.List;
 import javafx.util.Duration;
 
 //import static edu.insightr.spellmonger.model.SpellmongerApp.app;
+import javax.swing.*;
+
+import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 
 
@@ -266,14 +269,8 @@ public class Controller extends Application {
     }
 
     private void turnEnded2() {
-        /*try {
-            System.out.println("Sleeping - turnEnded just entered");
-            Thread.sleep(4000);
-            System.out.println("Awake");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        System.out.println("Turn ends... (turnEnded2 starts)");
+
+        //System.out.println("Turn ends... (turnEnded2 starts)");
         refreshBoard(Model.CheckCreaBoard());
         Model.TurnEndModel();
         if (Model.getCurrent().equals(Model.getPlayer(1))) {
