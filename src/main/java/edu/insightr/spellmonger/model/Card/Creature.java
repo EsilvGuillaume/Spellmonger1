@@ -1,6 +1,7 @@
-package edu.insightr.spellmonger.model;
+package edu.insightr.spellmonger.model.Card;
 
 
+import edu.insightr.spellmonger.model.Player;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import static edu.insightr.spellmonger.MenuController.app;
 
 public class Creature extends Card {
 
-    protected static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
+    public static ArrayList<Creature> allCreatures = new ArrayList<Creature>();
     private static ArrayList<Creature> temp;
     private int hp;
     private int attack;
@@ -202,23 +203,34 @@ public class Creature extends Card {
             if (target.getHp() == healthiest)
                 bestTarget = target;
         }
-        if (bestTarget != null) {
-            System.out.println("best target = " + bestTarget.getName());
-        }
+
         return bestTarget;
     }
 
     public void killCreature(Creature creatures) {
+        allCreatures.remove(this);
+        app.getAllCreaOnBoard().remove(this);
+        app.getLastDeadCrea().add(this);
+        if (this.getOwner().equals(app.getCurrentPlayer().getName())) {
+            app.getCurrentPlayer().getDiscard().add(this);
+        } else if (this.getOwner().equals(app.getOpponent().getName())) {
+            app.getOpponent().getDiscard().add(this);
+        }
+        app.setIgMsg(app.getIgMsg() + "" +creatures.getOwner() + "'s "+creatures.getName()+" killed " + this.getOwner() + "'s " + this.getName()+"\n");
+    }
+
+    /*public void killCreature(Creature creatures) {
         allCreatures.remove(creatures);
         app.getAllCreaOnBoard().remove(creatures);
         app.getLastDeadCrea().add(creatures);
-        if (creatures.getOwner() == app.getCurrentPlayer().getName()) {
-            app.getCurrentPlayer().getDiscard().add(creatures);
-        } else if (creatures.getOwner() == app.getOpponent().getName()) {
-            app.getOpponent().getDiscard().add(creatures);
+        if (creatures.getOwner().equals(app.getCurrentPlayer().getName())) {
+            app.getCurrentPlayer().getDiscard().add(this); //creatures
+        } else if (creatures.getOwner().equals(app.getOpponent().getName())) {
+            app.getOpponent().getDiscard().add(this); //readded
         }
-        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + " † by " + this.getName() + " of " + this.getOwner());
-    }
+        //app.setIgMsg(app.getIgMsg() + "" +creatures.getOwner() + "'s "+creatures.getName()+" killed " + this.getOwner() + "'s " + this.getName()+"\n");
+        app.setIgMsg(app.getIgMsg() + "" +creatures.getOwner() + "'s "+creatures.getName()+" killed " + this.getOwner() + "'s " + this.getName()+"\n");
+    }*/
 
     @Override
     public String toString() {
@@ -239,13 +251,13 @@ public class Creature extends Card {
         this.setHp(this.getHp() - creature.getAttack());
         if (creature.getHp() <= 0) {
             creature.setAlive(false);
-            //creature.killCreature(this);
-            killCreature((creature));
+            creature.killCreature(this);
+            //killCreature((creature));
         }
         if (this.getHp() <= 0) {
             this.setAlive(false);
-            //this.killCreature(creature);
-            killCreature(this);
+            this.killCreature(creature);
+            //killCreature(this);
         }
     }
 

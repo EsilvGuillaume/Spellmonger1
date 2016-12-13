@@ -57,7 +57,7 @@ public class MenuController implements Initializable, ControlledScreen {
         ctrl.start(pstage);
     }
     public void launchGameIa() {
-        app.initPlayer(Login.getText(), "Ia");
+        app.initPlayer(Login.getText(), "IA");
         app.setCurrentPlayer(app.getPlayer1());
         app.setOpponent(app.getPlayer2());
         app.drawFirstTwoCards();

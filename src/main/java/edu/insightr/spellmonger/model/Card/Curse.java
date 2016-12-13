@@ -1,5 +1,6 @@
-package edu.insightr.spellmonger.model;
+package edu.insightr.spellmonger.model.Card;
 
+import edu.insightr.spellmonger.model.Player;
 import javafx.scene.image.Image;
 
 //import static edu.insightr.spellmonger.model.SpellmongerApp.app;

@@ -1,9 +1,8 @@
 package edu.insightr.spellmonger.model;
 
-import edu.insightr.spellmonger.model.Bear;
-import edu.insightr.spellmonger.model.Card;
-import edu.insightr.spellmonger.model.Player;
-import edu.insightr.spellmonger.model.Wolf;
+import edu.insightr.spellmonger.model.Card.Bear;
+import edu.insightr.spellmonger.model.Card.Card;
+import edu.insightr.spellmonger.model.Card.Wolf;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

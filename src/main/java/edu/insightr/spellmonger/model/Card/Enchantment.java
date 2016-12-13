@@ -1,4 +1,6 @@
-package edu.insightr.spellmonger.model;
+package edu.insightr.spellmonger.model.Card;
+
+import edu.insightr.spellmonger.model.Player;
 
 public abstract class Enchantment extends Card {
 

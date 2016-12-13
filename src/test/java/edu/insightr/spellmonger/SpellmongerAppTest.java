@@ -1,6 +1,6 @@
 package edu.insightr.spellmonger;
 
-import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Card.Card;
 import edu.insightr.spellmonger.model.Player;
 import edu.insightr.spellmonger.model.SpellmongerApp;
 import org.junit.Assert;

@@ -1,5 +1,6 @@
 package edu.insightr.spellmonger.model;
 
+import edu.insightr.spellmonger.model.Card.*;
 import edu.insightr.spellmonger.utils.Tools;
 import org.apache.log4j.Logger;
 

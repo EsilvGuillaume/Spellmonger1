@@ -1,8 +1,7 @@
 package edu.insightr.spellmonger.model;
-import edu.insightr.spellmonger.model.Card;
-import edu.insightr.spellmonger.model.Creature;
-import edu.insightr.spellmonger.model.Player;
-import edu.insightr.spellmonger.model.MyModel;
+import edu.insightr.spellmonger.model.Card.Card;
+import edu.insightr.spellmonger.model.Card.Creature;
+import edu.insightr.spellmonger.model.Card.Rituol;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -35,16 +34,10 @@ import java.util.List;
 import javafx.util.Duration;
 
 //import static edu.insightr.spellmonger.model.SpellmongerApp.app;
-import javax.swing.*;
 
-import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 import static java.lang.Thread.sleep;
 
-
-/**
- * Created by Kali on 12/12/2016.
- */
 public class ControllerIA extends Application {
     // TODO : split Controller, View and Model
     // TODO : clean your code, too many warnings !
@@ -221,7 +214,7 @@ public class ControllerIA extends Application {
                     Draw = tmpcard;
                 }
             }
-            Model.setMsg("Ia draw one card : " +Draw.getName()+"\n");
+            Model.setMsg("IA draws card " +Draw.getName()+"\n");
             if (!(toplay instanceof Creature))
             {
                 for(Card tmpcard : cardia)
@@ -242,7 +235,7 @@ public class ControllerIA extends Application {
                 ImageView pic = new ImageView(img);
                 final ImageView movingPic = pic;
                 goPlayCard(toplay, Model.getCurrent(), Model.getOpponent(), movingPic);
-                Model.setMsg(Model.MsgIg()+("Ia play card :" +toplay.getName())+"|");
+                Model.setMsg(Model.MsgIg()+("IA plays card " +toplay.getName())+"\n");
             }
              if(Model.getCurrent().getEnergy()>0 && toplay.getCost()>0)
              {
@@ -292,11 +285,10 @@ public class ControllerIA extends Application {
                 ImageView pic = new ImageView(img);
                 final ImageView movingPic = pic;
                 goPlayCard(toplay, Model.getCurrent(), Model.getOpponent(), movingPic);
-                Model.setMsg(Model.MsgIg()+("Ia play card : " +toplay.getName()+ " | "));
+                Model.setMsg(Model.MsgIg()+("IA plays card " +toplay.getName()+ "\n"));
             }
             if(Model.getCurrent().getEnergy()>0 && toplay.getCost()>0)
             {
-
                 IaTurn(1);
             }
             else
@@ -389,14 +381,14 @@ public class ControllerIA extends Application {
             makeItFade(player1Box);
             makeItNormal(player2Box);
             draw1Button.setDisable(false);
-            setIgMsg(Model.MsgIg() + "\nEnd of turn " + Model.getOpponent().getName());
+            setIgMsg(Model.MsgIg() + "End of turn " + Model.getOpponent().getName());
         } else if (Model.getCurrent().equals(Model.getPlayer(2))) {
             makeItFade(player2Box);
             makeItNormal(player1Box);
             draw1Button.setDisable(true);
-            setIgMsg(Model.MsgIg() + "\nEnd of turn " + Model.getOpponent().getName());
+            setIgMsg(Model.MsgIg() + "End of turn " + Model.getOpponent().getName());
         }
-        Model.setMsg(Model.MsgIg() + "\n" + Model.getCurrent().getName() + " to draw");
+        Model.setMsg(Model.MsgIg() + " --> " + Model.getCurrent().getName() + " to draw");
         if (Model.getCurrent().equals(Model.getPlayer(1))) {
             hand2.setDisable(true);
             hand1.setDisable(false);

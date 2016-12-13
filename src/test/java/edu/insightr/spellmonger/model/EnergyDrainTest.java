@@ -1,7 +1,6 @@
 package edu.insightr.spellmonger.model;
 
-import edu.insightr.spellmonger.model.EnergyDrain;
-import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.model.Card.EnergyDrain;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

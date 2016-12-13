@@ -1,7 +1,7 @@
 package edu.insightr.spellmonger;
 
-import edu.insightr.spellmonger.model.Card;
-import edu.insightr.spellmonger.model.Creature;
+import edu.insightr.spellmonger.model.Card.Card;
+import edu.insightr.spellmonger.model.Card.Creature;
 import edu.insightr.spellmonger.model.Player;
 import edu.insightr.spellmonger.model.MyModel;
 import javafx.animation.*;
@@ -36,9 +36,7 @@ import java.util.List;
 import javafx.util.Duration;
 
 //import static edu.insightr.spellmonger.model.SpellmongerApp.app;
-import javax.swing.*;
 
-import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 
 

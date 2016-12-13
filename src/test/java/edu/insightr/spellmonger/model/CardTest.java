@@ -1,7 +1,7 @@
 package edu.insightr.spellmonger.model;
 
-import edu.insightr.spellmonger.model.Bear;
-import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Card.Bear;
+import edu.insightr.spellmonger.model.Card.Card;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

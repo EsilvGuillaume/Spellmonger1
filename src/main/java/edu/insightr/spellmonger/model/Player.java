@@ -1,6 +1,8 @@
 package edu.insightr.spellmonger.model;
 
 
+import edu.insightr.spellmonger.model.Card.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 

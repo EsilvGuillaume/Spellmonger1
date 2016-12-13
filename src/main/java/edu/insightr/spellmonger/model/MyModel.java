@@ -1,10 +1,7 @@
 package edu.insightr.spellmonger.model;
-import edu.insightr.spellmonger.model.Card;
-import edu.insightr.spellmonger.model.Creature;
-import edu.insightr.spellmonger.model.Player;
-import javafx.animation.FadeTransition;
+import edu.insightr.spellmonger.model.Card.Card;
+import edu.insightr.spellmonger.model.Card.Creature;
 import javafx.scene.Node;
-import javafx.util.Duration;
 
 import javax.swing.*;
 import java.util.ArrayList;

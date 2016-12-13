@@ -1,4 +1,4 @@
-package edu.insightr.spellmonger.model;
+package edu.insightr.spellmonger.model.Card;
 
 public abstract class Flying extends Creature {
 

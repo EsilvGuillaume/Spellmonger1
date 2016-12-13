@@ -1,6 +1,7 @@
-package edu.insightr.spellmonger.model;
+package edu.insightr.spellmonger.model.Card;
 
 
+import edu.insightr.spellmonger.model.Player;
 import javafx.scene.image.Image;
 
 public class Blessing extends Rituol {
