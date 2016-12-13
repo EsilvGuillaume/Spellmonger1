@@ -1,12 +1,13 @@
 package edu.insightr.spellmonger.model;
-
-import edu.insightr.spellmonger.utils.MyModel;
+import edu.insightr.spellmonger.model.Card;
+import edu.insightr.spellmonger.model.Creature;
+import edu.insightr.spellmonger.model.Player;
+import edu.insightr.spellmonger.model.MyModel;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+//import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,14 +26,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.util.Duration;
+
+//import static edu.insightr.spellmonger.model.SpellmongerApp.app;
+import javax.swing.*;
+
+import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
+
 
 /**
  * Created by Kali on 12/12/2016.
@@ -70,7 +78,7 @@ public class ControllerIA extends Application {
     private Label namePlayer1, namePlayer2;
 
     @FXML
-    private Button draw1Button, draw2Button;
+    private Button draw1Button;
 
     @FXML
     private Label hpPlayer1, hpPlayer2, manaPlayer1, manaPlayer2;
@@ -119,7 +127,7 @@ public class ControllerIA extends Application {
     }
 
     private void turnEnded() { // actually just checks dead crea then call real end of turn method (go rename)
-        System.out.println("turnEnded entered - checking deaths");
+       // System.out.println("turnEnded entered - checking deaths");
         FadeTransition ft = new FadeTransition();
         ArrayList<Creature> temp = Model.checkdeadcrea();
         //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
@@ -128,6 +136,8 @@ public class ControllerIA extends Application {
         }
         else
         {
+            System.out.println("Anim should start");
+
             for (Creature crea : temp) {
                 ft = new FadeTransition(Duration.millis(3000), crea.getPic());
                 ft.setFromValue(1.0);
@@ -180,7 +190,7 @@ public class ControllerIA extends Application {
         parallelTransition.onFinishedProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                refreshHand(Model.getOpponent());
+                refreshHand(Model.getCurrent());
             }
         });
 
@@ -341,6 +351,8 @@ public class ControllerIA extends Application {
 
     @FXML
     void playNoCard() {
+        refreshHand(Model.getCurrent());
+        refreshHand(Model.getOpponent());
         Model.CardPlay();
         refreshBoard(Model.CheckCreaBoard());
         refreshDiscard();
