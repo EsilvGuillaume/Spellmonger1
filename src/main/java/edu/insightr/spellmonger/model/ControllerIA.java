@@ -39,6 +39,7 @@ import javax.swing.*;
 
 import static edu.insightr.spellmonger.MenuController.app;
 import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
+import static java.lang.Thread.sleep;
 
 
 /**
@@ -198,23 +199,29 @@ public class ControllerIA extends Application {
     private boolean IaTurn(int i)
     {
         draw1Button.setDisable(true);
-
+        String Message ="";
         if (Model.GetSizeHand(1) < 5 && i==0)
         {
-
             Model.DrawCard(Model.getCurrent(), Model.getOpponent());
             refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
             refreshHand(Model.getCurrent());
             resfreshIGMsg();
+
             List<Card> cardia = Model.GetHandOpponent();
             Card toplay = new Card();
+            Card Draw = new Card();
             for(Card tmpcard : cardia)
             {
                 if (tmpcard.getCost() > toplay.getCost() && tmpcard instanceof Creature && tmpcard.getCost()<=Model.getCurrent().getEnergy())
                 {
                     toplay = tmpcard;
                 }
+                if(tmpcard.isDraw())
+                {
+                    Draw = tmpcard;
+                }
             }
+            Model.setMsg("Ia draw one card : " +Draw.getName()+"\n");
             if (!(toplay instanceof Creature))
             {
                 for(Card tmpcard : cardia)
@@ -235,6 +242,7 @@ public class ControllerIA extends Application {
                 ImageView pic = new ImageView(img);
                 final ImageView movingPic = pic;
                 goPlayCard(toplay, Model.getCurrent(), Model.getOpponent(), movingPic);
+                Model.setMsg(Model.MsgIg()+("Ia play card :" +toplay.getName())+"|");
             }
              if(Model.getCurrent().getEnergy()>0 && toplay.getCost()>0)
              {
@@ -249,6 +257,7 @@ public class ControllerIA extends Application {
         }
         else
         {
+            Card Draw = new Card();
             List<Card> cardia = Model.GetHandOpponent();
             Card toplay = new Card();
             for(Card tmpcard : cardia)
@@ -257,7 +266,12 @@ public class ControllerIA extends Application {
                 {
                     toplay = tmpcard;
                 }
+                if(tmpcard.isDraw())
+            {
+                Draw = tmpcard;
             }
+            }
+
             if (!(toplay instanceof Creature))
             {
                 for(Card tmpcard : cardia)
@@ -278,6 +292,7 @@ public class ControllerIA extends Application {
                 ImageView pic = new ImageView(img);
                 final ImageView movingPic = pic;
                 goPlayCard(toplay, Model.getCurrent(), Model.getOpponent(), movingPic);
+                Model.setMsg(Model.MsgIg()+("Ia play card : " +toplay.getName()+ " | "));
             }
             if(Model.getCurrent().getEnergy()>0 && toplay.getCost()>0)
             {
@@ -357,6 +372,7 @@ public class ControllerIA extends Application {
         refreshBoard(Model.CheckCreaBoard());
         refreshDiscard();
         turnEnded();
+
     }
 
     private void turnEnded2() {
@@ -450,7 +466,10 @@ public class ControllerIA extends Application {
 
         if (Model.GoPlayCardModel(card, currentPlayer, opponent, cardToMove)) {
             animCardPlayed(cardToMove);
-            Model.setMsg("");
+            if(Model.getCurrent().equals(Model.getPlayer(1)))
+            {
+                Model.setMsg("");
+            }
             //effect if crea dies
             //refreshBoard(app.getAllCreaOnBoard()); // test - remettre (go voir si peut etre injecter dans turnEnded
             removecardhand(card, currentPlayer);

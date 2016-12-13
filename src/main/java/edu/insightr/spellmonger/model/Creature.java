@@ -146,7 +146,7 @@ public class Creature extends Card {
         } else if (creatures.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(creatures);
         }
-        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + ",\nwas killed by " + this.getName() + " of " + this.getOwner());
+        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + " † by " + this.getName() + " of " + this.getOwner());
     }
 
     /*private void killCreature(Creature creatures) {

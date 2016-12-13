@@ -33,8 +33,8 @@
         <Label styleClass="player-hp" layoutX="30" layoutY="545" id="hpPlayer2" fx:id="hpPlayer2" text="20"/>
         <Label styleClass="player-energy" layoutX="30" layoutY="570" id="manaPlayer2" fx:id="manaPlayer2" text="1"/>
 
-        <Label styleClass="game-msg" layoutX="850" layoutY="470" id="player2Name" fx:id="gameMsg" text="Play !"/>
-        <Button styleClass="pass-button" text="Skip turn" layoutX="825" layoutY="580" onAction="#playNoCard"/>
+        <Label styleClass="game-msg" layoutX="830" layoutY="470" id="player2Name" fx:id="gameMsg" text="Play !"/>
+        <Button styleClass="pass-button" text="Skip turn" layoutX="825" layoutY="600" onAction="#playNoCard"/>
 
         <Button styleClass="draw-button" layoutX="580" layoutY="110" mnemonicParsing="false" onAction="#draw" fx:id="draw1Button" text="Draw"/>
         <HBox fx:id="boardP1"/>
