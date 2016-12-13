@@ -27,6 +27,7 @@ public class Player {
         this.setEnergy(1);
         this.setDeckInfo(new Deck(40, ""));
         this.setNumberOfCreaOnBoard(0);
+        this.alive = true;
         this.hand = new ArrayList<>(); // A CHANGER (2 card at the start)
         this.discard = new ArrayList<>();
         this.vaultOverclocking = false;
@@ -38,6 +39,7 @@ public class Player {
         this.setEnergy(1);
         this.setDeckInfo(new Deck(40, name));
         this.setNumberOfCreaOnBoard(0);
+        this.alive = true;
         this.vaultOverclocking = false;
         this.hand = new ArrayList<>(); // A CHANGER (2 card at the start)
         this.discard = new ArrayList<>();

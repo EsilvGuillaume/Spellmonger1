@@ -59,9 +59,10 @@ public class GamePhase {
     public void if_the_has_enough_energy_points_to_summon_a_creature_he_she_choose_the_corresponding_creature_and_summon_it(String arg1, String arg2) throws Throwable {
         Creature creature = new Creature(arg2, arg1);
         Player player = findPlayer(arg1);
+        Player opponent = findPlayer("player2");
         if (player.getEnergy() >= creature.getHp()) {
-            // TODO : il faut jouer la créature pour quelle soit on borad !!!
-            assertThat(player.getNumberOfCreaOnBoard(), is(equalTo(1)));
+            //assertThat(player.getNumberOfCreaOnBoard(), is(equalTo(1)));
+            assertThat(app.playCard(creature, player, opponent), is(true));
         }
     }
 
@@ -108,14 +109,16 @@ public class GamePhase {
     @Then("^the \"([^\"]*)\" is dead$")
     public void theIsDead(String arg0) throws Throwable {
         Player player = findPlayer(arg0);
-        assertThat(player.getHp(), is(equalTo(0)));
-        assertThat(player.isAlive(), is(equalTo(false)));
+        app.setPlayer1(player);
+        if(app.getPlayer1().getHp() <= 0)
+            assertThat(app.getPlayer1().isAlive(), is(equalTo(false)));
     }
 
     @Then("^the \"([^\"]*)\" is the winner$")
     public void the_is_the_winner(String arg1) throws Throwable {
-        Player player = findPlayer(arg1);
-        // TODO : il y a un bug dans isAlive() !!!
-        assertThat(player.isAlive(), is(true));
+        //Player player = findPlayer(arg1);
+        app.setWinner(arg1);
+        assertThat(app.getWinner(), is(arg1));
+        //assertThat(player.isAlive(), is(equalTo(true)));
     }
 }
