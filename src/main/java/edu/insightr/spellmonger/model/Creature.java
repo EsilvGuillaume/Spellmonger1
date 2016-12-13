@@ -20,15 +20,6 @@ public class Creature extends Card {
     private boolean putOnBoard;
     private ImageView pic;
 
-    public Creature(String name, String owner, int hp) {
-        super(name, owner);
-        this.setHp(hp);
-        this.setAttack(hp);
-        this.setAlive(true);
-        allCreatures.add(this);
-        this.setPutOnBoard(false);
-    }
-
     public Creature(String name, String owner) {
         super(name, owner);
         this.setHp(0);
@@ -86,37 +77,119 @@ public class Creature extends Card {
         return temp;
     }
 
+    private static Creature searchGoodSacrifice(int attack, int hp, List<Creature> killableTarg) {
+        List<Creature> killableTargets = killableTarg;
+        Creature targetWorthSuicide = null;
+        ArrayList toRemove = new ArrayList();
+
+        System.out.print("sacrifice targets are now : ");
+        for (Creature crea : killableTargets) {
+            System.out.print(crea.getName() + ", ");
+        }
+        System.out.print("\n");
+
+        for (Creature crea : killableTargets) {
+            //cannot kill me, not a sacrifice - we only keep targets that kill us
+            if ((crea.getAttack() < hp)) {
+                //killableTargets.remove(crea);
+                toRemove.add(crea);
+            }
+            if ((crea.getAttack() < attack)) {
+                toRemove.add(crea);
+            }
+            //if attack of target is the same, but target has less life, not worth
+            if ((crea.getAttack() == attack) && (crea.getHp() < hp)) {
+                toRemove.add(crea);
+            }
+            //doesnt sacrifice on same stats
+            if((crea.getAttack() == attack) && (crea.getHp() == hp)){
+                toRemove.add(crea);
+            }
+        }
+        killableTargets.removeAll(toRemove);
+
+        System.out.print("sacrifice targets are now : ");
+        for (Creature crea : killableTargets) {
+            System.out.print(crea.getName() + ", ");
+        }
+        System.out.print("\n");
+
+        int maxAttack = 0;
+        //we search the targets max attack
+        for (Creature crea : killableTargets) {
+            if (crea.getAttack() > maxAttack) {
+                maxAttack = crea.getAttack();
+            }
+        }
+        toRemove = new ArrayList();
+        //we chose our final target taking the one with the 'max attack' and with the most hp
+        for (Creature crea : killableTargets) {
+            if (crea.getAttack() != maxAttack) {
+                //killableTargets.remove(crea);
+                toRemove.add(crea);
+            }
+        }
+        killableTargets.removeAll(toRemove);
+        int maxLifeWhenMaxAttack = 0;
+        for (Creature crea : killableTargets) {
+            if (crea.getHp() > maxLifeWhenMaxAttack) {
+                maxLifeWhenMaxAttack = crea.getHp();
+            }
+        }
+        for (Creature crea : killableTargets) {
+            if (crea.getHp() == maxLifeWhenMaxAttack) {
+                targetWorthSuicide = crea;
+            }
+        }
+        return targetWorthSuicide;
+    }
+
     private static Creature findBestTarget(int attack, int hp, Player opponent) {
+
+        ArrayList toRemove = new ArrayList();
         Creature bestTarget = null;
         List<Creature> potentialTargets = new ArrayList<>();
         List<Creature> opponentCrea;
         opponentCrea = getPlayerCreaOnBoard(opponent);
-        //System.out.print(opponentCrea.isEmpty());
+
         //we retrieve all opponent creatures on board
         if (opponentCrea == null) {
             return null;
         } else {
-            for (int i = 0; i < opponentCrea.size(); i++) {
-                if (opponentCrea.get(i).getOwner() == opponent.getName()) {
-                    potentialTargets.add(opponentCrea.get(i));
+            for (Creature crea : opponentCrea) {
+                if (crea.getOwner() == opponent.getName()) {
+                    potentialTargets.add(crea);
                 }
             }
         }
+
         //we only keep the target we can kill (if they are none, we'll attack opponent)
-        //System.out.print("size of potential targets : "+potentialTargets.size());
-        for (int i = 0; i < potentialTargets.size(); i++) {
-            if (potentialTargets.get(i).getHp() > attack) {
-                potentialTargets.remove(potentialTargets.get(i));
+        for (Creature crea : potentialTargets) {
+            System.out.println(crea.getName() + " attacks = " + crea.getAttack());
+            if (crea.getHp() > attack) {
+                toRemove.add(crea);
             }
         }
-        //we check on targets if we can stay alive while killing them
+        potentialTargets.removeAll(toRemove);
+
+        List<Creature> potentialTargets0 = new ArrayList<Creature>(potentialTargets);
+        Creature worthSacrifice = searchGoodSacrifice(attack, hp, potentialTargets0);
+        if (worthSacrifice != null) {
+            System.out.println(" ********** sacrifice found ! Name:" + worthSacrifice.getName() + " / HP:" + worthSacrifice.getHp() + " / Attack:" + worthSacrifice.getAttack() + " ********** ");
+            return worthSacrifice;
+        }
+
+        toRemove = new ArrayList();
+        //we only keep targets that won't kill us while killing them
         for (int i = 0; i < potentialTargets.size(); i++) {
             if (potentialTargets.get(i).getAttack() >= hp) {
-                if (potentialTargets.get(i).getAttack() <= attack) {
-                    potentialTargets.remove(potentialTargets.get(i));
-                }
+                //if (potentialTargets.get(i).getAttack() <= attack) { // was <= attack ... why ? // test < hp : bug
+                //potentialTargets.remove(potentialTargets.get(i));
+                toRemove.add(potentialTargets.get(i));
+                //}
             }
         }
+        potentialTargets.removeAll(toRemove);
 
         //then we choose the one with the highest health
         int healthiest = 0;
@@ -129,16 +202,14 @@ public class Creature extends Card {
             if (target.getHp() == healthiest)
                 bestTarget = target;
         }
-
+        if (bestTarget != null) {
+            System.out.println("best target = " + bestTarget.getName());
+        }
         return bestTarget;
     }
 
-     public void killCreature(Creature creatures) {
+    public void killCreature(Creature creatures) {
         allCreatures.remove(creatures);
-
-        //Controller ctrl = new Controller(); // test
-        //ctrl.creaDies(this.getPic(), this); // test
-
         app.getAllCreaOnBoard().remove(creatures);
         app.getLastDeadCrea().add(creatures);
         if (creatures.getOwner() == app.getCurrentPlayer().getName()) {
@@ -148,22 +219,6 @@ public class Creature extends Card {
         }
         app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + ",\nwas killed by " + this.getName() + " of " + this.getOwner());
     }
-
-    /*private void killCreature(Creature creatures) {
-        allCreatures.remove(this);
-
-        //Controller ctrl = new Controller(); // test
-        //ctrl.creaDies(this.getPic(), this); // test
-
-        app.getAllCreaOnBoard().remove(this);
-        app.getLastDeadCrea().add(this);
-        if (this.getOwner() == app.getCurrentPlayer().getName()) {
-            app.getCurrentPlayer().getDiscard().add(this);
-        } else if (this.getOwner() == app.getOpponent().getName()) {
-            app.getOpponent().getDiscard().add(this);
-        }
-        app.setIgMsg(app.getIgMsg() + "\n" + this.getName() + " of " + this.getOwner() + ",\nwas killed by " + creatures.getName() + " of " + creatures.getOwner());
-    }*/
 
     @Override
     public String toString() {
@@ -196,7 +251,8 @@ public class Creature extends Card {
 
     public void attack(Player opponent) {
 
-        Creature bestCreaTarget = findBestTarget(this.getHp(), this.getAttack(), opponent);
+        //System.out.println("Searching best target for "+this.getName()+" : att:"+this.getAttack()+"/hp:"+this.getHp());
+        Creature bestCreaTarget = findBestTarget(this.getAttack(), this.getHp(), opponent);
 
         if (bestCreaTarget == null) {
             attackOpponent(opponent);

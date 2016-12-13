@@ -132,7 +132,7 @@ public class Controller extends Application {
             turnEnded2();
         } else {
 
-            System.out.println("Anim should start");
+            //System.out.println("Anim should start");
 
             for (Creature crea : temp) {
                 ft = new FadeTransition(Duration.millis(3000), crea.getPic()); //3k
@@ -204,6 +204,8 @@ public class Controller extends Application {
     }
 
     public void initialize() {
+        hand2.setDisable(true);
+        hand1.setDisable(true);
         refreshHand(Model.getPlayer(1));
         refreshHand(Model.getPlayer(2));
         refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
@@ -358,6 +360,8 @@ public class Controller extends Application {
     }
 
     private void goPlayCard(Card card, Player currentPlayer, Player opponent, Node cardToMove) {
+
+        System.out.println("current player : "+Model.getCurrent().getName());
 
         if (Model.GoPlayCardModel(card, currentPlayer, opponent, cardToMove)) {
             animCardPlayed(cardToMove);
