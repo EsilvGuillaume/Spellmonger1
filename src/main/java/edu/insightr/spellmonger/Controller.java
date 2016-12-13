@@ -3,8 +3,7 @@ package edu.insightr.spellmonger;
 import edu.insightr.spellmonger.model.Card;
 import edu.insightr.spellmonger.model.Creature;
 import edu.insightr.spellmonger.model.Player;
-import edu.insightr.spellmonger.model.SpellmongerApp;
-import edu.insightr.spellmonger.utils.MyModel;
+import edu.insightr.spellmonger.model.MyModel;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -44,9 +43,6 @@ import static edu.insightr.spellmonger.model.SpellmongerApp.setIgMsg;
 
 
 public class Controller extends Application {
-
-    // TODO : split Controller, View and Model
-    // TODO : clean your code, too many warnings !
 
     @Override
     public void start(final Stage primaryStage) {
@@ -126,25 +122,35 @@ public class Controller extends Application {
     }
 
     private void turnEnded() { // actually just checks dead crea then call real end of turn method (go rename)
-        System.out.println("turnEnded entered - checking deaths");
+
+        //System.out.println("turnEnded entered - checking deaths");
         FadeTransition ft = new FadeTransition();
         ArrayList<Creature> temp = Model.checkdeadcrea();
-            //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
-            if (temp.isEmpty()) {
-                turnEnded2();
+
+        //System.out.println("last death not empty : size = "+app.getLastDeadCrea().size());
+        if (temp.isEmpty()) {
+            turnEnded2();
+        } else {
+
+            System.out.println("Anim should start");
+
+            for (Creature crea : temp) {
+                ft = new FadeTransition(Duration.millis(3000), crea.getPic()); //3k
+                ft.setFromValue(1.0);
+                ft.setToValue(0.5);
+                ft.setRate(3); //3
+                ft.setCycleCount(1); //1
+                ft.play();
+                //ft.setOnFinished(e -> turnEnded2());
             }
-            else
-            {
-                for (Creature crea : temp) {
-                    ft = new FadeTransition(Duration.millis(3000), crea.getPic());
-                    ft.setFromValue(1.0);
-                    ft.setToValue(0.5);
-                    ft.setRate(3);
-                    ft.setCycleCount(1);
-                    ft.play();
-                }
-                ft.setOnFinished(e -> turnEnded2());
-            }
+            ft.setOnFinished(e -> turnEnded2());
+                /*ft.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent){
+                        turnEnded2();
+                    }
+                });*/
+        }
     }
 
     private void animCardPlayed(Node node) {
@@ -187,7 +193,7 @@ public class Controller extends Application {
         parallelTransition.onFinishedProperty().set(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                refreshHand(Model.getOpponent());
+                refreshHand(Model.getCurrent()); // getOppo
             }
         });
 
@@ -233,14 +239,14 @@ public class Controller extends Application {
             hand2.setDisable(true);
             hand1.setDisable(false);
         } else if (event.getSource() == draw2Button) {
-          Model.DrawPlayer(2);
+            Model.DrawPlayer(2);
             hand1.setDisable(true);
             hand2.setDisable(false);
         }
 
         refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
         if (Model.GetSizeHand(1) < 5) {
-    Model.DrawCard(Model.getCurrent(),Model.getOpponent());
+            Model.DrawCard(Model.getCurrent(), Model.getOpponent());
             draw1Button.setDisable(true);
             draw2Button.setDisable(true);
             refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
@@ -256,15 +262,17 @@ public class Controller extends Application {
 
     @FXML
     void playNoCard() {
-       Model.CardPlay();
-        refreshBoard(Model.CheckCreaBoard());
+        refreshHand(Model.getCurrent());
+        refreshHand(Model.getOpponent());
+        Model.CardPlay();
+        //refreshBoard(Model.CheckCreaBoard());
         refreshDiscard();
         turnEnded();
     }
 
     private void turnEnded2() {
 
-
+        //System.out.println("Turn ends... (turnEnded2 starts)");
         refreshBoard(Model.CheckCreaBoard());
         Model.TurnEndModel();
         if (Model.getCurrent().equals(Model.getPlayer(1))) {
@@ -360,7 +368,7 @@ public class Controller extends Application {
             //refreshHand(currentPlayer); // now in anim
             Creature.displayGroupOfCrea(Model.CheckCreaBoard());//affichage crea du board raffraichis
             refreshBoard(Model.CheckCreaBoard());//refresh main + crea
-            refreshHand(currentPlayer);
+            //refreshHand(currentPlayer); //doesnt allow animation
             refreshPlayerInfo(Model.getCurrent(), Model.getOpponent());
             /*  if (currentPlayer.getEnergy() == 0) { // à décommenter si on veut faire passer le tour automatiquement lorsque le joueur n'a plus d'energie.
                    app.cardPlayed();
@@ -408,7 +416,6 @@ public class Controller extends Application {
     }
 
     private void refreshHand(Player currPlayer) {
-
         int j = 0;
         Image img;
         ImageView pic;
