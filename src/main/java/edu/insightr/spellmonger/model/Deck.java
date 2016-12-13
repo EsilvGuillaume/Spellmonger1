@@ -34,7 +34,7 @@ public class Deck {
         int creatureNumber = (int) (size * 0.6); // ~75% of crea in a deck
         int rituolOrEnchantNumber = (int) (size * 0.4); // ~25% of ritual or enchant in a deck
 
-        int differentCrea = 5;
+        int differentCrea = 6;
         int differentRituOrEnch = 6;
 
         int uniqueCreaNumber = (int) (creatureNumber / differentCrea);
@@ -48,12 +48,14 @@ public class Deck {
             Wolf wolf = new Wolf("wolf", playerName);
             Fox fox = new Fox("fox", playerName);
             Dragon dragon = new Dragon("dragon", playerName);
+            Snake snake = new Snake("snake", playerName);
 
             addToList(possibleCards, wolf, uniqueCreaNumber);
             addToList(possibleCards, eagle, uniqueCreaNumber);
             addToList(possibleCards, fox, uniqueCreaNumber);
             addToList(possibleCards, bear, uniqueCreaNumber);
             addToList(possibleCards, dragon, uniqueCreaNumber);
+            addToList(possibleCards, snake, uniqueCreaNumber);
         }
 
         for (int i = 0; i < uniqueRituolNumber; i++) {

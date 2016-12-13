@@ -206,9 +206,7 @@ public class SpellmongerApp {
             if (!(card instanceof Creature)) {
                 currentPlayer.getDiscard().add(card);
             }
-
             //cardPlayed();
-
             return true;
         } else {
             System.out.println(card.getName() + " cost is too high to be played !");
