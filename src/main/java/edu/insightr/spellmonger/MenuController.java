@@ -1,5 +1,6 @@
 package edu.insightr.spellmonger;
 
+import edu.insightr.spellmonger.model.ControllerIA;
 import edu.insightr.spellmonger.model.Player;
 import edu.insightr.spellmonger.model.SpellmongerApp;
 import javafx.fxml.FXML;
@@ -35,6 +36,12 @@ public class MenuController implements Initializable, ControlledScreen {
         launchGame();
     }
 
+    public void playiA()
+    {
+        myController.addData("NamePlayer", Login.getText());
+        launchGameIa();
+    }
+
     public void viewScore() {
         myController.loadScreen(Main.Score_ID, Main.Score_FILE);
         myController.setScreen(Main.Score_ID);
@@ -47,6 +54,15 @@ public class MenuController implements Initializable, ControlledScreen {
         app.drawFirstTwoCards();
         Stage pstage = new Stage();
         Controller ctrl = new Controller();
+        ctrl.start(pstage);
+    }
+    public void launchGameIa() {
+        app.initPlayer(Login.getText(), "Opponent Ia");
+        app.setCurrentPlayer(app.getPlayer1());
+        app.setOpponent(app.getPlayer2());
+        app.drawFirstTwoCards();
+        Stage pstage = new Stage();
+        ControllerIA ctrl = new ControllerIA();
         ctrl.start(pstage);
     }
 

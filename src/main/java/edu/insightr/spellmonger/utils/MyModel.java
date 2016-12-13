@@ -104,6 +104,10 @@ public class MyModel {
         }
         return 0;
     }
+    public List<Card> GetHandOpponent()
+    {
+        return app.getCurrentPlayer().getHand();
+    }
 
     public void CardPlay()
     {

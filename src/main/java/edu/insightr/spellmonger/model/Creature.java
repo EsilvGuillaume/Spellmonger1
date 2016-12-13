@@ -133,7 +133,7 @@ public class Creature extends Card {
         return bestTarget;
     }
 
-    static public void killCreature(Creature creatures) {
+     public void killCreature(Creature creatures) {
         allCreatures.remove(creatures);
 
         //Controller ctrl = new Controller(); // test
@@ -146,7 +146,7 @@ public class Creature extends Card {
         } else if (creatures.getOwner() == app.getOpponent().getName()) {
             app.getOpponent().getDiscard().add(creatures);
         }
-        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + ",\nwas killed by " + creatures.getName() + " of " + creatures.getOwner());
+        app.setIgMsg(app.getIgMsg() + "\n" + creatures.getName() + " of " + creatures.getOwner() + ",\nwas killed by " + this.getName() + " of " + this.getOwner());
     }
 
     /*private void killCreature(Creature creatures) {

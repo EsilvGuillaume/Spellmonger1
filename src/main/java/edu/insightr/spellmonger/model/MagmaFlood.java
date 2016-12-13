@@ -22,6 +22,7 @@ public class MagmaFlood extends Rituol {
     }
 
     public void play(Player opponent) {
+
         boolean emptyOpponentBoard = Creature.getPlayerCreaOnBoard(opponent).isEmpty();
         boolean hasGround = false;
         if(!emptyOpponentBoard) {
@@ -37,7 +38,7 @@ public class MagmaFlood extends Rituol {
                 if(!(crea instanceof Flying)) {
                     crea.setHp(crea.getHp() - 2);
                     if(crea.getHp()<=0){
-                        Creature.killCreature(crea);
+                        crea.killCreature(crea);
                     }
                 }
             }
